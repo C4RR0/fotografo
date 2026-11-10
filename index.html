@@ -352,6 +352,8 @@ body.tapado img{filter:blur(30px) brightness(.4)!important}
 .p-ave .lejos{opacity:.85}
 .dial{--d:clamp(210px,17vw,270px);position:fixed;top:50%;right:0;z-index:70;width:var(--d);height:var(--d);transform:translate(40%,-50%);transition:opacity .6s,transform .6s var(--ease)}
 body.cargando .dial{opacity:0;transform:translate(100%,-50%);pointer-events:none}
+.dial.plegada{transform:translate(71%,-50%)}
+.dial.plegada .dial-svg{filter:drop-shadow(-6px 8px 14px rgba(0,0,0,.5)) brightness(.92)}
 body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none}
 .dial-svg{width:100%;height:100%;overflow:visible;touch-action:none;cursor:grab;filter:drop-shadow(-12px 16px 22px rgba(0,0,0,.6))}
 .dial-svg.arrastrando{cursor:grabbing}
@@ -369,7 +371,7 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
 .dial-txt .mono{display:block;color:var(--rojo)}
 .dial-txt b{display:block;font:italic 400 1.7rem/1.05 var(--serif);color:var(--papel);margin-top:4px}
 .dial-txt small{display:block;color:#d9d0c4;opacity:.85;margin-top:4px}
-@media (max-width:760px){.dial{--d:164px;top:60%;transform:translate(46%,-50%)}.dial-txt b{font-size:1.3rem}.pistas{align-items:flex-start}}
+@media (max-width:760px){.dial{--d:164px;top:60%;transform:translate(46%,-50%)}.dial.plegada{transform:translate(70%,-50%)}.dial-txt b{font-size:1.3rem}.pistas{align-items:flex-start}}
 
 /* ===== PAISAJES: de sol a luna ===== */
 .paisajes{position:relative;--c1:#3f6f95;--c2:#a9c3d3;--ave:#16120f}
@@ -845,7 +847,7 @@ Promise.all([cargada, espera(1900), document.fonts ? document.fonts.ready : 0]).
   gsap.fromTo("#flash", {opacity: .75}, {opacity: 0, duration: .7, ease: "power2.out"});        // el disparo
   fin();
   entrarHero();
-  setTimeout(() => { const t = $("#dialTxt"); t.classList.add("ver"); setTimeout(() => t.classList.remove("ver"), 3800); }, 1100);
+  setTimeout(() => { const t = $("#dialTxt"); t.classList.add("ver"); if (window.abrirDial) abrirDial(4300); setTimeout(() => t.classList.remove("ver"), 3800); }, 1100);
 });
 
 /* ================= PÁJAROS: vuelan por el cielo de la portada; hazle una foto y entras en los paisajes =================
@@ -1035,9 +1037,16 @@ if (ANIM) {
   const iconos = [...iconosEl.querySelectorAll(".dial-icono")], interiores = iconos.map(g => g.querySelector(".ic"));
   const estado = {r: 0};
   const pintarR = () => { rueda.setAttribute("transform", `rotate(${estado.r})`); interiores.forEach(g => g.setAttribute("transform", `rotate(${-estado.r})`)); };
+  // se esconde sola cuando no se usa: solo asoma la marca roja y el icono del modo actual
+  let tPleg, dentro = false;
+  const plegar = ms => { clearTimeout(tPleg); tPleg = setTimeout(() => { if (!arr && !dentro) dial.classList.add("plegada"); }, ms); };
+  const abrirD = (ms = 2400) => { dial.classList.remove("plegada"); plegar(ms); };
+  if (fino) { dial.addEventListener("pointerenter", () => { dentro = true; abrirD(); }); dial.addEventListener("pointerleave", () => { dentro = false; plegar(1200); }); }
+  window.abrirDial = abrirD;
   let actualM = -1, tTxt;
   function poner(i, animar = true) {
     if (i === actualM) return; actualM = i;
+    if (!document.body.classList.contains("cargando")) abrirD(2200);
     iconos.forEach((g, k) => g.classList.toggle("on", k === i));
     $("#dialNombre").textContent = MODOS[i].n; $("#dialSec").textContent = MODOS[i].sec;
     txt.classList.add("ver"); clearTimeout(tTxt); tTxt = setTimeout(() => txt.classList.remove("ver"), 1800);
@@ -1053,9 +1062,11 @@ if (ANIM) {
   }
   pintarR(); poner(0, false); $("#dialSec").textContent = "Inicio · gira la rueda";
   // girar arrastrando (con imán al modo más cercano) o pinchar un icono
-  let arr = null;
   const angulo = e => { const b = svgD.getBoundingClientRect(); return Math.atan2(e.clientY - (b.top + b.height / 2), e.clientX - (b.left + b.width / 2)) * 180 / Math.PI; };
-  svgD.addEventListener("pointerdown", e => { arr = {a0: angulo(e), r0: estado.r, x: e.clientX, y: e.clientY, movido: false, g: e.target.closest(".dial-icono")}; svgD.setPointerCapture(e.pointerId); if (ANIM) gsap.killTweensOf(estado); });
+  let arr = null;
+  svgD.addEventListener("pointerdown", e => {
+    if (dial.classList.contains("plegada")) { abrirD(3500); e.preventDefault(); return; }   // en el móvil, el primer toque solo la saca
+    abrirD(3500); arr = {a0: angulo(e), r0: estado.r, x: e.clientX, y: e.clientY, movido: false, g: e.target.closest(".dial-icono")}; svgD.setPointerCapture(e.pointerId); if (ANIM) gsap.killTweensOf(estado); });
   svgD.addEventListener("pointermove", e => {
     if (!arr) return;
     if (Math.hypot(e.clientX - arr.x, e.clientY - arr.y) > 6) { arr.movido = true; svgD.classList.add("arrastrando"); }
@@ -1067,6 +1078,7 @@ if (ANIM) {
   });
   svgD.addEventListener("pointerup", e => {
     if (!arr) return; const a = arr; arr = null; svgD.classList.remove("arrastrando");
+    plegar(fino ? 2400 : 3500);
     if (a.movido) { const i = Math.max(0, Math.min(MODOS.length - 1, Math.round(-estado.r / PASO))); actualM = -1; irA(i); return; }
     if (a.g) { actualM = -1; irA(+a.g.dataset.i); }
   });
