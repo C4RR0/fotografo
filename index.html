@@ -8,11 +8,11 @@
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0d0b0a">
 <meta property="og:title" content="José Luis Vadillo · Fotografía">
-<meta property="og:image" content="fotos/09.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/C4RR0/fotografo-fotos/main/fotos/09.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@600&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="fotos/09.jpg">
+<link rel="preload" as="image" href="https://raw.githubusercontent.com/C4RR0/fotografo-fotos/main/fotos/09.jpg">
 <style>
 :root{
   --negro:#0d0b0a; --carbon:#171312; --papel:#efe8dd; --papel2:#f6f2ea; --gris:#9c9189; --linea:#2b2421;
@@ -465,8 +465,8 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
   <!-- HERO -->
   <section class="hero" id="inicio">
     <div class="hero-media">
-      <img class="hero-bn" src="fotos/09.jpg" alt="">
-      <img class="hero-color" src="fotos/09.jpg" alt="Chica en el agua de una fuente lanzando el pelo hacia atrás y formando un arco de gotas">
+      <img class="hero-bn" src="https://raw.githubusercontent.com/C4RR0/fotografo-fotos/main/fotos/09.jpg" alt="">
+      <img class="hero-color" src="https://raw.githubusercontent.com/C4RR0/fotografo-fotos/main/fotos/09.jpg" alt="Chica en el agua de una fuente lanzando el pelo hacia atrás y formando un arco de gotas">
     </div>
     <div class="hero-txt">
       <h1><span class="l1">José Luis</span><span class="l2" data-letras>Vadillo</span></h1>
@@ -527,7 +527,7 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
   <!-- LUNA -->
   <section class="luna" id="luna">
     <div class="luna-pin">
-      <img src="fotos/12.jpg" alt="Una chica en el campo que parece sostener una enorme luna llena sobre sus manos" id="lunaimg" data-abrir="12">
+      <img src="https://raw.githubusercontent.com/C4RR0/fotografo-fotos/main/fotos/12.jpg" alt="Una chica en el campo que parece sostener una enorme luna llena sobre sus manos" id="lunaimg" data-abrir="12">
       <span class="mono leyenda" id="lleyenda">Fotograma 12</span>
       <p class="luna-txt t1" id="lt1">Hay fotos que salen en un segundo…</p>
       <p class="luna-txt t2" id="lt2">…y otras que hay que <em>esperar</em>.</p>
@@ -596,7 +596,9 @@ const WHATSAPP = "34652971714";
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 scrollTo(0, 0);
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
-const img = (n, m) => `fotos/${n}${m ? "-m" : ""}.${n.includes("-") ? "webp" : "jpg"}`;
+/* Las fotos viven en el repositorio fotografo-fotos y se sirven directamente desde GitHub (raw): así esta web pesa poco y se publica en segundos. jsDelivr NO vale (límite de 50 MB por repo). Cuando GitHub Pages de fotografo-fotos publique bien, cambiar a https://c4rr0.github.io/fotografo-fotos/. */
+const FOTOS = "https://raw.githubusercontent.com/C4RR0/fotografo-fotos/main/";
+const img = (n, m) => `${FOTOS}fotos/${n}${m ? "-m" : ""}.${n.includes("-") ? "webp" : "jpg"}`;
 const fino = matchMedia("(pointer: fine)").matches;
 const ANIM = !!(window.gsap && window.ScrollTrigger);
 if (!ANIM) document.documentElement.classList.add("estatico");
