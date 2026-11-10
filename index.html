@@ -347,31 +347,29 @@ body.tapado img{filter:blur(30px) brightness(.4)!important}
 .estatico .mesa-copias{display:flex;flex-wrap:wrap;gap:20px;padding:30px var(--lado)}
 .estatico .copia{position:relative;left:auto;top:auto}
 .estatico .luna-txt.t1{display:none}.estatico .luna-txt.t2,.estatico .luna .leyenda{opacity:1}
-/* ===== PÁJAROS de la portada: hazle una foto y te lleva a Paisajes ===== */
-.cielo-hero{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
-.ave{position:absolute;left:0;top:0;color:#f4efe6;will-change:transform;opacity:0}
-.ave svg{display:block;width:100%;height:100%;overflow:visible}
-.ave .lejos{opacity:.85}
-.ave-hero{width:clamp(62px,6vw,92px);aspect-ratio:3/2;padding:0;border:0;background:none;pointer-events:auto;cursor:pointer;filter:drop-shadow(0 6px 12px rgba(0,0,0,.55))}
-.ave-hero::before{content:"";position:absolute;inset:-70% -50%}
-.ave-hero .foco{position:absolute;inset:-34% -18%;pointer-events:none;opacity:0;transform:scale(1.35);transition:opacity .25s,transform .35s var(--ease)}
-.ave-hero .foco i{position:absolute;width:12px;height:12px;border:1.5px solid var(--rojo)}
-.ave-hero .foco i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0}.ave-hero .foco i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0}
-.ave-hero .foco i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0}.ave-hero .foco i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0}
-.ave-hero:hover .foco,.ave-hero:focus-visible .foco{opacity:1;transform:scale(1)}
-@media (pointer:coarse){.ave-hero .foco{opacity:.75;transform:scale(1)}}
-.ave-lejos{width:clamp(24px,2.2vw,34px);aspect-ratio:3/2;color:#ddd5c8}
+/* ===== RUEDA DE MODOS (como la de una cámara): navega por las categorías ===== */
 .pistas{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
-.pista-ave{display:flex;align-items:center;gap:10px;color:var(--papel);text-decoration:none;background:none;border:0;padding:0;cursor:pointer;pointer-events:auto}
-.pista-ave:hover{color:var(--ambar)}
 .p-ave .lejos{opacity:.85}
-.pista-ave svg{width:22px;height:16px;color:var(--ambar)}
-.disparo{position:fixed;left:0;top:0;z-index:99;width:min(42vw,600px);background:#f3eee6;padding:clamp(6px,.8vw,12px) clamp(6px,.8vw,12px) clamp(26px,3vw,40px);box-shadow:0 50px 90px rgba(0,0,0,.65);pointer-events:none;transform-origin:50% 50%}
-.disparo .foto{position:relative;aspect-ratio:3/2;overflow:hidden;background:#3f6f95}
-.disparo img{width:100%;height:100%;object-fit:cover}
-.disparo .foto svg{position:absolute;left:56%;top:14%;width:13%;color:#141110}
-.disparo span{position:absolute;left:clamp(8px,1vw,14px);bottom:clamp(6px,.8vw,12px);font:500 clamp(.55rem,.8vw,.7rem) var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#3a302a}
-@media (max-width:760px){.disparo{width:80vw}.pistas{align-items:flex-start}}
+.dial{--d:clamp(210px,17vw,270px);position:fixed;top:50%;right:0;z-index:70;width:var(--d);height:var(--d);transform:translate(40%,-50%);transition:opacity .6s,transform .6s var(--ease)}
+body.cargando .dial{opacity:0;transform:translate(100%,-50%);pointer-events:none}
+body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none}
+.dial-svg{width:100%;height:100%;overflow:visible;touch-action:none;cursor:grab;filter:drop-shadow(-12px 16px 22px rgba(0,0,0,.6))}
+.dial-svg.arrastrando{cursor:grabbing}
+.dial-moleteado rect{fill:#2a231f}
+.dial-moleteado rect:nth-child(odd){fill:#3d3430}
+.dial-indice{fill:var(--rojo)}
+.dial-icono{cursor:pointer}
+.dial-icono .fondo{fill:rgba(255,255,255,0);transition:fill .3s}
+.dial-icono:hover .fondo{fill:rgba(255,255,255,.08)}
+.dial-icono .ic{color:#9d9186;transition:color .35s}
+.dial-icono.on .ic{color:#fff}
+.dial-icono .ic *{vector-effect:non-scaling-stroke}
+.dial-txt{position:absolute;right:calc(100% + 18px);top:50%;transform:translate(10px,-50%);text-align:right;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .4s,transform .5s var(--ease);text-shadow:0 2px 14px rgba(0,0,0,.75)}
+.dial-txt.ver,.dial:hover .dial-txt{opacity:1;transform:translate(0,-50%)}
+.dial-txt .mono{display:block;color:var(--rojo)}
+.dial-txt b{display:block;font:italic 400 1.7rem/1.05 var(--serif);color:var(--papel);margin-top:4px}
+.dial-txt small{display:block;color:#d9d0c4;opacity:.85;margin-top:4px}
+@media (max-width:760px){.dial{--d:164px;top:60%;transform:translate(46%,-50%)}.dial-txt b{font-size:1.3rem}.pistas{align-items:flex-start}}
 
 /* ===== PAISAJES: de sol a luna ===== */
 .paisajes{position:relative;--c1:#3f6f95;--c2:#a9c3d3;--ave:#16120f}
@@ -442,6 +440,23 @@ body.tapado img{filter:blur(30px) brightness(.4)!important}
     <li><a href="#contacto">Contacto</a></li>
   </ul>
 </nav>
+<div class="dial" id="dial">
+  <div class="dial-txt" id="dialTxt"><span class="mono">Modo</span><b id="dialNombre">Auto</b><small class="mono" id="dialSec">Inicio · gira la rueda</small></div>
+  <svg class="dial-svg" id="dialSvg" viewBox="-110 -110 220 220" role="group" aria-label="Rueda de modos: elige una categoría">
+    <defs>
+      <radialGradient id="dCara" cx="-30" cy="-40" r="150" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4a403a"/><stop offset=".55" stop-color="#26201c"/><stop offset="1" stop-color="#120e0c"/></radialGradient>
+      <radialGradient id="dCentro" cx="-12" cy="-16" r="70" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3b332e"/><stop offset="1" stop-color="#151110"/></radialGradient>
+    </defs>
+    <g id="dialRueda"><g class="dial-moleteado" id="dialMolet"></g>
+      <circle r="93" fill="url(#dCara)" stroke="#0b0908" stroke-width="2"/>
+      <circle r="91" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+      <circle r="44" fill="url(#dCentro)" stroke="#0b0908" stroke-width="1.5"/>
+      <circle r="36" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="6" stroke-dasharray="1 2"/>
+      <g id="dialIconos"></g>
+    </g>
+    <path class="dial-indice" d="M-109,0 l-11,-7 v14 z"/>
+  </svg>
+</div>
 <div class="contador mono" aria-hidden="true"><i class="pto"></i><span>Fotograma <b id="fnum">09</b> / 23</span></div>
 
 <main>
@@ -455,15 +470,10 @@ body.tapado img{filter:blur(30px) brightness(.4)!important}
       <h1><span class="l1">José Luis</span><span class="l2" data-letras>Vadillo</span></h1>
       <div class="hero-pie">
         <p>Fotografía de parejas, retratos, deporte y naturaleza. Valladolid y alrededores.</p>
-        <span class="pistas"><span class="pista-luz mono"><i></i><span class="solo-raton">Mueve el ratón: pinta con luz</span><span class="solo-tactil">Arrastra el dedo: pinta con luz</span></span><button class="pista-ave mono" id="pistaAve"><svg viewBox="-38 -24 76 48" aria-hidden="true"><path fill="currentColor" d="M0,-4.5 C1.6,-4.5 2.6,-3 2.8,-1 C3,1.5 2,4 1.6,6 L3.2,10 L0,8.6 L-3.2,10 L-1.6,6 C-2,4 -3,1.5 -2.8,-1 C-2.6,-3 -1.6,-4.5 0,-4.5Z"/><path fill="currentColor" d="M3,-1 Q8,-10 14,-8 Q24,-15 34,-14 Q24,-8 14,-3 Q8,1 3,2 Z M-3,-1 Q-8,-10 -14,-8 Q-24,-15 -34,-14 Q-24,-8 -14,-3 Q-8,1 -3,2 Z"/></svg><span class="solo-raton">Hazle una foto al pájaro: paisajes</span><span class="solo-tactil">Toca el pájaro: paisajes</span></button></span>
+        <span class="pistas"><span class="pista-luz mono"><i></i><span class="solo-raton">Mueve el ratón: pinta con luz</span><span class="solo-tactil">Arrastra el dedo: pinta con luz</span></span></span>
       </div>
     </div>
     <div class="baja mono" aria-hidden="true">Baja<i></i></div>
-    <div class="cielo-hero" id="cieloHero">
-      <span class="ave ave-lejos" data-ave="lejos1"><svg viewBox="-38 -24 76 48" aria-hidden="true"><path class="lejos" fill="currentColor"/><path class="cuerpo" fill="currentColor" d="M0,-4.5 C1.6,-4.5 2.6,-3 2.8,-1 C3,1.5 2,4 1.6,6 L3.2,10 L0,8.6 L-3.2,10 L-1.6,6 C-2,4 -3,1.5 -2.8,-1 C-2.6,-3 -1.6,-4.5 0,-4.5Z"/><path class="cerca" fill="currentColor"/></svg></span>
-      <span class="ave ave-lejos" data-ave="lejos2"><svg viewBox="-38 -24 76 48" aria-hidden="true"><path class="lejos" fill="currentColor"/><path class="cuerpo" fill="currentColor" d="M0,-4.5 C1.6,-4.5 2.6,-3 2.8,-1 C3,1.5 2,4 1.6,6 L3.2,10 L0,8.6 L-3.2,10 L-1.6,6 C-2,4 -3,1.5 -2.8,-1 C-2.6,-3 -1.6,-4.5 0,-4.5Z"/><path class="cerca" fill="currentColor"/></svg></span>
-      <button class="ave ave-hero" id="aveHero" aria-label="Hazle una foto al pájaro y entra en los paisajes"><svg viewBox="-38 -24 76 48" aria-hidden="true"><path class="lejos" fill="currentColor"/><path class="cuerpo" fill="currentColor" d="M0,-4.5 C1.6,-4.5 2.6,-3 2.8,-1 C3,1.5 2,4 1.6,6 L3.2,10 L0,8.6 L-3.2,10 L-1.6,6 C-2,4 -3,1.5 -2.8,-1 C-2.6,-3 -1.6,-4.5 0,-4.5Z"/><path class="cerca" fill="currentColor"/></svg><span class="foco"><i></i><i></i><i></i><i></i></span></button>
-    </div>
   </section>
 
   <!-- MANIFIESTO -->
@@ -523,7 +533,7 @@ body.tapado img{filter:blur(30px) brightness(.4)!important}
   </section>
 
   <!-- SERIE III -->
-  <section class="mesa">
+  <section class="mesa" id="deporte">
     <div class="serie-cab">
       <div><span class="mono">Serie III · Hoja de contactos · 11 fotogramas</span><h2 data-partir>Hojas <em>y medallas</em></h2></div>
       <p>Retrato deportivo para una triatleta: corre, pedalea, salta… y también sonríe. Marcadas en rojo, mis favoritas.</p>
@@ -835,12 +845,12 @@ Promise.all([cargada, espera(1900), document.fonts ? document.fonts.ready : 0]).
   gsap.fromTo("#flash", {opacity: .75}, {opacity: 0, duration: .7, ease: "power2.out"});        // el disparo
   fin();
   entrarHero();
-  setTimeout(() => { introLista = true; }, 1200);
+  setTimeout(() => { const t = $("#dialTxt"); t.classList.add("ver"); setTimeout(() => t.classList.remove("ver"), 3800); }, 1100);
 });
 
 /* ================= PÁJAROS: vuelan por el cielo de la portada; hazle una foto y entras en los paisajes =================
    Las alas se dibujan en cada fotograma (no es una imagen que se estira): aletean, planean y se ladean. */
-let introLista = !ANIM;
+
 function alas(svg, a) {   // pájaro visto desde abajo, en «M». a: 1 = alas arriba, 0 = planeando, -0.6 = abajo
   const f = v => v.toFixed(1);
   const ala = (lado, k) => { const x = v => f(lado * v * k);
@@ -860,57 +870,14 @@ function crearAve(el, {vel = 1, ritmo = 9} = {}) {
     alas(svg, a);
   };
 }
-const cieloHero = $("#cieloHero"), aveHero = $("#aveHero"), lejanos = $$(".ave-lejos");
-const vuelos = [
-  {el: aveHero, aleteo: crearAve(aveHero), dur: 8.5, t: -1.2, y0: .2, amp: .06, esc: 1, pausa: 2.2},
-  {el: lejanos[0], aleteo: crearAve(lejanos[0], {vel: 1.25}), dur: 14, t: -3.5, y0: .1, amp: .03, esc: 1, pausa: 4},
-  {el: lejanos[1], aleteo: crearAve(lejanos[1], {vel: 1.35}), dur: 16, t: -7, y0: .15, amp: .025, esc: 1, pausa: 5}
-];
-let disparando = false, tAnt = performance.now();
+let tAnt = performance.now();
 const aveP = $("#pAve"), aleteoP = crearAve(aveP, {vel: 1.1});
 (function volar(t) {
   const dt = Math.min(.05, (t - tAnt) / 1000); tAnt = t;
   aleteoP(dt);
-  const W = cieloHero.clientWidth, H = cieloHero.clientHeight, visible = hero.getBoundingClientRect().bottom > 0;
-  if (introLista && visible && !disparando) {
-    vuelos.forEach(v => {
-      v.t += dt; if (v.t > v.dur + v.pausa) { v.t = 0; v.y0 = (v === vuelos[0] ? .14 : .06) + Math.random() * .16; }
-      const k = v.t / v.dur;
-      if (k < 0 || k > 1) { v.el.style.opacity = 0; return; }
-      v.aleteo(dt);
-      const x = -.12 * W + k * 1.24 * W, y = H * (v.y0 + v.amp * Math.sin(k * 7.5) + .05 * k);
-      const giro = Math.cos(k * 7.5) * v.amp * 60;                      // se ladea al subir y bajar
-      v.el.style.opacity = 1;
-      v.el.style.transform = `translate3d(${x}px,${y}px,0) rotate(${giro.toFixed(1)}deg)`;
-    });
-  }
   requestAnimationFrame(volar);
 })(tAnt);
 
-// el disparo: flash, sale la copia con el pájaro en el cielo de un paisaje y la copia te mete en la sección
-function disparar() {
-  const destino = $("#paisajes");
-  if (!ANIM || !lenis) { destino.scrollIntoView({behavior: "smooth"}); return; }
-  if (disparando) return; disparando = true;
-  const r = aveHero.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-  const copia = document.createElement("div"); copia.className = "disparo";
-  copia.innerHTML = `<div class="foto"><img src="${img("paisaje-04")}" alt="">${aveHero.querySelector("svg").outerHTML}</div><span>Fotograma 01 · Paisajes</span>`;
-  document.body.append(copia);
-  const cw = copia.offsetWidth, ch = copia.offsetHeight, llena = Math.max(innerWidth / cw, innerHeight / ch) * 1.25;
-  gsap.fromTo("#flash", {opacity: .9}, {opacity: 0, duration: .65, ease: "power2.out"});
-  gsap.to(aveHero, {opacity: 0, duration: .15});
-  gsap.set(copia, {x: cx - cw / 2, y: cy - ch / 2, scale: .08, rotation: -14, opacity: 0});
-  gsap.timeline({onComplete: () => { copia.remove(); disparando = false; vuelos[0].t = vuelos[0].dur; }})
-    .to(copia, {opacity: 1, scale: .35, duration: .18, ease: "power2.out"}, .12)
-    .to(copia, {x: innerWidth / 2 - cw / 2, y: innerHeight / 2 - ch / 2, scale: 1, rotation: -3, duration: .8, ease: "power3.out"})
-    .to(copia, {rotation: 0, duration: .5, ease: "sine.inOut"})
-    .to(copia, {scale: llena, duration: .85, ease: "power3.in"})
-    .add(() => lenis.scrollTo(destino, {immediate: true, force: true}))
-    .to(copia, {opacity: 0, duration: .7, ease: "power1.out"}, "+=.05");
-}
-aveHero.addEventListener("click", disparar);
-$("#pistaAve").addEventListener("click", disparar);
-if (!ANIM) { aveHero.style.opacity = 1; }
 
 /* ================= animaciones con el scroll ================= */
 if (ANIM) {
@@ -1037,6 +1004,79 @@ if (ANIM) {
   $$(".revela, .contacto-f").forEach(e => e.classList.add("on"));
 }
 
+/* ================= RUEDA DE MODOS: como la de una cámara. Gira sola al bajar; pincha o arrástrala para cambiar de categoría =================
+   Para añadir Animales cuando haya fotos: una línea más en MODOS con el icono "mascota" y el id de su sección. */
+{
+  const IC = {
+    auto: `<text x="0" y="3.4" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" font-weight="600" fill="currentColor">AUTO</text>`,
+    retrato: `<circle cx="0" cy="-3.6" r="4.2" fill="currentColor"/><path d="M-8,8 C-8,1.6 8,1.6 8,8Z" fill="currentColor"/>`,
+    paisaje: `<path d="M-10,7 L-3.5,-3.5 L0.5,2.5 L4,-1.5 L10,7Z" fill="currentColor"/><circle cx="5.5" cy="-6.5" r="2.2" fill="currentColor"/>`,
+    agua: `<path d="M0,-9 C4,-3 6.5,0.5 6.5,3.5 A6.5,6.5 0 0,1 -6.5,3.5 C-6.5,0.5 -4,-3 0,-9Z" fill="currentColor"/>`,
+    noche: `<path d="M1,-8.5 A8.5,8.5 0 1,0 8.5,3 A6.6,6.6 0 1,1 1,-8.5Z" fill="currentColor"/><path d="M-6,-7 l1,2.2 2.2,1 -2.2,1 -1,2.2 -1,-2.2 -2.2,-1 2.2,-1Z" fill="currentColor"/>`,
+    deporte: `<circle cx="2.6" cy="-7.2" r="2.2" fill="currentColor"/><path d="M1.6,-4 L-0.8,2.6 L-6.5,7.5 M-0.8,2.6 L4.2,7.8 M1.4,-3.4 L6.4,-0.4 M1.2,-3.4 L-4,-1.4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>`,
+    m: `<text x="0" y="4.6" text-anchor="middle" font-family="Instrument Serif,Georgia,serif" font-style="italic" font-size="15" fill="currentColor">M</text>`
+  };
+  const MODOS = [
+    {ic: "auto", n: "Auto", sec: "Inicio", t: "#inicio"},
+    {ic: "retrato", n: "Retrato", sec: "Reportajes", t: "#series"},
+    {ic: "paisaje", n: "Paisaje", sec: "Paisajes", t: "#paisajes"},
+    {ic: "agua", n: "Agua", sec: "Dentro del agua", t: "#agua"},
+    {ic: "noche", n: "Nocturno", sec: "Luna llena", t: "#luna"},
+    {ic: "deporte", n: "Deporte", sec: "Hojas y medallas", t: "#deporte"},
+    {ic: "m", n: "Manual", sec: "Encargos", t: "#encargos"}
+  ].filter(m => $(m.t));
+  const PASO = 40, dial = $("#dial"), svgD = $("#dialSvg"), rueda = $("#dialRueda"), iconosEl = $("#dialIconos"), txt = $("#dialTxt");
+  // moleteado del borde
+  let mol = ""; for (let i = 0; i < 96; i++) mol += `<rect x="-1.6" y="-104" width="3.2" height="12" rx=".8" transform="rotate(${i * 3.75})"/>`;
+  $("#dialMolet").innerHTML = mol;
+  // iconos: el modo i está a 180° + i·PASO (a la izquierda queda el activo, junto a la marca roja)
+  iconosEl.innerHTML = MODOS.map((m, i) => { const a = (180 + i * PASO) * Math.PI / 180;
+    return `<g class="dial-icono" data-i="${i}" transform="translate(${(68 * Math.cos(a)).toFixed(1)},${(68 * Math.sin(a)).toFixed(1)})"><circle class="fondo" r="17"/><g class="ic"><g transform="scale(1.3)">${IC[m.ic]}</g></g><title>${m.n} · ${m.sec}</title></g>`; }).join("");
+  const iconos = [...iconosEl.querySelectorAll(".dial-icono")], interiores = iconos.map(g => g.querySelector(".ic"));
+  const estado = {r: 0};
+  const pintarR = () => { rueda.setAttribute("transform", `rotate(${estado.r})`); interiores.forEach(g => g.setAttribute("transform", `rotate(${-estado.r})`)); };
+  let actualM = -1, tTxt;
+  function poner(i, animar = true) {
+    if (i === actualM) return; actualM = i;
+    iconos.forEach((g, k) => g.classList.toggle("on", k === i));
+    $("#dialNombre").textContent = MODOS[i].n; $("#dialSec").textContent = MODOS[i].sec;
+    txt.classList.add("ver"); clearTimeout(tTxt); tTxt = setTimeout(() => txt.classList.remove("ver"), 1800);
+    if (ANIM && animar) gsap.to(estado, {r: -i * PASO, duration: .75, ease: "back.out(1.7)", onUpdate: pintarR, overwrite: true});
+    else { estado.r = -i * PASO; pintarR(); }
+  }
+  let vamos = false;
+  function irA(i) {
+    poner(i); const d = $(MODOS[i].t); vamos = true;
+    if (navigator.vibrate) navigator.vibrate(8);
+    lenis ? lenis.scrollTo(d, {duration: 1.6, onComplete: () => vamos = false}) : (d.scrollIntoView({behavior: "smooth"}), vamos = false);
+    setTimeout(() => vamos = false, 1900);
+  }
+  pintarR(); poner(0, false); $("#dialSec").textContent = "Inicio · gira la rueda";
+  // girar arrastrando (con imán al modo más cercano) o pinchar un icono
+  let arr = null;
+  const angulo = e => { const b = svgD.getBoundingClientRect(); return Math.atan2(e.clientY - (b.top + b.height / 2), e.clientX - (b.left + b.width / 2)) * 180 / Math.PI; };
+  svgD.addEventListener("pointerdown", e => { arr = {a0: angulo(e), r0: estado.r, x: e.clientX, y: e.clientY, movido: false, g: e.target.closest(".dial-icono")}; svgD.setPointerCapture(e.pointerId); if (ANIM) gsap.killTweensOf(estado); });
+  svgD.addEventListener("pointermove", e => {
+    if (!arr) return;
+    if (Math.hypot(e.clientX - arr.x, e.clientY - arr.y) > 6) { arr.movido = true; svgD.classList.add("arrastrando"); }
+    if (!arr.movido) return;
+    let d = angulo(e) - arr.a0; if (d > 180) d -= 360; if (d < -180) d += 360;
+    estado.r = Math.max(-(MODOS.length - 1) * PASO - 20, Math.min(20, arr.r0 + d)); pintarR();
+    const i = Math.max(0, Math.min(MODOS.length - 1, Math.round(-estado.r / PASO)));
+    if (i !== actualM) { actualM = i; iconos.forEach((g, k) => g.classList.toggle("on", k === i)); $("#dialNombre").textContent = MODOS[i].n; $("#dialSec").textContent = MODOS[i].sec; txt.classList.add("ver"); if (navigator.vibrate) navigator.vibrate(5); }
+  });
+  svgD.addEventListener("pointerup", e => {
+    if (!arr) return; const a = arr; arr = null; svgD.classList.remove("arrastrando");
+    if (a.movido) { const i = Math.max(0, Math.min(MODOS.length - 1, Math.round(-estado.r / PASO))); actualM = -1; irA(i); return; }
+    if (a.g) { actualM = -1; irA(+a.g.dataset.i); }
+  });
+  // al bajar, la rueda gira sola al modo de la sección que estás viendo
+  if (ANIM) addEventListener("load", () => MODOS.forEach((m, i) => {
+    const el = $(m.t), tr = el.parentElement.classList.contains("pin-spacer") ? el.parentElement : el;
+    ScrollTrigger.create({trigger: tr, start: "top 55%", end: "bottom 55%", onToggle: s => { if (s.isActive && !vamos) poner(i); }});
+  }));
+}
+
 /* ================= cursor visor, lupa, foto flotante, botón imán ================= */
 if (fino) {
   document.body.classList.add("con-visor");
@@ -1052,10 +1092,10 @@ if (fino) {
     requestAnimationFrame(bucle);
   })();
   document.addEventListener("mouseover", e => {
-    const enPajaro = !!e.target.closest(".ave-hero"), enHero = !!e.target.closest(".hero"), enFoto = enPajaro || !!e.target.closest("[data-foto], [data-abrir], [data-album]");
+    const enPajaro = !!e.target.closest(".dial"), enHero = !!e.target.closest(".hero"), enFoto = enPajaro || !!e.target.closest("[data-foto], [data-abrir], [data-album]");
     visor.classList.toggle("luz", enHero && !enFoto);
     visor.classList.toggle("foto", enFoto);
-    etiqueta.textContent = enPajaro ? "DISPARA" : enHero ? "PINTA CON LUZ" : "VER";
+    etiqueta.textContent = enPajaro ? "MODO" : enHero ? "PINTA CON LUZ" : "VER";
   });
   hoja.querySelectorAll(".contacto-f").forEach(f => {
     const im = f.querySelector("img");
