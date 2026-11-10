@@ -347,6 +347,67 @@ body.tapado img{filter:blur(30px) brightness(.4)!important}
 .estatico .mesa-copias{display:flex;flex-wrap:wrap;gap:20px;padding:30px var(--lado)}
 .estatico .copia{position:relative;left:auto;top:auto}
 .estatico .luna-txt.t1{display:none}.estatico .luna-txt.t2,.estatico .luna .leyenda{opacity:1}
+/* ===== EL PÁJARO de la portada (lleva a Paisajes) ===== */
+.pajaro{position:absolute;right:clamp(18px,9vw,150px);top:clamp(84px,19vh,190px);z-index:4}
+.pajaro-ave{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;padding:10px;cursor:pointer;color:var(--papel);opacity:0}
+.pajaro-ave svg{width:clamp(64px,7vw,96px);height:auto;overflow:visible;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
+.pajaro-ave .pj-txt{font:500 .64rem var(--mono);letter-spacing:.22em;text-transform:uppercase;white-space:nowrap;opacity:.85;transition:opacity .3s,letter-spacing .4s var(--ease)}
+.pajaro-ave:hover .pj-txt,.pajaro-ave:focus-visible .pj-txt{opacity:1;letter-spacing:.3em}
+.pajaro-ave:focus-visible{outline:1px dashed var(--ambar);outline-offset:4px}
+.ala{transform-box:view-box;transform-origin:6px -2px;animation:aletea 2.6s ease-in-out infinite}
+.ala.lejos{opacity:.55;animation-delay:-.08s}
+.vuela .ala{animation-duration:.26s}
+.pajaro-ave:hover .ala{animation-duration:.55s}
+@keyframes aletea{0%,100%{transform:scaleY(1)}12%{transform:scaleY(-.55)}24%{transform:scaleY(1)}}
+.vuela .ala{animation-name:aleteaR}
+@keyframes aleteaR{0%,100%{transform:scaleY(1)}50%{transform:scaleY(-.7)}}
+
+/* ===== PAISAJES: de sol a luna ===== */
+.paisajes{position:relative;--c1:#3f6f95;--c2:#a9c3d3;--ave:#16120f}
+.p-pin{position:relative;height:100svh;overflow:hidden;background:linear-gradient(180deg,var(--c1) 0%,var(--c2) 100%)}
+.p-cielo-grano{position:absolute;inset:0;background:radial-gradient(120% 70% at 50% 110%,rgba(0,0,0,.35),transparent 60%);pointer-events:none}
+.p-estrellas{position:absolute;inset:0;opacity:0;pointer-events:none}
+.p-estrellas i{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;box-shadow:0 0 4px rgba(255,255,255,.8)}
+.p-arco{position:absolute;left:0;right:0;top:0;height:46%;width:100%;pointer-events:none;overflow:visible}
+.p-arco path{fill:none;stroke:rgba(255,255,255,.18);stroke-width:1.5;stroke-dasharray:2 9;vector-effect:non-scaling-stroke}
+.p-astro{position:absolute;left:0;top:0;width:clamp(46px,5vw,74px);aspect-ratio:1;margin:calc(clamp(46px,5vw,74px)/-2) 0 0 calc(clamp(46px,5vw,74px)/-2);pointer-events:none;will-change:transform}
+.p-astro .sol,.p-astro .luna,.p-astro .sombra{position:absolute;inset:0;border-radius:50%}
+.p-astro .sol{background:radial-gradient(circle at 40% 38%,#fff6d8,#ffc65c 55%,#f08f2b);box-shadow:0 0 40px 12px rgba(255,190,90,.55),0 0 120px 40px rgba(255,170,60,.25)}
+.p-astro .luna{opacity:0;background:radial-gradient(circle at 36% 34%,#fffdf6,#e9e4d6 55%,#bfb8a7);box-shadow:0 0 34px 8px rgba(235,232,220,.35),0 0 110px 34px rgba(190,205,255,.15)}
+.p-astro .luna::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 62% 58%,rgba(120,112,98,.35) 0 9%,transparent 10%),radial-gradient(circle at 38% 66%,rgba(120,112,98,.28) 0 7%,transparent 8%),radial-gradient(circle at 55% 30%,rgba(120,112,98,.22) 0 6%,transparent 7%)}
+.p-astro .sombra{background:#07070a;transform:scale(.98);opacity:0;box-shadow:0 0 0 2px rgba(255,240,210,.9),0 0 30px 10px rgba(255,236,200,.75),0 0 90px 30px rgba(255,220,170,.35)}
+.p-ave{position:absolute;left:0;top:0;width:clamp(40px,4vw,58px);color:var(--ave);pointer-events:none;will-change:transform}
+.p-ave svg{width:100%;height:auto;overflow:visible}
+.p-ave .ala{animation:aleteaR .34s ease-in-out infinite}
+.p-cab{position:absolute;left:var(--lado);top:clamp(86px,14vh,140px);z-index:3;max-width:min(36ch,88vw);text-shadow:0 2px 18px rgba(0,0,0,.35)}
+.p-cab .mono{color:#fff;opacity:.85}
+.p-cab h2{font:400 clamp(2.8rem,7.4vw,6.6rem)/.88 var(--serif);letter-spacing:-.02em;margin:10px 0 14px;color:#fff}
+.p-cab h2 em{color:#ffd79a}
+.p-cab p{color:rgba(255,255,255,.88);font-size:.98rem}
+.p-fase{position:absolute;right:var(--lado);top:clamp(86px,14vh,140px);z-index:3;text-align:right;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.4)}
+.p-fase b{display:block;font:italic 400 clamp(1.6rem,3vw,2.6rem)/1 var(--serif);letter-spacing:0;text-transform:none;margin-top:6px;transition:opacity .4s}
+.p-pista{position:absolute;left:0;bottom:clamp(54px,9vh,96px);display:flex;align-items:center;gap:clamp(22px,3.4vw,56px);padding:0 clamp(40px,8vw,140px) 0 max(var(--lado),44vw);will-change:transform}
+.p-foto{position:relative;flex:none;height:var(--h,39svh);margin:0;cursor:pointer;background:none;border:0;padding:0;color:#fff;text-align:left}
+.p-foto:nth-child(odd){transform:translateY(-4svh)}
+.p-foto:nth-child(3n){--h:45svh}
+.p-foto .marco{display:block;height:100%;overflow:hidden;border-radius:3px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.08);background:var(--bg,#222)}
+.p-foto img{height:100%;width:100%;object-fit:cover;transform:scale(1.08);transition:transform 1.2s var(--ease),filter .6s}
+.p-foto:hover img{transform:scale(1.02)}
+.p-foto figcaption{position:absolute;left:0;top:calc(100% + 10px);display:flex;gap:10px;align-items:baseline;white-space:nowrap;text-shadow:0 1px 10px rgba(0,0,0,.5)}
+.p-foto figcaption .mono{opacity:.75}
+.p-foto figcaption i{font:italic 400 1.15rem var(--serif)}
+.p-fin{flex:none;width:min(34ch,70vw);color:#fff;font:italic 400 clamp(1.4rem,2.4vw,2rem)/1.15 var(--serif);text-shadow:0 2px 16px rgba(0,0,0,.5)}
+.p-fin small{display:block;font:500 .66rem var(--mono);letter-spacing:.2em;text-transform:uppercase;font-style:normal;margin-top:14px;opacity:.75}
+.estatico .p-pista{position:relative;overflow-x:auto;padding-left:var(--lado);bottom:auto;top:56svh}
+@media (max-width:760px){
+  .pajaro{right:10px;top:clamp(78px,13svh,120px)}
+  .p-cab{max-width:86vw}
+  .p-cab p{font-size:.9rem}
+  .p-fase{top:auto;bottom:calc(var(--h,34svh) + 150px);right:var(--lado)}
+  .p-pista{padding-left:var(--lado);bottom:72px}
+  .p-foto{--h:34svh}.p-foto:nth-child(3n){--h:38svh}
+  .p-foto figcaption i{font-size:1rem}
+}
 </style>
 </head>
 <body class="cargando">
@@ -366,7 +427,8 @@ body.tapado img{filter:blur(30px) brightness(.4)!important}
 <nav class="nav">
   <a class="firma" href="#inicio">J. L. Vadillo</a>
   <ul>
-    <li><a href="#series">Álbumes</a></li>
+    <li><a href="#series">Reportajes</a></li>
+    <li><a href="#paisajes">Paisajes</a></li>
     <li><a href="#encargos">Encargos</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
@@ -388,6 +450,12 @@ body.tapado img{filter:blur(30px) brightness(.4)!important}
       </div>
     </div>
     <div class="baja mono" aria-hidden="true">Baja<i></i></div>
+    <div class="pajaro">
+      <button class="pajaro-ave" id="pajaro" aria-label="Ir a los paisajes">
+        <svg viewBox="-34 -36 64 50" aria-hidden="true"><path class="ala lejos" d="M8,-2 C3,-13 -6,-24 -20,-30 C-12,-20 -5,-10 -3,-1Z" fill="currentColor"/><path d="M24,0 C20,-4 11,-5 2,-3 C-7,-1 -13,0 -19,-5 L-30,-11 L-22,-1 L-32,6 L-19,3 C-11,5 -1,5 9,4 C16,4 21,3 24,0Z" fill="currentColor"/><path class="ala" d="M10,-1 C6,-14 -2,-27 -14,-34 C-9,-22 -4,-11 -2,0Z" fill="currentColor"/></svg>
+        <span class="pj-txt">Paisajes →</span>
+      </button>
+    </div>
   </section>
 
   <!-- MANIFIESTO -->
@@ -403,6 +471,24 @@ body.tapado img{filter:blur(30px) brightness(.4)!important}
       <p>Abre una carpeta y mira la sesión entera, foto a foto.</p>
     </div>
     <div class="carpetas" id="carpetas"></div>
+  </section>
+
+  <!-- PAISAJES: un día entero, de sol a luna -->
+  <section class="paisajes" id="paisajes">
+    <div class="p-pin">
+      <div class="p-cielo-grano"></div>
+      <div class="p-estrellas" id="pEstrellas"></div>
+      <svg class="p-arco" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true"><path id="pArco" d="M-40,300 C200,40 800,40 1040,300"/></svg>
+      <div class="p-astro" id="pAstro" aria-hidden="true"><span class="sol"></span><span class="luna"></span><span class="sombra"></span></div>
+      <div class="p-ave" id="pAve" aria-hidden="true"><svg viewBox="-34 -36 64 50"><path class="ala lejos" d="M8,-2 C3,-13 -6,-24 -20,-30 C-12,-20 -5,-10 -3,-1Z" fill="currentColor"/><path d="M24,0 C20,-4 11,-5 2,-3 C-7,-1 -13,0 -19,-5 L-30,-11 L-22,-1 L-32,6 L-19,3 C-11,5 -1,5 9,4 C16,4 21,3 24,0Z" fill="currentColor"/><path class="ala" d="M10,-1 C6,-14 -2,-27 -14,-34 C-9,-22 -4,-11 -2,0Z" fill="currentColor"/></svg></div>
+      <div class="p-cab">
+        <span class="mono" id="pTotal">Paisajes</span>
+        <h2>De sol <em>a luna</em></h2>
+        <p>Un día entero en mis paisajes: castillos al sol, el agua de los molinos, la luna saliendo detrás de una torre y la vía láctea cuando ya no queda nadie.</p>
+      </div>
+      <div class="p-fase mono" aria-live="polite"><span id="pNum">01 / 24</span><b id="pFase">Día</b></div>
+      <div class="p-pista" id="pPista"></div>
+    </div>
   </section>
 
   <!-- SERIE II -->
@@ -524,7 +610,7 @@ Object.assign(T, {"alba-acequia-01": "Alba · Acequia", "alba-acequia-02": "Alba
 const ALBUMES = [{"nombre": "Alba", "sesion": "4 sesiones", "texto": "", "sesiones": [{"t": "Acequia", "f": ["alba-acequia-01", "alba-acequia-02", "alba-acequia-03", "alba-acequia-04", "alba-acequia-05", "alba-acequia-06", "alba-acequia-07", "alba-acequia-08", "alba-acequia-09", "alba-acequia-10", "alba-acequia-11", "alba-acequia-12", "alba-acequia-14", "alba-acequia-15"]}, {"t": "Estudio", "f": ["alba-estudio-01", "alba-estudio-02", "alba-estudio-03", "alba-estudio-04", "alba-estudio-05", "alba-estudio-06", "alba-estudio-07", "alba-estudio-08", "alba-estudio-09", "alba-estudio-10", "alba-estudio-11", "alba-estudio-12", "alba-estudio-13", "alba-estudio-14", "alba-estudio-15", "alba-estudio-16", "alba-estudio-17", "alba-estudio-18", "alba-estudio-19", "alba-estudio-20", "alba-estudio-22", "alba-estudio-23", "alba-estudio-24"]}, {"t": "Vías", "f": ["alba-vias-01", "alba-vias-02", "alba-vias-03", "alba-vias-04", "alba-vias-05", "alba-vias-06", "alba-vias-07", "alba-vias-08", "alba-vias-09", "alba-vias-10", "alba-vias-11", "alba-vias-12", "alba-vias-13", "alba-vias-14", "alba-vias-15", "alba-vias-16", "alba-vias-17", "alba-vias-18", "alba-vias-19", "alba-vias-20", "alba-vias-21", "alba-vias-22", "alba-vias-23", "alba-vias-24", "alba-vias-25", "alba-vias-26", "alba-vias-27", "alba-vias-28", "alba-vias-29"]}, {"t": "Con Jessi", "f": ["alba-y-jessi-01", "alba-y-jessi-02", "alba-y-jessi-03", "alba-y-jessi-04", "alba-y-jessi-05", "alba-y-jessi-06", "alba-y-jessi-07", "alba-y-jessi-08", "alba-y-jessi-09", "alba-y-jessi-10", "alba-y-jessi-11", "alba-y-jessi-12", "alba-y-jessi-13", "alba-y-jessi-14", "alba-y-jessi-15", "alba-y-jessi-16", "alba-y-jessi-17", "alba-y-jessi-18", "alba-y-jessi-19", "alba-y-jessi-20", "alba-y-jessi-21", "alba-y-jessi-22", "alba-y-jessi-23", "alba-y-jessi-24", "alba-y-jessi-25", "alba-y-jessi-26", "alba-y-jessi-27", "alba-y-jessi-28", "alba-y-jessi-29", "alba-y-jessi-30", "alba-y-jessi-31"]}], "fotos": ["alba-acequia-01", "alba-acequia-02", "alba-acequia-03", "alba-acequia-04", "alba-acequia-05", "alba-acequia-06", "alba-acequia-07", "alba-acequia-08", "alba-acequia-09", "alba-acequia-10", "alba-acequia-11", "alba-acequia-12", "alba-acequia-14", "alba-acequia-15", "alba-estudio-01", "alba-estudio-02", "alba-estudio-03", "alba-estudio-04", "alba-estudio-05", "alba-estudio-06", "alba-estudio-07", "alba-estudio-08", "alba-estudio-09", "alba-estudio-10", "alba-estudio-11", "alba-estudio-12", "alba-estudio-13", "alba-estudio-14", "alba-estudio-15", "alba-estudio-16", "alba-estudio-17", "alba-estudio-18", "alba-estudio-19", "alba-estudio-20", "alba-estudio-22", "alba-estudio-23", "alba-estudio-24", "alba-vias-01", "alba-vias-02", "alba-vias-03", "alba-vias-04", "alba-vias-05", "alba-vias-06", "alba-vias-07", "alba-vias-08", "alba-vias-09", "alba-vias-10", "alba-vias-11", "alba-vias-12", "alba-vias-13", "alba-vias-14", "alba-vias-15", "alba-vias-16", "alba-vias-17", "alba-vias-18", "alba-vias-19", "alba-vias-20", "alba-vias-21", "alba-vias-22", "alba-vias-23", "alba-vias-24", "alba-vias-25", "alba-vias-26", "alba-vias-27", "alba-vias-28", "alba-vias-29", "alba-y-jessi-01", "alba-y-jessi-02", "alba-y-jessi-03", "alba-y-jessi-04", "alba-y-jessi-05", "alba-y-jessi-06", "alba-y-jessi-07", "alba-y-jessi-08", "alba-y-jessi-09", "alba-y-jessi-10", "alba-y-jessi-11", "alba-y-jessi-12", "alba-y-jessi-13", "alba-y-jessi-14", "alba-y-jessi-15", "alba-y-jessi-16", "alba-y-jessi-17", "alba-y-jessi-18", "alba-y-jessi-19", "alba-y-jessi-20", "alba-y-jessi-21", "alba-y-jessi-22", "alba-y-jessi-23", "alba-y-jessi-24", "alba-y-jessi-25", "alba-y-jessi-26", "alba-y-jessi-27", "alba-y-jessi-28", "alba-y-jessi-29", "alba-y-jessi-30", "alba-y-jessi-31"]}, {"nombre": "Daniela", "sesion": "4 sesiones", "texto": "", "sesiones": [{"t": "Acequia", "f": ["daniela-acequia-01", "daniela-acequia-02", "daniela-acequia-03", "daniela-acequia-04", "daniela-acequia-05", "daniela-acequia-06", "daniela-acequia-07", "daniela-acequia-08", "daniela-acequia-09", "daniela-acequia-10", "daniela-acequia-11", "daniela-acequia-12", "daniela-acequia-13", "daniela-acequia-14", "daniela-acequia-15", "daniela-acequia-16", "daniela-acequia-17", "daniela-acequia-18", "daniela-acequia-19"]}, {"t": "Simancas", "f": ["daniela-simancas-01", "daniela-simancas-02", "daniela-simancas-03", "daniela-simancas-04", "daniela-simancas-05", "daniela-simancas-06", "daniela-simancas-07", "daniela-simancas-08", "daniela-simancas-09", "daniela-simancas-10", "daniela-simancas-11", "daniela-simancas-12", "daniela-simancas-13", "daniela-simancas-14", "daniela-simancas-15", "daniela-simancas-16", "daniela-simancas-17", "daniela-simancas-18", "daniela-simancas-19", "daniela-simancas-20", "daniela-simancas-21", "daniela-simancas-22", "daniela-simancas-23", "daniela-simancas-24", "daniela-simancas-25", "daniela-simancas-26", "daniela-simancas-27", "daniela-simancas-28", "daniela-simancas-29", "daniela-simancas-30", "daniela-simancas-31", "daniela-simancas-32"]}, {"t": "Street", "f": ["daniela-street-01", "daniela-street-02", "daniela-street-03", "daniela-street-04", "daniela-street-05", "daniela-street-06", "daniela-street-07", "daniela-street-08", "daniela-street-09", "daniela-street-10", "daniela-street-11", "daniela-street-12", "daniela-street-13", "daniela-street-14", "daniela-street-15", "daniela-street-16", "daniela-street-17"]}, {"t": "Vías", "f": ["danielavias-01", "danielavias-02", "danielavias-03", "danielavias-04", "danielavias-05", "danielavias-06", "danielavias-07", "danielavias-08", "danielavias-09", "danielavias-10", "danielavias-11", "danielavias-12", "danielavias-13", "danielavias-14", "danielavias-15", "danielavias-16", "danielavias-17", "danielavias-18", "danielavias-19", "danielavias-20", "danielavias-21"]}], "fotos": ["daniela-acequia-01", "daniela-acequia-02", "daniela-acequia-03", "daniela-acequia-04", "daniela-acequia-05", "daniela-acequia-06", "daniela-acequia-07", "daniela-acequia-08", "daniela-acequia-09", "daniela-acequia-10", "daniela-acequia-11", "daniela-acequia-12", "daniela-acequia-13", "daniela-acequia-14", "daniela-acequia-15", "daniela-acequia-16", "daniela-acequia-17", "daniela-acequia-18", "daniela-acequia-19", "daniela-simancas-01", "daniela-simancas-02", "daniela-simancas-03", "daniela-simancas-04", "daniela-simancas-05", "daniela-simancas-06", "daniela-simancas-07", "daniela-simancas-08", "daniela-simancas-09", "daniela-simancas-10", "daniela-simancas-11", "daniela-simancas-12", "daniela-simancas-13", "daniela-simancas-14", "daniela-simancas-15", "daniela-simancas-16", "daniela-simancas-17", "daniela-simancas-18", "daniela-simancas-19", "daniela-simancas-20", "daniela-simancas-21", "daniela-simancas-22", "daniela-simancas-23", "daniela-simancas-24", "daniela-simancas-25", "daniela-simancas-26", "daniela-simancas-27", "daniela-simancas-28", "daniela-simancas-29", "daniela-simancas-30", "daniela-simancas-31", "daniela-simancas-32", "daniela-street-01", "daniela-street-02", "daniela-street-03", "daniela-street-04", "daniela-street-05", "daniela-street-06", "daniela-street-07", "daniela-street-08", "daniela-street-09", "daniela-street-10", "daniela-street-11", "daniela-street-12", "daniela-street-13", "daniela-street-14", "daniela-street-15", "daniela-street-16", "daniela-street-17", "danielavias-01", "danielavias-02", "danielavias-03", "danielavias-04", "danielavias-05", "danielavias-06", "danielavias-07", "danielavias-08", "danielavias-09", "danielavias-10", "danielavias-11", "danielavias-12", "danielavias-13", "danielavias-14", "danielavias-15", "danielavias-16", "danielavias-17", "danielavias-18", "danielavias-19", "danielavias-20", "danielavias-21"]}, {"nombre": "Amapolas", "sesion": "Sesión", "texto": "", "sesiones": [{"t": "", "f": ["amapolas-01", "amapolas-02", "amapolas-03", "amapolas-04", "amapolas-05", "amapolas-06", "amapolas-07", "amapolas-08", "amapolas-09", "amapolas-10", "amapolas-11", "amapolas-12", "amapolas-13", "amapolas-14", "amapolas-15", "amapolas-16", "amapolas-17", "amapolas-18", "amapolas-19", "amapolas-20", "amapolas-21", "amapolas-22", "amapolas-23", "amapolas-24", "amapolas-25", "amapolas-26", "amapolas-27", "amapolas-28", "amapolas-29", "amapolas-30", "amapolas-31", "amapolas-32", "amapolas-33", "amapolas-34", "amapolas-35", "amapolas-36", "amapolas-37", "amapolas-38", "amapolas-39", "amapolas-40", "amapolas-41", "amapolas-42", "amapolas-43", "amapolas-44", "amapolas-45", "amapolas-46", "amapolas-47"]}], "fotos": ["amapolas-01", "amapolas-02", "amapolas-03", "amapolas-04", "amapolas-05", "amapolas-06", "amapolas-07", "amapolas-08", "amapolas-09", "amapolas-10", "amapolas-11", "amapolas-12", "amapolas-13", "amapolas-14", "amapolas-15", "amapolas-16", "amapolas-17", "amapolas-18", "amapolas-19", "amapolas-20", "amapolas-21", "amapolas-22", "amapolas-23", "amapolas-24", "amapolas-25", "amapolas-26", "amapolas-27", "amapolas-28", "amapolas-29", "amapolas-30", "amapolas-31", "amapolas-32", "amapolas-33", "amapolas-34", "amapolas-35", "amapolas-36", "amapolas-37", "amapolas-38", "amapolas-39", "amapolas-40", "amapolas-41", "amapolas-42", "amapolas-43", "amapolas-44", "amapolas-45", "amapolas-46", "amapolas-47"]}, {"nombre": "Azu", "sesion": "Embarazo", "texto": "", "sesiones": [{"t": "Embarazo", "f": ["azu-embarazo-01", "azu-embarazo-02", "azu-embarazo-03", "azu-embarazo-04", "azu-embarazo-05", "azu-embarazo-06", "azu-embarazo-07", "azu-embarazo-08", "azu-embarazo-09", "azu-embarazo-10", "azu-embarazo-11"]}], "fotos": ["azu-embarazo-01", "azu-embarazo-02", "azu-embarazo-03", "azu-embarazo-04", "azu-embarazo-05", "azu-embarazo-06", "azu-embarazo-07", "azu-embarazo-08", "azu-embarazo-09", "azu-embarazo-10", "azu-embarazo-11"]}];
 
 const carpetasEl = $("#carpetas");
-$("#albTotal").textContent = `Álbumes · ${ALBUMES.length} carpetas · ${ALBUMES.reduce((t, a) => t + a.sesiones.length, 0)} sesiones`;
+$("#albTotal").textContent = `Reportajes ·${ALBUMES.length} carpetas · ${ALBUMES.reduce((t, a) => t + a.sesiones.length, 0)} sesiones`;
 ALBUMES.forEach((a, i) => {
   // portada de la carpeta: solo fotos que encajan en el marco sin cortarse (horizontales en ordenador, verticales en el móvil)
   const encaja = n => (innerWidth > 760) !== V.has(n);
@@ -551,6 +637,19 @@ $$(".carpeta").forEach(c => {
   if (fino) { c.addEventListener("mouseenter", () => empezar(1400)); c.addEventListener("mouseleave", parar); }
   else new IntersectionObserver(([e]) => e.isIntersecting ? empezar(2200) : parar(), {threshold: .6}).observe(c);
 });
+
+/* ================= PAISAJES: un día entero, de sol a luna =================
+   [número, fase de luz, título, proporción ancho/alto, color medio]. Los títulos son provisionales hasta que José Luis los cambie. */
+const PAISAJES = [["01","Día","El castillo entre árboles",1.808,"#807a6c"],["02","Día","El patio de piedra",1.5,"#787d88"],["03","Día","Fortaleza sobre el valle",1.501,"#616157"],["04","Día","Margaritas y torre",1.425,"#727c6c"],["05","Día","La roca horadada",.667,"#5f5b56"],["06","Día","Desde la cueva",2,"#504c50"],["07","Día","Dos en la cueva",1.5,"#464848"],["08","Día","El molino y la cascada",1.4,"#56504e"],["09","Día","Agua entre arcos",1.501,"#524c4c"],["10","Día","El puente del molino",1.78,"#493e28"],["11","Hora dorada","La ruina y el sol",.666,"#7d7d82"],["12","Hora dorada","Salamanca junto al puente",1.501,"#506c7a"],["13","Hora dorada","Salamanca en el río",1.562,"#616e86"],["14","Eclipse","El eclipse sobre la torre",.722,"#324552"],["15","Hora azul","La luna tras la torre",1.5,"#462104"],["16","Hora azul","Luna roja en el castillo",1.5,"#232833"],["17","Hora azul","La luna asoma",1.5,"#0f3750"],["18","Hora azul","Luna llena en la colina",1.5,"#43465e"],["19","Hora azul","La luna y la estatua",1.5,"#2e4d6b"],["20","Hora azul","Luna, estatua y molino",1.5,"#555c84"],["21","Hora azul","La estatua en la luna",.666,"#3f304d"],["22","Hora azul","Luna creciente",1.5,"#1a2132"],["23","Noche","La vía láctea",.711,"#18323c"],["24","Noche","Noche sobre la torre",.667,"#1f2733"]];
+const PLISTA = PAISAJES.map(([k, f, t]) => { const n = "paisaje-" + k; T[n] = t; return {n, s: "Paisajes · " + f}; });
+const pPista = $("#pPista");
+$("#pTotal").textContent = `Paisajes · ${PAISAJES.length} fotos`;
+pPista.innerHTML = PAISAJES.map(([k, f, t, ar, c], i) =>
+  `<figure class="p-foto" data-foto="paisaje-${k}" data-i="${i}" style="aspect-ratio:${ar};--bg:${c}"><span class="marco"><img src="${img("paisaje-" + k, 1)}" alt="${t}" loading="lazy"></span><figcaption><span class="mono">${k} · ${f}</span><i>${t}</i></figcaption></figure>`).join("")
+  + `<div class="p-fin">Y cuando ya no queda nadie, sigue la foto.<small>Fin de los paisajes · sigue bajando</small></div>`;
+// las estrellas (salen al hacerse de noche)
+(() => { const e = $("#pEstrellas"); let h = ""; for (let i = 0; i < 140; i++) { const s = Math.random() < .12 ? 3 : Math.random() < .5 ? 2 : 1.3;
+  h += `<i style="left:${(Math.random() * 100).toFixed(2)}%;top:${(Math.random() * 62).toFixed(2)}%;width:${s}px;height:${s}px;opacity:${(.35 + Math.random() * .65).toFixed(2)}"></i>`; } e.innerHTML = h; })();
 
 const copiasEl = $("#copias");
 SERIES["Dentro del agua"].forEach(n => copiasEl.insertAdjacentHTML("beforeend",
@@ -728,7 +827,32 @@ Promise.all([cargada, espera(1900), document.fonts ? document.fonts.ready : 0]).
   gsap.fromTo("#flash", {opacity: .75}, {opacity: 0, duration: .7, ease: "power2.out"});        // el disparo
   fin();
   entrarHero();
+  setTimeout(posarPajaro, 1500);
 });
+
+/* ================= el pájaro de la portada: entra volando, se posa y, al pincharlo, vuela hasta los paisajes ================= */
+const pj = $("#pajaro");
+function balanceo() { gsap.to(pj, {y: -7, duration: 1.7, yoyo: true, repeat: -1, ease: "sine.inOut"}); }
+function posarPajaro() {
+  if (!ANIM) { pj.style.opacity = 1; return; }
+  pj.classList.add("vuela");
+  gsap.fromTo(pj, {opacity: 1, x: () => -innerWidth * .8, y: () => -innerHeight * .1, rotation: -10, scale: .65},
+    {keyframes: [{x: () => -innerWidth * .38, y: () => innerHeight * .07, rotation: 8, scale: .85, duration: 1.2, ease: "sine.inOut"},
+                 {x: 0, y: 0, rotation: 0, scale: 1, duration: 1.1, ease: "power2.out"}],
+     onComplete: () => { pj.classList.remove("vuela"); balanceo(); }});
+}
+if (!ANIM) pj.style.opacity = 1;
+pj.addEventListener("click", () => {
+  const destino = $("#paisajes");
+  if (!ANIM) { destino.scrollIntoView({behavior: "smooth"}); return; }
+  gsap.killTweensOf(pj); pj.classList.add("vuela");
+  gsap.to(pj, {keyframes: [{x: () => innerWidth * .06, y: -40, rotation: -14, duration: .35, ease: "power1.out"},
+                           {x: () => -innerWidth * .3, y: () => innerHeight * .75, rotation: 26, scale: .55, opacity: 0, duration: 1.3, ease: "power2.in"}]});
+  if (lenis) lenis.scrollTo(destino, {duration: 2.2, easing: t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2});
+  else destino.scrollIntoView({behavior: "smooth"});
+  setTimeout(() => { gsap.set(pj, {x: 0, y: 0, rotation: 0, scale: 1}); pj.classList.remove("vuela"); gsap.to(pj, {opacity: 1, duration: .8}); balanceo(); }, 2700);
+});
+if (ANIM) gsap.to(".pajaro", {opacity: 0, y: -50, ease: "none", scrollTrigger: {trigger: ".hero", start: "top top", end: "40% top", scrub: true}});
 
 /* ================= animaciones con el scroll ================= */
 if (ANIM) {
@@ -755,6 +879,56 @@ if (ANIM) {
       .from(c.querySelector(".c-fotos"), {clipPath: "inset(100% 0 0 0)", duration: 1.3, ease: "power4.inOut"}, "<.05")
       .from(c.querySelectorAll(".c-nombre, .c-info, .c-abrir"), {y: 24, opacity: 0, duration: .8, stagger: .08, ease: "power3.out"}, "-=.6");
   });
+
+  // PAISAJES: la pista corre en horizontal y el cielo pasa del día a la noche
+  {
+    const sec = $("#paisajes"), pin = $(".p-pin"), figs = $$(".p-foto"), imgsP = figs.map(f => f.querySelector("img"));
+    const astro = $("#pAstro"), sol = astro.querySelector(".sol"), lunaA = astro.querySelector(".luna"), sombra = astro.querySelector(".sombra");
+    const cab = $(".p-cab"), ave = $("#pAve"), arco = $("#pArco"), arcoSvg = $(".p-arco"), estrellas = $("#pEstrellas"), pFase = $("#pFase"), pNum = $("#pNum");
+    const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+    const mezcla = (a, b, t) => { const A = hex(a), B = hex(b); return "#" + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, "0")).join(""); };
+    const lim = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+    const AZ0 = ["#45386e", "#d0798a"], AZ1 = ["#0d1838", "#2c4677"];
+    const CIELO = {"Día": ["#3f6f95", "#b3c9d4"], "Hora dorada": ["#8a4a2a", "#efb067"], "Eclipse": ["#14121c", "#5b3f36"], "Noche": ["#04060d", "#0b1330"]};
+    const azules = PAISAJES.map((p, i) => i).filter(i => PAISAJES[i][1] === "Hora azul");
+    const cielo = i => { const f = PAISAJES[i][1]; if (f !== "Hora azul") return CIELO[f];
+      const t = azules.indexOf(i) / Math.max(1, azules.length - 1); return [mezcla(AZ0[0], AZ1[0], t), mezcla(AZ0[1], AZ1[1], t)]; };
+    const iEclipse = PAISAJES.findIndex(p => p[1] === "Eclipse"), iAzul = azules[0], iNoche = PAISAJES.findIndex(p => p[1] === "Noche");
+    let centros = [], ultimoI = -1;
+    const medir = () => { centros = figs.map(f => f.offsetLeft + f.offsetWidth / 2); };
+    const dist = () => Math.max(0, pPista.scrollWidth - innerWidth);
+    function pintar(p) {
+      if (!centros.length) medir();
+      const x = -gsap.getProperty(pPista, "x") + innerWidth / 2;
+      let fi = 0;
+      if (x >= centros[centros.length - 1]) fi = centros.length - 1;
+      else if (x > centros[0]) { let i = 0; while (centros[i + 1] < x) i++; fi = i + (x - centros[i]) / (centros[i + 1] - centros[i]); }
+      const i0 = Math.floor(fi), i1 = Math.min(PAISAJES.length - 1, i0 + 1), t = fi - i0, a = cielo(i0), b = cielo(i1);
+      sec.style.setProperty("--c1", mezcla(a[0], b[0], t)); sec.style.setProperty("--c2", mezcla(a[1], b[1], t));
+      sec.style.setProperty("--ave", mezcla("#16120f", "#e8e2d4", lim((fi - iEclipse) / (iNoche - iEclipse))));
+      cab.style.opacity = 1 - lim(p * 14); cab.style.transform = `translateY(${-lim(p * 14) * 30}px)`;
+      const ic = Math.round(fi);
+      if (ic !== ultimoI) { ultimoI = ic; pFase.textContent = PAISAJES[ic][1]; pNum.textContent = `${PAISAJES[ic][0]} / ${PAISAJES.length}`; }
+      // el astro recorre el arco: sol hasta el eclipse, luna después
+      const W = pin.clientWidth, Ha = arcoSvg.clientHeight, L = arco.getTotalLength(), pt = arco.getPointAtLength(L * (.07 + .86 * p));
+      astro.style.transform = `translate3d(${pt.x / 1000 * W}px,${pt.y / 300 * Ha}px,0)`;
+      const m = lim((fi - iEclipse - .35) / 1.2);
+      sol.style.opacity = 1 - m; lunaA.style.opacity = m;
+      sombra.style.opacity = lim(1 - Math.abs(fi - iEclipse) / .75);
+      estrellas.style.opacity = lim((fi - iAzul - 2) / (iNoche - iAzul - 2)) * .95;
+      // el pájaro vuela delante del astro
+      ave.style.transform = `translate3d(${W * (.08 + .84 * p)}px,${innerHeight * (.24 + .05 * Math.sin(p * 26))}px,0) rotate(${Math.cos(p * 26) * 6}deg)`;
+      // cada foto se desliza un poco dentro de su marco (profundidad)
+      imgsP.forEach((im, k) => { const d = (centros[k] - x) / innerWidth; im.style.translate = `${lim(d, -1, 1) * -4}% 0`; });
+    }
+    const recorrido = gsap.to(pPista, {x: () => -dist(), ease: "none", onUpdate() { pintar(this.progress()); },
+      scrollTrigger: {trigger: sec, start: "top top", end: () => "+=" + dist() * .7, pin: true, scrub: 1, invalidateOnRefresh: true,
+        onRefresh: s => { medir(); pintar(s.progress); }}});
+    // cada foto se "revela" al entrar por la derecha
+    figs.forEach(f => gsap.from(f.querySelector(".marco"), {clipPath: "inset(14% 10% 14% 10% round 3px)", duration: 1.1, ease: "power3.out",
+      scrollTrigger: {trigger: f, containerAnimation: recorrido, start: "left 96%", toggleActions: "play none none reverse"}}));
+    addEventListener("load", () => { medir(); ScrollTrigger.refresh(); });
+  }
 
   // SERIE II: las copias caen una a una sobre la mesa
   const copias = $$(".copia"), anum = $("#anum"), atxt = $("#atxt");
@@ -820,10 +994,10 @@ if (fino) {
     requestAnimationFrame(bucle);
   })();
   document.addEventListener("mouseover", e => {
-    const enHero = !!e.target.closest(".hero"), enFoto = !!e.target.closest("[data-foto], [data-abrir], [data-album]");
+    const enPajaro = !!e.target.closest(".pajaro"), enHero = !!e.target.closest(".hero"), enFoto = enPajaro || !!e.target.closest("[data-foto], [data-abrir], [data-album]");
     visor.classList.toggle("luz", enHero && !enFoto);
     visor.classList.toggle("foto", enFoto);
-    etiqueta.textContent = enHero ? "PINTA CON LUZ" : "VER";
+    etiqueta.textContent = enPajaro ? "VUELA" : enHero ? "PINTA CON LUZ" : "VER";
   });
   hoja.querySelectorAll(".contacto-f").forEach(f => {
     const im = f.querySelector("img");
@@ -887,7 +1061,7 @@ document.addEventListener("click", e => {
   const c = e.target.closest("[data-album]");
   if (c) { abrirAlbum(+c.dataset.album, c); return; }
   const f = e.target.closest("[data-foto], [data-abrir]");
-  if (f) abrir(f.dataset.foto || f.dataset.abrir, f.closest("#album") ? albumLista : null);
+  if (f) abrir(f.dataset.foto || f.dataset.abrir, f.closest("#album") ? albumLista : f.closest("#paisajes") ? PLISTA : null);
 });
 
 /* ================= álbum: la carpeta se abre y la sesión llena la pantalla ================= */
