@@ -347,20 +347,31 @@ body.tapado img{filter:blur(30px) brightness(.4)!important}
 .estatico .mesa-copias{display:flex;flex-wrap:wrap;gap:20px;padding:30px var(--lado)}
 .estatico .copia{position:relative;left:auto;top:auto}
 .estatico .luna-txt.t1{display:none}.estatico .luna-txt.t2,.estatico .luna .leyenda{opacity:1}
-/* ===== EL PÁJARO de la portada (lleva a Paisajes) ===== */
-.pajaro{position:absolute;right:clamp(18px,9vw,150px);top:clamp(84px,19vh,190px);z-index:4}
-.pajaro-ave{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;padding:10px;cursor:pointer;color:var(--papel);opacity:0}
-.pajaro-ave svg{width:clamp(64px,7vw,96px);height:auto;overflow:visible;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
-.pajaro-ave .pj-txt{font:500 .64rem var(--mono);letter-spacing:.22em;text-transform:uppercase;white-space:nowrap;opacity:.85;transition:opacity .3s,letter-spacing .4s var(--ease)}
-.pajaro-ave:hover .pj-txt,.pajaro-ave:focus-visible .pj-txt{opacity:1;letter-spacing:.3em}
-.pajaro-ave:focus-visible{outline:1px dashed var(--ambar);outline-offset:4px}
-.ala{transform-box:view-box;transform-origin:6px -2px;animation:aletea 2.6s ease-in-out infinite}
-.ala.lejos{opacity:.55;animation-delay:-.08s}
-.vuela .ala{animation-duration:.26s}
-.pajaro-ave:hover .ala{animation-duration:.55s}
-@keyframes aletea{0%,100%{transform:scaleY(1)}12%{transform:scaleY(-.55)}24%{transform:scaleY(1)}}
-.vuela .ala{animation-name:aleteaR}
-@keyframes aleteaR{0%,100%{transform:scaleY(1)}50%{transform:scaleY(-.7)}}
+/* ===== PÁJAROS de la portada: hazle una foto y te lleva a Paisajes ===== */
+.cielo-hero{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.ave{position:absolute;left:0;top:0;color:#f4efe6;will-change:transform;opacity:0}
+.ave svg{display:block;width:100%;height:100%;overflow:visible}
+.ave .lejos{opacity:.85}
+.ave-hero{width:clamp(62px,6vw,92px);aspect-ratio:3/2;padding:0;border:0;background:none;pointer-events:auto;cursor:pointer;filter:drop-shadow(0 6px 12px rgba(0,0,0,.55))}
+.ave-hero::before{content:"";position:absolute;inset:-70% -50%}
+.ave-hero .foco{position:absolute;inset:-34% -18%;pointer-events:none;opacity:0;transform:scale(1.35);transition:opacity .25s,transform .35s var(--ease)}
+.ave-hero .foco i{position:absolute;width:12px;height:12px;border:1.5px solid var(--rojo)}
+.ave-hero .foco i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0}.ave-hero .foco i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0}
+.ave-hero .foco i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0}.ave-hero .foco i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0}
+.ave-hero:hover .foco,.ave-hero:focus-visible .foco{opacity:1;transform:scale(1)}
+@media (pointer:coarse){.ave-hero .foco{opacity:.75;transform:scale(1)}}
+.ave-lejos{width:clamp(24px,2.2vw,34px);aspect-ratio:3/2;color:#ddd5c8}
+.pistas{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.pista-ave{display:flex;align-items:center;gap:10px;color:var(--papel);text-decoration:none;background:none;border:0;padding:0;cursor:pointer;pointer-events:auto}
+.pista-ave:hover{color:var(--ambar)}
+.p-ave .lejos{opacity:.85}
+.pista-ave svg{width:22px;height:16px;color:var(--ambar)}
+.disparo{position:fixed;left:0;top:0;z-index:99;width:min(42vw,600px);background:#f3eee6;padding:clamp(6px,.8vw,12px) clamp(6px,.8vw,12px) clamp(26px,3vw,40px);box-shadow:0 50px 90px rgba(0,0,0,.65);pointer-events:none;transform-origin:50% 50%}
+.disparo .foto{position:relative;aspect-ratio:3/2;overflow:hidden;background:#3f6f95}
+.disparo img{width:100%;height:100%;object-fit:cover}
+.disparo .foto svg{position:absolute;left:56%;top:14%;width:13%;color:#141110}
+.disparo span{position:absolute;left:clamp(8px,1vw,14px);bottom:clamp(6px,.8vw,12px);font:500 clamp(.55rem,.8vw,.7rem) var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#3a302a}
+@media (max-width:760px){.disparo{width:80vw}.pistas{align-items:flex-start}}
 
 /* ===== PAISAJES: de sol a luna ===== */
 .paisajes{position:relative;--c1:#3f6f95;--c2:#a9c3d3;--ave:#16120f}
@@ -378,7 +389,6 @@ body.tapado img{filter:blur(30px) brightness(.4)!important}
 .p-astro .sombra{background:#07070a;transform:scale(.98);opacity:0;box-shadow:0 0 0 2px rgba(255,240,210,.9),0 0 30px 10px rgba(255,236,200,.75),0 0 90px 30px rgba(255,220,170,.35)}
 .p-ave{position:absolute;left:0;top:0;width:clamp(40px,4vw,58px);color:var(--ave);pointer-events:none;will-change:transform}
 .p-ave svg{width:100%;height:auto;overflow:visible}
-.p-ave .ala{animation:aleteaR .34s ease-in-out infinite}
 .p-cab{position:absolute;left:var(--lado);top:clamp(86px,14vh,140px);z-index:3;max-width:min(36ch,88vw);text-shadow:0 2px 18px rgba(0,0,0,.35)}
 .p-cab .mono{color:#fff;opacity:.85}
 .p-cab h2{font:400 clamp(2.8rem,7.4vw,6.6rem)/.88 var(--serif);letter-spacing:-.02em;margin:10px 0 14px;color:#fff}
@@ -400,7 +410,6 @@ body.tapado img{filter:blur(30px) brightness(.4)!important}
 .p-fin small{display:block;font:500 .66rem var(--mono);letter-spacing:.2em;text-transform:uppercase;font-style:normal;margin-top:14px;opacity:.75}
 .estatico .p-pista{position:relative;overflow-x:auto;padding-left:var(--lado);bottom:auto;top:56svh}
 @media (max-width:760px){
-  .pajaro{right:10px;top:clamp(78px,13svh,120px)}
   .p-cab{max-width:86vw}
   .p-cab p{font-size:.9rem}
   .p-fase{top:auto;bottom:calc(var(--h,34svh) + 150px);right:var(--lado)}
@@ -446,15 +455,14 @@ body.tapado img{filter:blur(30px) brightness(.4)!important}
       <h1><span class="l1">José Luis</span><span class="l2" data-letras>Vadillo</span></h1>
       <div class="hero-pie">
         <p>Fotografía de parejas, retratos, deporte y naturaleza. Valladolid y alrededores.</p>
-        <span class="pista-luz mono"><i></i><span class="solo-raton">Mueve el ratón: pinta con luz</span><span class="solo-tactil">Arrastra el dedo: pinta con luz</span></span>
+        <span class="pistas"><span class="pista-luz mono"><i></i><span class="solo-raton">Mueve el ratón: pinta con luz</span><span class="solo-tactil">Arrastra el dedo: pinta con luz</span></span><button class="pista-ave mono" id="pistaAve"><svg viewBox="-38 -24 76 48" aria-hidden="true"><path fill="currentColor" d="M0,-4.5 C1.6,-4.5 2.6,-3 2.8,-1 C3,1.5 2,4 1.6,6 L3.2,10 L0,8.6 L-3.2,10 L-1.6,6 C-2,4 -3,1.5 -2.8,-1 C-2.6,-3 -1.6,-4.5 0,-4.5Z"/><path fill="currentColor" d="M3,-1 Q8,-10 14,-8 Q24,-15 34,-14 Q24,-8 14,-3 Q8,1 3,2 Z M-3,-1 Q-8,-10 -14,-8 Q-24,-15 -34,-14 Q-24,-8 -14,-3 Q-8,1 -3,2 Z"/></svg><span class="solo-raton">Hazle una foto al pájaro: paisajes</span><span class="solo-tactil">Toca el pájaro: paisajes</span></button></span>
       </div>
     </div>
     <div class="baja mono" aria-hidden="true">Baja<i></i></div>
-    <div class="pajaro">
-      <button class="pajaro-ave" id="pajaro" aria-label="Ir a los paisajes">
-        <svg viewBox="-34 -36 64 50" aria-hidden="true"><path class="ala lejos" d="M8,-2 C3,-13 -6,-24 -20,-30 C-12,-20 -5,-10 -3,-1Z" fill="currentColor"/><path d="M24,0 C20,-4 11,-5 2,-3 C-7,-1 -13,0 -19,-5 L-30,-11 L-22,-1 L-32,6 L-19,3 C-11,5 -1,5 9,4 C16,4 21,3 24,0Z" fill="currentColor"/><path class="ala" d="M10,-1 C6,-14 -2,-27 -14,-34 C-9,-22 -4,-11 -2,0Z" fill="currentColor"/></svg>
-        <span class="pj-txt">Paisajes →</span>
-      </button>
+    <div class="cielo-hero" id="cieloHero">
+      <span class="ave ave-lejos" data-ave="lejos1"><svg viewBox="-38 -24 76 48" aria-hidden="true"><path class="lejos" fill="currentColor"/><path class="cuerpo" fill="currentColor" d="M0,-4.5 C1.6,-4.5 2.6,-3 2.8,-1 C3,1.5 2,4 1.6,6 L3.2,10 L0,8.6 L-3.2,10 L-1.6,6 C-2,4 -3,1.5 -2.8,-1 C-2.6,-3 -1.6,-4.5 0,-4.5Z"/><path class="cerca" fill="currentColor"/></svg></span>
+      <span class="ave ave-lejos" data-ave="lejos2"><svg viewBox="-38 -24 76 48" aria-hidden="true"><path class="lejos" fill="currentColor"/><path class="cuerpo" fill="currentColor" d="M0,-4.5 C1.6,-4.5 2.6,-3 2.8,-1 C3,1.5 2,4 1.6,6 L3.2,10 L0,8.6 L-3.2,10 L-1.6,6 C-2,4 -3,1.5 -2.8,-1 C-2.6,-3 -1.6,-4.5 0,-4.5Z"/><path class="cerca" fill="currentColor"/></svg></span>
+      <button class="ave ave-hero" id="aveHero" aria-label="Hazle una foto al pájaro y entra en los paisajes"><svg viewBox="-38 -24 76 48" aria-hidden="true"><path class="lejos" fill="currentColor"/><path class="cuerpo" fill="currentColor" d="M0,-4.5 C1.6,-4.5 2.6,-3 2.8,-1 C3,1.5 2,4 1.6,6 L3.2,10 L0,8.6 L-3.2,10 L-1.6,6 C-2,4 -3,1.5 -2.8,-1 C-2.6,-3 -1.6,-4.5 0,-4.5Z"/><path class="cerca" fill="currentColor"/></svg><span class="foco"><i></i><i></i><i></i><i></i></span></button>
     </div>
   </section>
 
@@ -480,7 +488,7 @@ body.tapado img{filter:blur(30px) brightness(.4)!important}
       <div class="p-estrellas" id="pEstrellas"></div>
       <svg class="p-arco" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true"><path id="pArco" d="M-40,300 C200,40 800,40 1040,300"/></svg>
       <div class="p-astro" id="pAstro" aria-hidden="true"><span class="sol"></span><span class="luna"></span><span class="sombra"></span></div>
-      <div class="p-ave" id="pAve" aria-hidden="true"><svg viewBox="-34 -36 64 50"><path class="ala lejos" d="M8,-2 C3,-13 -6,-24 -20,-30 C-12,-20 -5,-10 -3,-1Z" fill="currentColor"/><path d="M24,0 C20,-4 11,-5 2,-3 C-7,-1 -13,0 -19,-5 L-30,-11 L-22,-1 L-32,6 L-19,3 C-11,5 -1,5 9,4 C16,4 21,3 24,0Z" fill="currentColor"/><path class="ala" d="M10,-1 C6,-14 -2,-27 -14,-34 C-9,-22 -4,-11 -2,0Z" fill="currentColor"/></svg></div>
+      <div class="p-ave" id="pAve" aria-hidden="true"><svg viewBox="-38 -24 76 48" aria-hidden="true"><path class="lejos" fill="currentColor"/><path class="cuerpo" fill="currentColor" d="M0,-4.5 C1.6,-4.5 2.6,-3 2.8,-1 C3,1.5 2,4 1.6,6 L3.2,10 L0,8.6 L-3.2,10 L-1.6,6 C-2,4 -3,1.5 -2.8,-1 C-2.6,-3 -1.6,-4.5 0,-4.5Z"/><path class="cerca" fill="currentColor"/></svg></div>
       <div class="p-cab">
         <span class="mono" id="pTotal">Paisajes</span>
         <h2>De sol <em>a luna</em></h2>
@@ -827,32 +835,82 @@ Promise.all([cargada, espera(1900), document.fonts ? document.fonts.ready : 0]).
   gsap.fromTo("#flash", {opacity: .75}, {opacity: 0, duration: .7, ease: "power2.out"});        // el disparo
   fin();
   entrarHero();
-  setTimeout(posarPajaro, 1500);
+  setTimeout(() => { introLista = true; }, 1200);
 });
 
-/* ================= el pájaro de la portada: entra volando, se posa y, al pincharlo, vuela hasta los paisajes ================= */
-const pj = $("#pajaro");
-function balanceo() { gsap.to(pj, {y: -7, duration: 1.7, yoyo: true, repeat: -1, ease: "sine.inOut"}); }
-function posarPajaro() {
-  if (!ANIM) { pj.style.opacity = 1; return; }
-  pj.classList.add("vuela");
-  gsap.fromTo(pj, {opacity: 1, x: () => -innerWidth * .8, y: () => -innerHeight * .1, rotation: -10, scale: .65},
-    {keyframes: [{x: () => -innerWidth * .38, y: () => innerHeight * .07, rotation: 8, scale: .85, duration: 1.2, ease: "sine.inOut"},
-                 {x: 0, y: 0, rotation: 0, scale: 1, duration: 1.1, ease: "power2.out"}],
-     onComplete: () => { pj.classList.remove("vuela"); balanceo(); }});
+/* ================= PÁJAROS: vuelan por el cielo de la portada; hazle una foto y entras en los paisajes =================
+   Las alas se dibujan en cada fotograma (no es una imagen que se estira): aletean, planean y se ladean. */
+let introLista = !ANIM;
+function alas(svg, a) {   // pájaro visto desde abajo, en «M». a: 1 = alas arriba, 0 = planeando, -0.6 = abajo
+  const f = v => v.toFixed(1);
+  const ala = (lado, k) => { const x = v => f(lado * v * k);
+    return `M${x(2.6)},-1 Q${x(8)},${f(-6 * a - 4)} ${x(14)},${f(-6 * a - 2)} Q${x(24)},${f(-11 * a - 4)} ${x(34)},${f(-16 * a + 2)} Q${x(24)},${f(-9 * a + 1)} ${x(14)},${f(-5 * a + 2)} Q${x(8)},${f(-2 * a + 3)} ${x(2.6)},2.4 Z`; };
+  svg.querySelector(".cerca").setAttribute("d", ala(1, 1));
+  svg.querySelector(".lejos").setAttribute("d", ala(-1, .92));   // el ala lejana, un poco más corta (perspectiva)
 }
-if (!ANIM) pj.style.opacity = 1;
-pj.addEventListener("click", () => {
+// cada pájaro: aletea unos segundos y planea otros (como de verdad)
+function crearAve(el, {vel = 1, ritmo = 9} = {}) {
+  const svg = el.querySelector("svg"); let fase = Math.random() * 6, planeo = 0, siguiente = 1 + Math.random() * 2;
+  return dt => {
+    siguiente -= dt;
+    if (siguiente <= 0) { planeo = planeo ? 0 : 1; siguiente = planeo ? .7 + Math.random() * .9 : 1.2 + Math.random() * 1.6; }
+    const objetivo = planeo ? .18 : null;
+    fase += dt * ritmo * vel;
+    const a = objetivo === null ? .3 + .7 * Math.sin(fase) : objetivo + .04 * Math.sin(fase * .3);
+    alas(svg, a);
+  };
+}
+const cieloHero = $("#cieloHero"), aveHero = $("#aveHero"), lejanos = $$(".ave-lejos");
+const vuelos = [
+  {el: aveHero, aleteo: crearAve(aveHero), dur: 8.5, t: -1.2, y0: .2, amp: .06, esc: 1, pausa: 2.2},
+  {el: lejanos[0], aleteo: crearAve(lejanos[0], {vel: 1.25}), dur: 14, t: -3.5, y0: .1, amp: .03, esc: 1, pausa: 4},
+  {el: lejanos[1], aleteo: crearAve(lejanos[1], {vel: 1.35}), dur: 16, t: -7, y0: .15, amp: .025, esc: 1, pausa: 5}
+];
+let disparando = false, tAnt = performance.now();
+const aveP = $("#pAve"), aleteoP = crearAve(aveP, {vel: 1.1});
+(function volar(t) {
+  const dt = Math.min(.05, (t - tAnt) / 1000); tAnt = t;
+  aleteoP(dt);
+  const W = cieloHero.clientWidth, H = cieloHero.clientHeight, visible = hero.getBoundingClientRect().bottom > 0;
+  if (introLista && visible && !disparando) {
+    vuelos.forEach(v => {
+      v.t += dt; if (v.t > v.dur + v.pausa) { v.t = 0; v.y0 = (v === vuelos[0] ? .14 : .06) + Math.random() * .16; }
+      const k = v.t / v.dur;
+      if (k < 0 || k > 1) { v.el.style.opacity = 0; return; }
+      v.aleteo(dt);
+      const x = -.12 * W + k * 1.24 * W, y = H * (v.y0 + v.amp * Math.sin(k * 7.5) + .05 * k);
+      const giro = Math.cos(k * 7.5) * v.amp * 60;                      // se ladea al subir y bajar
+      v.el.style.opacity = 1;
+      v.el.style.transform = `translate3d(${x}px,${y}px,0) rotate(${giro.toFixed(1)}deg)`;
+    });
+  }
+  requestAnimationFrame(volar);
+})(tAnt);
+
+// el disparo: flash, sale la copia con el pájaro en el cielo de un paisaje y la copia te mete en la sección
+function disparar() {
   const destino = $("#paisajes");
-  if (!ANIM) { destino.scrollIntoView({behavior: "smooth"}); return; }
-  gsap.killTweensOf(pj); pj.classList.add("vuela");
-  gsap.to(pj, {keyframes: [{x: () => innerWidth * .06, y: -40, rotation: -14, duration: .35, ease: "power1.out"},
-                           {x: () => -innerWidth * .3, y: () => innerHeight * .75, rotation: 26, scale: .55, opacity: 0, duration: 1.3, ease: "power2.in"}]});
-  if (lenis) lenis.scrollTo(destino, {duration: 2.2, easing: t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2});
-  else destino.scrollIntoView({behavior: "smooth"});
-  setTimeout(() => { gsap.set(pj, {x: 0, y: 0, rotation: 0, scale: 1}); pj.classList.remove("vuela"); gsap.to(pj, {opacity: 1, duration: .8}); balanceo(); }, 2700);
-});
-if (ANIM) gsap.to(".pajaro", {opacity: 0, y: -50, ease: "none", scrollTrigger: {trigger: ".hero", start: "top top", end: "40% top", scrub: true}});
+  if (!ANIM || !lenis) { destino.scrollIntoView({behavior: "smooth"}); return; }
+  if (disparando) return; disparando = true;
+  const r = aveHero.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  const copia = document.createElement("div"); copia.className = "disparo";
+  copia.innerHTML = `<div class="foto"><img src="${img("paisaje-04")}" alt="">${aveHero.querySelector("svg").outerHTML}</div><span>Fotograma 01 · Paisajes</span>`;
+  document.body.append(copia);
+  const cw = copia.offsetWidth, ch = copia.offsetHeight, llena = Math.max(innerWidth / cw, innerHeight / ch) * 1.25;
+  gsap.fromTo("#flash", {opacity: .9}, {opacity: 0, duration: .65, ease: "power2.out"});
+  gsap.to(aveHero, {opacity: 0, duration: .15});
+  gsap.set(copia, {x: cx - cw / 2, y: cy - ch / 2, scale: .08, rotation: -14, opacity: 0});
+  gsap.timeline({onComplete: () => { copia.remove(); disparando = false; vuelos[0].t = vuelos[0].dur; }})
+    .to(copia, {opacity: 1, scale: .35, duration: .18, ease: "power2.out"}, .12)
+    .to(copia, {x: innerWidth / 2 - cw / 2, y: innerHeight / 2 - ch / 2, scale: 1, rotation: -3, duration: .8, ease: "power3.out"})
+    .to(copia, {rotation: 0, duration: .5, ease: "sine.inOut"})
+    .to(copia, {scale: llena, duration: .85, ease: "power3.in"})
+    .add(() => lenis.scrollTo(destino, {immediate: true, force: true}))
+    .to(copia, {opacity: 0, duration: .7, ease: "power1.out"}, "+=.05");
+}
+aveHero.addEventListener("click", disparar);
+$("#pistaAve").addEventListener("click", disparar);
+if (!ANIM) { aveHero.style.opacity = 1; }
 
 /* ================= animaciones con el scroll ================= */
 if (ANIM) {
@@ -994,10 +1052,10 @@ if (fino) {
     requestAnimationFrame(bucle);
   })();
   document.addEventListener("mouseover", e => {
-    const enPajaro = !!e.target.closest(".pajaro"), enHero = !!e.target.closest(".hero"), enFoto = enPajaro || !!e.target.closest("[data-foto], [data-abrir], [data-album]");
+    const enPajaro = !!e.target.closest(".ave-hero"), enHero = !!e.target.closest(".hero"), enFoto = enPajaro || !!e.target.closest("[data-foto], [data-abrir], [data-album]");
     visor.classList.toggle("luz", enHero && !enFoto);
     visor.classList.toggle("foto", enFoto);
-    etiqueta.textContent = enPajaro ? "VUELA" : enHero ? "PINTA CON LUZ" : "VER";
+    etiqueta.textContent = enPajaro ? "DISPARA" : enHero ? "PINTA CON LUZ" : "VER";
   });
   hoja.querySelectorAll(".contacto-f").forEach(f => {
     const im = f.querySelector("img");
