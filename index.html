@@ -408,6 +408,11 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
 .p-foto figcaption i{font:italic 400 1.15rem var(--serif)}
 .p-fin{flex:none;width:min(34ch,70vw);color:#fff;font:italic 400 clamp(1.4rem,2.4vw,2rem)/1.15 var(--serif);text-shadow:0 2px 16px rgba(0,0,0,.5)}
 .p-fin small{display:block;font:500 .66rem var(--mono);letter-spacing:.2em;text-transform:uppercase;font-style:normal;margin-top:14px;opacity:.75}
+.p-saltar{position:absolute;white-space:nowrap;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:5;display:flex;gap:8px;align-items:center;padding:10px 18px;border-radius:99px;border:1px solid rgba(255,255,255,.4);background:rgba(10,8,8,.38);color:#fff;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:background .3s,border-color .3s}
+.p-saltar:hover{background:rgba(10,8,8,.6);border-color:#fff}
+.p-saltar span{font-size:.9rem;letter-spacing:0}
+@media (max-width:760px){.p-saltar{left:var(--lado);transform:none;bottom:max(16px,env(safe-area-inset-bottom));padding:9px 14px}}
+.estatico .p-saltar{display:none}
 .estatico .p-pista{position:relative;overflow-x:auto;padding-left:var(--lado);bottom:auto;top:56svh}
 @media (max-width:760px){
   .p-cab{max-width:86vw}
@@ -508,6 +513,7 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
       </div>
       <div class="p-fase mono" aria-live="polite"><span id="pNum">01 / 24</span></div>
       <div class="p-pista" id="pPista"></div>
+      <button class="p-saltar mono" id="pSaltar" type="button">Saltar paisajes <span aria-hidden="true">↓</span></button>
     </div>
   </section>
 
@@ -954,12 +960,15 @@ if (ANIM) {
       imgsP.forEach((im, k) => { const d = (centros[k] - x) / innerWidth; im.style.translate = `${lim(d, -1, 1) * -4}% 0`; });
     }
     const recorrido = gsap.to(pPista, {x: () => -dist(), ease: "none", onUpdate() { pintar(this.progress()); },
-      scrollTrigger: {trigger: sec, start: "top top", end: () => "+=" + dist() * .7, pin: true, scrub: 1, invalidateOnRefresh: true,
+      scrollTrigger: {trigger: sec, start: "top top", end: () => "+=" + Math.min(dist() * .45, innerHeight * 12), pin: true, scrub: 1, invalidateOnRefresh: true,
         onRefresh: s => { medir(); pintar(s.progress); }}});
     // cada foto se "revela" al entrar por la derecha
     figs.forEach(f => gsap.from(f.querySelector(".marco"), {clipPath: "inset(14% 10% 14% 10% round 3px)", duration: 1.1, ease: "power3.out",
       scrollTrigger: {trigger: f, containerAnimation: recorrido, start: "left 96%", toggleActions: "play none none reverse"}}));
     addEventListener("load", () => { medir(); ScrollTrigger.refresh(); });
+    // botón para saltarse los paisajes sin tener que deslizarlos todos (petición de Sergio 11/11)
+    $("#pSaltar").addEventListener("click", e => { e.stopPropagation(); const y = recorrido.scrollTrigger.end + innerHeight;   // justo donde empieza la sección siguiente
+      if (lenis) lenis.scrollTo(y, {immediate: true}); else scrollTo(0, y); });
   }
 
   // SERIE II: las copias caen una a una sobre la mesa
