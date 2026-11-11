@@ -923,16 +923,27 @@ if (ANIM) {
       // cada foto se desliza un poco dentro de su marco (profundidad)
       imgsP.forEach((im, k) => { const d = (centros[k] - x) / innerWidth; im.style.translate = `${lim(d, -1, 1) * -4}% 0`; });
     }
+    // botón Saltar: recuerda hacia dónde vas (lo usa el onUpdate del recorrido)
+    const bSaltar = $("#pSaltar"), bFlecha = bSaltar.querySelector("span");
+    let dirS = 1, saltando = false;
+    function ponDir(d) { if (d === dirS) return; dirS = d; bFlecha.textContent = d > 0 ? "↓" : "↑"; bSaltar.setAttribute("aria-label", d > 0 ? "Saltar paisajes hacia abajo" : "Saltar paisajes hacia arriba"); }
+    const suave = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     const recorrido = gsap.to(pPista, {x: () => -dist(), ease: "none", onUpdate() { pintar(this.progress()); },
       scrollTrigger: {trigger: sec, start: "top top", end: () => "+=" + Math.min(dist() * .45, innerHeight * 12), pin: true, scrub: 1, invalidateOnRefresh: true,
-        onRefresh: s => { medir(); pintar(s.progress); }}});
+        onRefresh: s => { medir(); pintar(s.progress); }, onUpdate: s => { if (!saltando) ponDir(s.direction); }}});
     // cada foto se "revela" al entrar por la derecha
     figs.forEach(f => gsap.from(f.querySelector(".marco"), {clipPath: "inset(14% 10% 14% 10% round 3px)", duration: 1.1, ease: "power3.out",
       scrollTrigger: {trigger: f, containerAnimation: recorrido, start: "left 96%", toggleActions: "play none none reverse"}}));
     addEventListener("load", () => { medir(); ScrollTrigger.refresh(); });
     // botón para saltarse los paisajes sin tener que deslizarlos todos (petición de Sergio 11/11)
-    $("#pSaltar").addEventListener("click", e => { e.stopPropagation(); const y = recorrido.scrollTrigger.end + innerHeight;   // justo donde empieza la sección siguiente
-      if (lenis) lenis.scrollTo(y, {immediate: true}); else scrollTo(0, y); });
+    // 11/11: va hacia donde ibas (bajando → sección siguiente; subiendo → sección anterior) y con un deslizamiento suave, no de golpe
+    bSaltar.addEventListener("click", e => {
+      e.stopPropagation(); if (saltando) return; saltando = true;
+      const st = recorrido.scrollTrigger, y = dirS > 0 ? st.end + innerHeight : st.start - innerHeight;   // justo la sección siguiente o la anterior
+      const fin = () => { saltando = false; };
+      if (lenis) lenis.scrollTo(y, {duration: 2.2, easing: suave, lock: true, force: true, onComplete: fin});
+      else { scrollTo({top: y, behavior: "smooth"}); setTimeout(fin, 1500); }
+    });
   }
 
   // LUNA: primero solo la luna sobre negro; el círculo se abre hasta la escena entera
