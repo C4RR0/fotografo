@@ -655,9 +655,12 @@ ALBUMES.push({nombre: "Marina", sesion: "Triatlón", texto: "", sesiones: [{t: "
              {nombre: "Pareja", sesion: "En el agua", texto: "", sesiones: [{t: "En el agua", f: SERIES["Dentro del agua"]}], fotos: SERIES["Dentro del agua"]});
 // 12/11 13:56 el tío manda «Boda Albano y Paula» (11 fotos de WhatsApp, en su orden; demo/_plantillas/boda_tio.py) → carpeta en Reportajes
 const BODA_AP = {"boda-albano-paula-01": [0.666, "#6d584e"], "boda-albano-paula-02": [0.667, "#797a51"], "boda-albano-paula-03": [0.666, "#323232"], "boda-albano-paula-04": [1.485, "#4c3226"], "boda-albano-paula-05": [0.666, "#686868"], "boda-albano-paula-06": [1.501, "#848485"], "boda-albano-paula-07": [1.501, "#707071"], "boda-albano-paula-08": [1.499, "#747474"], "boda-albano-paula-09": [0.666, "#483f36"], "boda-albano-paula-10": [1.501, "#535354"], "boda-albano-paula-11": [1.501, "#6b6058"]};
-{ const f = Object.keys(BODA_AP);
-  f.forEach(n => { T[n] = "Albano y Paula · Boda"; C[n] = BODA_AP[n][1]; if (BODA_AP[n][0] < 1) V.add(n); });
-  ALBUMES.push({nombre: "Albano y Paula", sesion: "Boda", texto: "", sesiones: [{t: "Boda", f}], fotos: f}); }
+// 12/11 13:58 «Boda Joserra y Vero» (18 fotos de WhatsApp, en su orden)
+const BODA_JV = {"boda-joserra-vero-01": [1.5, "#7f7f80"], "boda-joserra-vero-02": [1.5, "#776a64"], "boda-joserra-vero-03": [1.5, "#727378"], "boda-joserra-vero-04": [1.501, "#636363"], "boda-joserra-vero-05": [1.5, "#797170"], "boda-joserra-vero-06": [1.5, "#857c78"], "boda-joserra-vero-07": [0.666, "#6e5f59"], "boda-joserra-vero-08": [1.501, "#786f74"], "boda-joserra-vero-09": [1.501, "#707070"], "boda-joserra-vero-10": [0.666, "#8b8280"], "boda-joserra-vero-11": [1.501, "#6c6c68"], "boda-joserra-vero-12": [1.501, "#8c7c76"], "boda-joserra-vero-13": [0.666, "#5f5a57"], "boda-joserra-vero-14": [1.5, "#787a7c"], "boda-joserra-vero-15": [1.501, "#5c5c5c"], "boda-joserra-vero-16": [0.666, "#6a6e7d"], "boda-joserra-vero-17": [0.666, "#5c7077"], "boda-joserra-vero-18": [1.501, "#5f3a28"]};
+[["Albano y Paula", BODA_AP], ["Joserra y Vero", BODA_JV]].forEach(([nombre, info]) => {
+  const f = Object.keys(info);
+  f.forEach(n => { T[n] = nombre + " · Boda"; C[n] = info[n][1]; if (info[n][0] < 1) V.add(n); });
+  ALBUMES.push({nombre, sesion: "Boda", texto: "", sesiones: [{t: "Boda", f}], fotos: f}); });
 
 /* === ANIMALES (WhatsApp del tío, 11/11): 96 fotos animal-NN, generado con demo/_plantillas/animales_tio.py ===
    FAUNA_INFO: [proporción ancho/alto, color medio]. FAUNA: una carpeta por familia; la primera foto es la portada. */
@@ -680,7 +683,7 @@ $("#miPie").innerHTML = MIRADA.map(([f], k) => { const a = ALBUMES[albDe(f)];
 $("#miLista").innerHTML = MIRADA.map(([f]) => `<button type="button" data-album="${albDe(f)}">${f}</button>`).join("");
 
 const carpetasEl = $("#carpetas");
-$("#albTotal").textContent = `Reportajes ·${N_REP} carpetas · ${ALBUMES.slice(0, N_REP).reduce((t, a) => t + a.sesiones.length, 0)} sesiones`;
+$("#albTotal").textContent = `Reportajes · ${N_REP} carpetas · ${ALBUMES.slice(0, N_REP).reduce((t, a) => t + a.sesiones.length, 0)} sesiones`;
 ALBUMES.forEach((a, i) => {
   if (i >= N_REP) return;   // las de animales no van en la mesa de Reportajes (se abren desde «Primero, la mirada»)
   // portada de la carpeta: solo fotos que encajan en el marco sin cortarse (horizontales en ordenador, verticales en el móvil)
