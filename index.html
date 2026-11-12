@@ -653,6 +653,11 @@ const ALBUMES = [{"nombre": "Alba", "sesion": "4 sesiones", "texto": "", "sesion
 // 10-11/11 el tío: «Mételas en la carpeta retratos como Marina, que no queden fuera» → la triatleta y la pareja del agua viven SOLO aquí (11/11 se quitaron sus secciones sueltas de la portada)
 ALBUMES.push({nombre: "Marina", sesion: "Triatlón", texto: "", sesiones: [{t: "Triatlón", f: SERIES["Hojas y medallas"]}], fotos: SERIES["Hojas y medallas"]},
              {nombre: "Pareja", sesion: "En el agua", texto: "", sesiones: [{t: "En el agua", f: SERIES["Dentro del agua"]}], fotos: SERIES["Dentro del agua"]});
+// 12/11 13:56 el tío manda «Boda Albano y Paula» (11 fotos de WhatsApp, en su orden; demo/_plantillas/boda_tio.py) → carpeta en Reportajes
+const BODA_AP = {"boda-albano-paula-01": [0.666, "#6d584e"], "boda-albano-paula-02": [0.667, "#797a51"], "boda-albano-paula-03": [0.666, "#323232"], "boda-albano-paula-04": [1.485, "#4c3226"], "boda-albano-paula-05": [0.666, "#686868"], "boda-albano-paula-06": [1.501, "#848485"], "boda-albano-paula-07": [1.501, "#707071"], "boda-albano-paula-08": [1.499, "#747474"], "boda-albano-paula-09": [0.666, "#483f36"], "boda-albano-paula-10": [1.501, "#535354"], "boda-albano-paula-11": [1.501, "#6b6058"]};
+{ const f = Object.keys(BODA_AP);
+  f.forEach(n => { T[n] = "Albano y Paula · Boda"; C[n] = BODA_AP[n][1]; if (BODA_AP[n][0] < 1) V.add(n); });
+  ALBUMES.push({nombre: "Albano y Paula", sesion: "Boda", texto: "", sesiones: [{t: "Boda", f}], fotos: f}); }
 
 /* === ANIMALES (WhatsApp del tío, 11/11): 96 fotos animal-NN, generado con demo/_plantillas/animales_tio.py ===
    FAUNA_INFO: [proporción ancho/alto, color medio]. FAUNA: una carpeta por familia; la primera foto es la portada. */
