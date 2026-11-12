@@ -236,6 +236,9 @@ footer a{color:#9c9189}
 .caja-escena{flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;padding:6px clamp(10px,7vw,110px)}
 .caja-escena img{display:block;width:auto;height:auto;max-width:100%;max-height:calc(100svh - 58px - 96px - 12px);object-fit:contain;box-shadow:0 30px 80px rgba(0,0,0,.6);transition:opacity .3s,transform .5s var(--ease)}
 .caja-escena img.cambiando{opacity:0;transform:scale(.97)}
+.caja-escena{touch-action:none}
+.con-visor .caja-escena img{cursor:zoom-in}
+.caja-escena img.zoom{transition:opacity .3s;will-change:transform;cursor:zoom-out}
 .flecha{position:absolute;top:50%;transform:translateY(-50%);width:54px;height:54px;border-radius:50%;border:1px solid #3a302b;background:rgba(23,19,18,.75);font-size:1.25rem;cursor:pointer;display:grid;place-items:center;transition:background .3s,border-color .3s}
 .flecha:hover{background:var(--ambar);border-color:var(--ambar);color:var(--negro)}
 .flecha.izq{left:clamp(6px,2vw,28px)}.flecha.der{right:clamp(6px,2vw,28px)}
@@ -1220,7 +1223,8 @@ document.addEventListener("click", e => {
   const c = e.target.closest("[data-album]");
   if (c) { abrirAlbum(+c.dataset.album, c); return; }
   const f = e.target.closest("[data-foto], [data-abrir]");
-  if (f) abrir(f.dataset.foto || f.dataset.abrir, f.closest("#album") ? albumLista : f.closest("#paisajes") ? PLISTA : null);
+  // 12/11 el tío: al pulsar la luna salían las fotos de Marina y de la moto (la lista por defecto) → la luna se abre sola
+  if (f) abrir(f.dataset.foto || f.dataset.abrir, f.closest("#album") ? albumLista : f.closest("#paisajes") ? PLISTA : f.closest("#luna") ? [{n: "12", s: "Luna llena"}] : null);
 });
 
 /* ================= álbum: la carpeta se abre y la sesión llena la pantalla ================= */
@@ -1284,14 +1288,63 @@ addEventListener("keyup", e => {
 });
 $("#cerrar").onclick = cerrar; $("#ant").onclick = () => mostrar(actual - 1); $("#sig").onclick = () => mostrar(actual + 1);
 tiras.addEventListener("click", e => { const b = e.target.closest("button"); if (b) mostrar(+b.dataset.i); });
-caja.addEventListener("click", e => { if (e.target.classList.contains("caja-escena")) cerrar(); });
+/* ===== ampliar la foto (12/11, el tío: «si intentas ampliar se buguea, sale la portada y se cierra»):
+   antes el pellizco ampliaba TODA la página y el toque al soltar contaba como «cerrar» o «siguiente».
+   Ahora: pellizco o doble toque (móvil) y clic (ordenador) amplían SOLO la foto; ampliada se mueve con el dedo o el ratón;
+   mientras está ampliada no se pasa de foto ni se cierra al tocar el fondo. */
+const zoom = {s: 1, x: 0, y: 0};
+const pintarZoom = () => { cimg.style.transform = zoom.s > 1 ? `translate(${zoom.x}px,${zoom.y}px) scale(${zoom.s})` : ""; cimg.classList.toggle("zoom", zoom.s > 1); };
+const limitarZoom = () => { const mx = cimg.offsetWidth * (zoom.s - 1) / 2, my = cimg.offsetHeight * (zoom.s - 1) / 2;
+  zoom.x = Math.max(-mx, Math.min(mx, zoom.x)); zoom.y = Math.max(-my, Math.min(my, zoom.y)); };
+function resetZoom() { zoom.s = 1; zoom.x = 0; zoom.y = 0; pintarZoom(); }
+function zoomEn(px, py, s) {   // amplía hacia el punto (px, py) de la pantalla
+  const r = cimg.getBoundingClientRect(), cx = r.left + r.width / 2 - zoom.x, cy = r.top + r.height / 2 - zoom.y;
+  zoom.s = s; zoom.x = (cx - px) * (s - 1); zoom.y = (cy - py) * (s - 1); limitarZoom(); pintarZoom();
+}
+const mostrarSinZoom = mostrar;
+mostrar = i => { resetZoom(); mostrarSinZoom(i); };
+const cerrarSinZoom = cerrar;
+cerrar = () => { resetZoom(); cerrarSinZoom(); };
+$("#cerrar").onclick = cerrar; $("#ant").onclick = () => mostrar(actual - 1); $("#sig").onclick = () => mostrar(actual + 1);
+caja.addEventListener("click", e => {
+  if (e.target === cimg && fino) { zoom.s > 1 ? resetZoom() : zoomEn(e.clientX, e.clientY, 2.4); return; }
+  if (e.target.classList.contains("caja-escena")) { if (zoom.s > 1) resetZoom(); else cerrar(); }
+});
+cimg.addEventListener("mousemove", e => {   // ordenador: con la foto ampliada, se recorre moviendo el ratón
+  if (zoom.s <= 1 || !fino) return; const r = cimg.parentElement.getBoundingClientRect();
+  const mx = cimg.offsetWidth * (zoom.s - 1) / 2, my = cimg.offsetHeight * (zoom.s - 1) / 2;
+  zoom.x = -((e.clientX - r.left) / r.width - .5) * 2 * mx; zoom.y = -((e.clientY - r.top) / r.height - .5) * 2 * my; pintarZoom();
+});
 addEventListener("keydown", e => {
   if (!caja.classList.contains("on")) { if (e.key === "Escape") cerrarAlbum(); return; }
-  if (e.key === "Escape") cerrar(); if (e.key === "ArrowRight") mostrar(actual + 1); if (e.key === "ArrowLeft") mostrar(actual - 1);
+  if (e.key === "Escape") { zoom.s > 1 ? resetZoom() : cerrar(); } if (e.key === "ArrowRight") mostrar(actual + 1); if (e.key === "ArrowLeft") mostrar(actual - 1);
 });
-let tx = 0;
-caja.addEventListener("touchstart", e => tx = e.touches[0].clientX, {passive: true});
-caja.addEventListener("touchend", e => { const d = e.changedTouches[0].clientX - tx; if (Math.abs(d) > 50) mostrar(actual + (d < 0 ? 1 : -1)); });
+// móvil: pellizco, doble toque, arrastre con la foto ampliada y deslizar para pasar (solo sin ampliar y con un dedo)
+const escena = cimg.parentElement;
+let gesto = null, ultimoToque = 0;
+const distT = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+escena.addEventListener("touchstart", e => {
+  const t = e.touches;
+  if (t.length === 2) { gesto = {tipo: "pellizco", d0: distT(t), s0: zoom.s, px: (t[0].clientX + t[1].clientX) / 2, py: (t[0].clientY + t[1].clientY) / 2, multi: true}; return; }
+  if (t.length === 1) {
+    const ahora = Date.now();
+    if (ahora - ultimoToque < 300 && e.target === cimg) { zoom.s > 1 ? resetZoom() : zoomEn(t[0].clientX, t[0].clientY, 2.5); ultimoToque = 0; gesto = {tipo: "doble", multi: true}; return; }
+    ultimoToque = ahora;
+    gesto = {tipo: zoom.s > 1 ? "mover" : "deslizar", x0: t[0].clientX, y0: t[0].clientY, zx: zoom.x, zy: zoom.y, multi: false};
+  }
+}, {passive: true});
+escena.addEventListener("touchmove", e => {
+  if (!gesto) return; const t = e.touches;
+  if (gesto.tipo === "pellizco" && t.length === 2) { e.preventDefault(); const s = Math.max(1, Math.min(4, gesto.s0 * distT(t) / gesto.d0)); zoomEn(gesto.px, gesto.py, s); }
+  else if (gesto.tipo === "mover" && t.length === 1) { e.preventDefault(); zoom.x = gesto.zx + t[0].clientX - gesto.x0; zoom.y = gesto.zy + t[0].clientY - gesto.y0; limitarZoom(); pintarZoom(); }
+}, {passive: false});
+escena.addEventListener("touchend", e => {
+  if (!gesto || e.touches.length) return;
+  const g = gesto; gesto = null;
+  if (zoom.s < 1.05) resetZoom();
+  if (g.tipo === "deslizar" && !g.multi) { const d = e.changedTouches[0].clientX - g.x0; if (Math.abs(d) > 50 && Math.abs(d) > Math.abs(e.changedTouches[0].clientY - g.y0)) mostrar(actual + (d < 0 ? 1 : -1)); }
+  if (g.multi || g.tipo === "mover") { e.preventDefault(); }   // que el toque al soltar no cuente como «cerrar»
+}, {passive: false});
 </script>
 <script defer src="m.js" data-site="engrana" data-api="https://script.google.com/macros/s/AKfycbxUQt_fUgS_BEP-gdpqzNt1EqRblhiBikMZr5ThNytjFnjY_kvcknVICwr1iis0NjyO/exec"></script>
 </body>
