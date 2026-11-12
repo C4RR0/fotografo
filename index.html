@@ -422,6 +422,63 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
   .p-foto{--h:34svh}.p-foto:nth-child(3n){--h:38svh}
   .p-foto figcaption i{font-size:1rem}
 }
+
+/* ===== ANIMALES: desde el hide (el escondite del fotógrafo de fauna) ===== */
+.animales{position:relative;background:#14110d}
+.h-pin{position:relative;height:100svh;overflow:hidden;background:#0c0a07}
+.h-escena{position:absolute;inset:0;cursor:zoom-in}
+.h-foto{position:absolute;inset:0;opacity:0;will-change:transform}
+.h-foto.on{opacity:1}
+.h-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.h-foto .b2,.h-foto .nitida{opacity:0}
+.h-escena::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 180px rgba(0,0,0,.6);pointer-events:none}
+.h-obtur,.h-flash{position:absolute;inset:0;opacity:0;pointer-events:none;z-index:1}
+.h-obtur{background:#000}.h-flash{background:#fff}
+.h-tela{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;display:block}
+.h-cab{position:absolute;left:var(--lado);top:clamp(86px,14vh,140px);z-index:4;max-width:min(40ch,88vw);color:var(--papel);pointer-events:none;text-shadow:0 2px 6px rgba(0,0,0,.9),0 4px 30px rgba(0,0,0,.8)}
+.h-cab .mono{color:var(--ambar)}
+.h-cab h2{font:400 clamp(2.8rem,7.4vw,6.6rem)/.88 var(--serif);letter-spacing:-.02em;margin:10px 0 14px}
+.h-cab h2 em{color:#b9c98a}
+.h-cab p{color:#efe8dd;font-size:.98rem}
+.h-af{position:absolute;left:0;top:0;width:100px;height:100px;z-index:3;pointer-events:none;--k:#fff;opacity:0;will-change:transform;
+  background:linear-gradient(var(--k),var(--k)) 0 0/16px 2px,linear-gradient(var(--k),var(--k)) 0 0/2px 16px,linear-gradient(var(--k),var(--k)) 100% 0/16px 2px,linear-gradient(var(--k),var(--k)) 100% 0/2px 16px,
+  linear-gradient(var(--k),var(--k)) 0 100%/16px 2px,linear-gradient(var(--k),var(--k)) 0 100%/2px 16px,linear-gradient(var(--k),var(--k)) 100% 100%/16px 2px,linear-gradient(var(--k),var(--k)) 100% 100%/2px 16px;
+  background-repeat:no-repeat;filter:drop-shadow(0 0 3px rgba(0,0,0,.7))}
+.h-af.ok{--k:#7dff6a}
+.h-af b{position:absolute;left:0;top:calc(100% + 7px);font:500 .6rem var(--mono);letter-spacing:.16em;color:#7dff6a;opacity:0;transition:opacity .2s;white-space:nowrap}
+.h-af.ok b{opacity:1}
+.h-hud{position:absolute;left:calc(var(--vl,16px) + 18px);right:calc(var(--vr,16px) + 18px);bottom:calc(var(--vb,16px) + 16px);z-index:4;display:flex;justify-content:space-between;gap:12px;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.7);pointer-events:none;opacity:0}
+.h-est i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#fff;margin-right:8px;vertical-align:1px;transition:background .2s,box-shadow .2s}
+.h-est.ok i{background:#7dff6a;box-shadow:0 0 10px #7dff6a}
+.contador{transition:opacity .4s}.en-hide .contador{opacity:0}
+.h-saltar{opacity:0;transition:opacity .4s,background .3s,border-color .3s}
+@media (max-width:760px){.h-hud{bottom:calc(var(--vb,8px) + 64px);flex-direction:column;gap:6px}.h-cab p{font-size:.9rem}}
+/* cuaderno de campo: una ficha por familia */
+.cuaderno{padding:clamp(100px,16vh,170px) 0 clamp(80px,12vh,140px)}
+.cuaderno .serie-cab h2 em{color:#b9c98a}
+.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:clamp(40px,5vw,70px) clamp(22px,3vw,44px);padding:clamp(60px,9vh,100px) var(--lado) 0;max-width:1500px;margin:0 auto}
+.ficha{position:relative;display:block;width:100%;padding:16px 16px 20px;border:0;border-radius:2px;cursor:pointer;text-align:left;font:inherit;color:#2a221a;
+  background:#ece3cf linear-gradient(rgba(70,100,140,.1) 1px,transparent 1px) 0 0/100% 22px,#ece3cf;background-color:#ece3cf;
+  box-shadow:0 30px 50px -24px rgba(0,0,0,.85),0 2px 0 rgba(0,0,0,.15);transform:rotate(var(--r,0deg));transition:transform .7s var(--ease),box-shadow .7s}
+.ficha:nth-child(odd){--r:-1.6deg}.ficha:nth-child(even){--r:1.3deg}.ficha:nth-child(3n){--r:.5deg}
+.ficha:hover,.ficha:focus-visible{transform:rotate(0) translateY(-8px);box-shadow:0 44px 60px -26px rgba(0,0,0,.9),0 2px 0 rgba(0,0,0,.15)}
+.f-marco{position:relative;display:block}
+.f-marco::before,.f-marco::after{content:"";position:absolute;top:-12px;width:78px;height:24px;background:rgba(222,206,160,.82);box-shadow:0 1px 3px rgba(0,0,0,.18);z-index:2}
+.f-marco::before{left:10%;transform:rotate(-5deg)}.f-marco::after{right:10%;transform:rotate(4deg)}
+.f-fotos{position:relative;display:block;aspect-ratio:3/2;overflow:hidden;background:#2a241c}
+.f-fotos img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.04);transition:opacity .9s,transform 1.4s var(--ease)}
+.f-fotos img.on{opacity:1}
+.ficha:hover .f-fotos img.on{transform:scale(1)}
+.f-pie{display:grid;gap:2px;margin-top:16px;padding-right:62px}
+.f-num{color:#9a3d24;font-size:.62rem}
+.f-nombre{font:600 clamp(2rem,3vw,2.5rem)/1 "Caveat",cursive;color:#2a221a}
+.f-cuenta{color:#6b5e4f;font-size:.62rem}
+.f-cuenta b{color:#2a221a;font-weight:500}
+.f-sello{position:absolute;right:18px;bottom:18px;width:54px;height:54px;border:2px solid rgba(176,74,46,.7);border-radius:50%;color:rgba(176,74,46,.75);display:grid;place-items:center;transform:rotate(-14deg);transition:transform .7s var(--ease)}
+.f-sello svg{width:26px;height:26px}
+.ficha:hover .f-sello{transform:rotate(6deg) scale(1.08)}
+.estatico .h-foto:first-child,.estatico .h-foto:first-child .nitida{opacity:1}
+.estatico .h-tela,.estatico .h-af,.estatico .h-hud,.estatico .h-saltar{display:none}
 </style>
 </head>
 <body class="cargando">
@@ -443,6 +500,7 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
   <ul>
     <li><a href="#series">Reportajes</a></li>
     <li><a href="#paisajes">Paisajes</a></li>
+    <li><a href="#animales">Animales</a></li>
     <li><a href="#encargos">Encargos</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
@@ -524,6 +582,38 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
       <span class="mono leyenda" id="lleyenda">Fotograma 12</span>
       <p class="luna-txt t1" id="lt1">Hay fotos que salen en un segundo…</p>
       <p class="luna-txt t2" id="lt2">…y otras que hay que <em>esperar</em>.</p>
+    </div>
+  </section>
+
+  <!-- ANIMALES: desde el hide. La mirilla se abre, el autofoco busca el ojo y dispara -->
+  <section class="animales" id="animales">
+    <div class="h-pin">
+      <div class="h-escena" id="hEscena" data-foto=""></div>
+      <div class="h-obtur" id="hObtur"></div><div class="h-flash" id="hFlash"></div>
+      <svg class="h-tela" id="hTela" aria-hidden="true">
+        <defs>
+          <pattern id="hRed" width="13" height="13" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0,0 H13 M0,0 V13" stroke="rgba(0,0,0,.4)" stroke-width="1.4" fill="none"/></pattern>
+          <radialGradient id="hSombra" cx="50%" cy="50%" r="75%"><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient>
+          <mask id="hMask" maskUnits="userSpaceOnUse" x="-50" y="-50" width="9000" height="9000"><rect x="-50" y="-50" width="9000" height="9000" fill="#fff"/><rect id="hHueco" fill="#000"/></mask>
+        </defs>
+        <g mask="url(#hMask)"><image href="camo.webp" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"/><rect width="100%" height="100%" fill="url(#hRed)"/><rect width="100%" height="100%" fill="url(#hSombra)"/></g>
+        <rect id="hFleco" fill="none" stroke="#3b301f" stroke-width="8" stroke-dasharray="1.5 2.5"/>
+      </svg>
+      <div class="h-af" id="hAf"><b>AF · OJO</b></div>
+      <div class="h-hud mono" id="hHud" aria-hidden="true"><span class="h-est" id="hEst"><i></i><span id="hEstado">Enfocando…</span></span><span id="hCuenta">Disparo 01 / 06</span></div>
+      <div class="h-cab">
+        <span class="mono" id="hTotal">Animales</span>
+        <h2>Desde <em>el hide</em></h2>
+        <p>Escondido, quieto y en silencio, esperando a que asomen.</p>
+      </div>
+      <button class="p-saltar h-saltar mono" id="hSaltar" type="button">Saltar <span aria-hidden="true">↓</span></button>
+    </div>
+    <div class="cuaderno">
+      <div class="serie-cab">
+        <div><span class="mono">Cuaderno de campo</span><h2 data-partir>Todas, <em>por familias</em></h2></div>
+        <p>Abre una ficha y mira todas sus fotos.</p>
+      </div>
+      <div class="fichas" id="fichas"></div>
     </div>
   </section>
 
@@ -658,6 +748,43 @@ pPista.innerHTML = PAISAJES.map(([k, f, t, ar, c], i) =>
 // las estrellas (salen al hacerse de noche)
 (() => { const e = $("#pEstrellas"); let h = ""; for (let i = 0; i < 140; i++) { const s = Math.random() < .12 ? 3 : Math.random() < .5 ? 2 : 1.3;
   h += `<i style="left:${(Math.random() * 100).toFixed(2)}%;top:${(Math.random() * 62).toFixed(2)}%;width:${s}px;height:${s}px;opacity:${(.35 + Math.random() * .65).toFixed(2)}"></i>`; } e.innerHTML = h; })();
+
+/* ================= ANIMALES: desde el hide + cuaderno de campo =================
+   Fotos del tío por WhatsApp (11/11, 20:04-20:05): 96 distintas → fotos/animal-NN. Generado con demo/_plantillas/animales_tio.py
+   FAUNA_INFO: [proporción ancho/alto, color medio]. FAUNA: familias (agrupadas por lo que se ve en cada foto; el tío puede cambiarlas). */
+const FAUNA_INFO = {"animal-01": [1.501, "#726961"], "animal-02": [1.501, "#7c7470"], "animal-03": [1.501, "#6b7b8a"], "animal-04": [1.501, "#5d6b78"], "animal-05": [1.501, "#2a6894"], "animal-06": [1.501, "#57749f"], "animal-07": [1.5, "#795d48"], "animal-08": [1.501, "#7f604a"], "animal-09": [1.501, "#8c7b6a"], "animal-10": [1.501, "#7c6a5c"], "animal-11": [1.5, "#6b5239"], "animal-12": [1.501, "#67544b"], "animal-13": [0.666, "#55634e"], "animal-14": [1.501, "#353737"], "animal-15": [1.501, "#56503a"], "animal-16": [1.501, "#888360"], "animal-17": [1.501, "#947b64"], "animal-18": [1.499, "#74543c"], "animal-19": [1.5, "#755c4b"], "animal-20": [1.5, "#745b4c"], "animal-21": [1.501, "#77706c"], "animal-22": [1.5, "#685b4e"], "animal-23": [1.5, "#647c96"], "animal-24": [1.501, "#6f6558"], "animal-25": [1.501, "#786451"], "animal-26": [1.5, "#8a7363"], "animal-27": [1.501, "#645747"], "animal-28": [1.385, "#696043"], "animal-29": [1.5, "#5d5036"], "animal-30": [1.501, "#494841"], "animal-31": [1.5, "#595848"], "animal-32": [1.501, "#6c6859"], "animal-33": [1.421, "#585943"], "animal-34": [1.501, "#645839"], "animal-35": [1.501, "#929078"], "animal-36": [0.666, "#716964"], "animal-37": [1.501, "#81744e"], "animal-38": [1.5, "#7c746a"], "animal-39": [0.666, "#6e624e"], "animal-40": [0.667, "#705b3a"], "animal-41": [1.501, "#58584a"], "animal-42": [0.666, "#8a745c"], "animal-43": [1.501, "#756957"], "animal-44": [0.666, "#806f57"], "animal-45": [0.666, "#807966"], "animal-46": [1.501, "#5e5d58"], "animal-47": [0.666, "#5d6160"], "animal-48": [0.666, "#7e735d"], "animal-49": [0.666, "#6a5d45"], "animal-50": [1.501, "#6e6657"], "animal-51": [1.501, "#5e5038"], "animal-52": [1.447, "#635444"], "animal-53": [1.501, "#57524d"], "animal-54": [1.501, "#70716f"], "animal-55": [0.667, "#5b6148"], "animal-56": [1.5, "#947750"], "animal-57": [1.5, "#2e2416"], "animal-58": [1.501, "#5c5742"], "animal-59": [0.666, "#544b3a"], "animal-60": [1.501, "#786b4a"], "animal-61": [1.501, "#746758"], "animal-62": [0.666, "#49422f"], "animal-63": [1.501, "#605442"], "animal-64": [0.666, "#54472c"], "animal-65": [1.501, "#6f6240"], "animal-66": [1.501, "#615641"], "animal-67": [1.5, "#7d785c"], "animal-68": [1.5, "#585148"], "animal-69": [1.501, "#685e4a"], "animal-70": [1.5, "#5f5643"], "animal-71": [1.5, "#605a54"], "animal-72": [1.5, "#6f6850"], "animal-73": [1.501, "#4c4434"], "animal-74": [1.501, "#746a49"], "animal-75": [1.501, "#756f64"], "animal-76": [1.501, "#464039"], "animal-77": [1.501, "#585034"], "animal-78": [1.501, "#4e4b2f"], "animal-79": [1.501, "#6b6c6a"], "animal-80": [0.666, "#5c4d3f"], "animal-81": [1.501, "#686457"], "animal-82": [1.501, "#463c35"], "animal-83": [1.501, "#403a23"], "animal-84": [1.501, "#584030"], "animal-85": [1.501, "#80664a"], "animal-86": [1.501, "#474321"], "animal-87": [1.501, "#876336"], "animal-88": [1.501, "#75551d"], "animal-89": [1.501, "#816440"], "animal-90": [1.501, "#5678a2"], "animal-91": [1.501, "#7086a0"], "animal-92": [1.524, "#796852"], "animal-93": [1.501, "#7f7f7c"], "animal-94": [1.501, "#6b4e31"], "animal-95": [1.501, "#221e17"], "animal-96": [1.501, "#907b64"]};
+const FAUNA = [{"nombre": "Rapaces", "fotos": ["animal-06", "animal-07", "animal-08", "animal-09", "animal-10", "animal-21", "animal-22", "animal-23", "animal-25", "animal-26", "animal-27", "animal-28", "animal-29", "animal-58", "animal-59", "animal-60", "animal-61", "animal-62", "animal-63", "animal-64", "animal-65", "animal-66", "animal-67", "animal-68", "animal-69", "animal-70", "animal-71", "animal-72", "animal-73", "animal-74", "animal-76", "animal-77", "animal-78", "animal-80", "animal-81", "animal-82", "animal-90", "animal-91"]}, {"nombre": "Pájaros", "fotos": ["animal-11", "animal-12", "animal-13", "animal-14", "animal-15", "animal-16", "animal-17", "animal-24", "animal-30", "animal-31", "animal-33", "animal-34", "animal-35", "animal-36", "animal-37", "animal-41", "animal-46", "animal-47", "animal-48", "animal-51", "animal-52", "animal-53", "animal-54", "animal-55", "animal-56", "animal-57", "animal-75", "animal-79", "animal-83", "animal-84", "animal-85", "animal-86", "animal-87", "animal-88", "animal-89", "animal-92", "animal-94", "animal-95", "animal-96"]}, {"nombre": "Mochuelos", "fotos": ["animal-38", "animal-39", "animal-40", "animal-42", "animal-43", "animal-44", "animal-45"]}, {"nombre": "Flamencos", "fotos": ["animal-01", "animal-02", "animal-03", "animal-04", "animal-05"]}, {"nombre": "Mamíferos y reptiles", "fotos": ["animal-19", "animal-18", "animal-20", "animal-49", "animal-50", "animal-32", "animal-93"]}];
+// destacadas del hide: [foto, x, y del ojo (0-1)]. El autofoco «de ojo» se clava ahí. Provisionales: que elija José Luis
+const HIDE = [["animal-06", .49, .61], ["animal-19", .35, .51], ["animal-38", .467, .33], ["animal-61", .425, .362], ["animal-32", .634, .27], ["animal-54", .48, .354]];
+const PORTADA_F = {"Rapaces": "animal-26", "Pájaros": "animal-54", "Mochuelos": "animal-38", "Flamencos": "animal-04", "Mamíferos y reptiles": "animal-19"};
+const HUELLA = `<ellipse cx="0" cy="4" rx="5.2" ry="4.4" fill="currentColor"/><ellipse cx="-6.4" cy="-2.2" rx="2.2" ry="2.7" fill="currentColor"/><ellipse cx="-2.4" cy="-6.8" rx="2.2" ry="2.8" fill="currentColor"/><ellipse cx="2.4" cy="-6.8" rx="2.2" ry="2.8" fill="currentColor"/><ellipse cx="6.4" cy="-2.2" rx="2.2" ry="2.7" fill="currentColor"/>`;
+FAUNA.forEach(g => {
+  g.sesion = "Animales"; g.texto = ""; g.sesiones = [{t: "", f: g.fotos}];
+  g.fotos.forEach(n => { T[n] = "Animales · " + g.nombre; C[n] = FAUNA_INFO[n][1]; if (FAUNA_INFO[n][0] < 1) V.add(n); });
+});
+const ALISTA = FAUNA.flatMap(g => g.fotos.map(n => ({n, s: g.nombre})));
+$("#hTotal").textContent = `Animales · ${ALISTA.length} fotos`;
+const hEsc = $("#hEscena");
+// cada destacada lleva 3 capas: muy borrosa (b1), algo borrosa (b2) y nítida; el «enfoque» las funde (sin filter: blur, que pesa en el móvil)
+hEsc.innerHTML = HIDE.map(([n, x, y], i) => { const op = `object-position:${x * 100}% ${y * 100}%`;
+  return `<div class="h-foto" style="background:${C[n]}"><img class="b1" src="${FOTOS}fotos/${n}-b1.webp" alt="" style="${op}"><img class="b2" src="${FOTOS}fotos/${n}-b2.webp" alt="" style="${op}"><img class="nitida" src="${img(n)}" alt="${T[n]}" style="${op}"${i ? ' loading="lazy"' : ""}></div>`; }).join("");
+hEsc.dataset.foto = HIDE[0][0];
+$("#fichas").innerHTML = FAUNA.map((g, i) => {
+  const p = PORTADA_F[g.nombre], m = [...new Set([p, ...g.fotos.filter(n => !V.has(n)), ...g.fotos].filter(Boolean))].slice(0, 5);
+  return `<button class="ficha" data-ficha="${i}" aria-label="Abrir las fotos de ${g.nombre}">
+    <span class="f-marco"><span class="f-fotos">${m.map((n, k) => `<img src="${img(n, 1)}" alt=""${k ? ' loading="lazy"' : ' class="on"'}>`).join("")}</span></span>
+    <span class="f-pie"><span class="f-num mono">Ficha ${String(i + 1).padStart(2, "0")}</span><span class="f-nombre">${g.nombre}</span><span class="f-cuenta mono">${g.fotos.length} fotos · <b>Abrir ↗</b></span></span>
+    <span class="f-sello" aria-hidden="true"><svg viewBox="-12 -12 24 24">${HUELLA}</svg></span>
+  </button>`; }).join("");
+// en cada ficha las fotos van pasando: al pasar el ratón (ordenador) o solas cuando se ve (móvil)
+$$(".ficha").forEach(c => {
+  const fotos = [...c.querySelectorAll(".f-fotos img")]; if (fotos.length < 2) return;
+  let k = 0, t = null;
+  const paso = () => { fotos[k].classList.remove("on"); k = (k + 1) % fotos.length; fotos[k].classList.add("on"); };
+  const empezar = ms => { if (!t) { paso(); t = setInterval(paso, ms); } }, parar = () => { clearInterval(t); t = null; };
+  if (fino) { c.addEventListener("mouseenter", () => empezar(1300)); c.addEventListener("mouseleave", parar); }
+  else new IntersectionObserver(([e]) => e.isIntersecting ? empezar(2300) : parar(), {threshold: .6}).observe(c);
+});
 
 const ENC = [
   ["Bodas y parejas","Preboda, boda o simplemente vosotros dos.","07"],
@@ -963,6 +1090,71 @@ if (ANIM) {
     .fromTo("#lt2", {opacity: 0, y: 30}, {opacity: 1, y: 0, duration: .2}, .72)
     .to("#lleyenda", {opacity: 1, duration: .15}, .8);
 
+  // ANIMALES: desde el hide. La rendija de la tela de camuflaje se abre; en cada foto el autofoco busca el OJO,
+  // se pone verde, salta el destello y el obturador da paso a la siguiente. Al final la rendija se vuelve a cerrar.
+  {
+    const pinH = $(".h-pin"), fotosH = [...hEsc.querySelectorAll(".h-foto")], capas = fotosH.map(f => [f.querySelector(".b2"), f.querySelector(".nitida")]), af = $("#hAf"), hud = $("#hHud"), estH = $("#hEst"), estTxt = $("#hEstado"), cuenta = $("#hCuenta");
+    const hueco = $("#hHueco"), fleco = $("#hFleco"), obt = $("#hObtur"), flashH = $("#hFlash"), cabH = $(".h-cab"), bSaltarH = $("#hSaltar"), flechaH = bSaltarH.querySelector("span");
+    const N = HIDE.length, A = .1, Z = .07;   // tramo de apertura, N disparos, tramo de cierre
+    const lim = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), mix = (a, b, t) => a + (b - a) * t, sv = t => t * t * (3 - 2 * t);
+    let ultimo = -1, okAnt = null, cuentaAnt = "";
+    function ventana(t) {   // t: 0 = rendija, 1 = abierta del todo
+      const W = pinH.clientWidth, H = pinH.clientHeight, m = W < 760 ? 8 : 16;
+      const w0 = Math.min(W * .84, 920), h0 = Math.max(54, H * .12), y0 = H * (W < 760 ? .64 : .62);
+      const w = mix(w0, W - 2 * m, t), h = mix(h0, H - 2 * m, t), x = (W - w) / 2, y = mix(y0 - h0 / 2, m, t), r = mix(h0 / 2, 6, t);
+      for (const el of [hueco, fleco]) { el.setAttribute("x", x.toFixed(1)); el.setAttribute("y", y.toFixed(1)); el.setAttribute("width", w.toFixed(1)); el.setAttribute("height", h.toFixed(1)); el.setAttribute("rx", r.toFixed(1)); }
+      pinH.style.setProperty("--vl", x + "px"); pinH.style.setProperty("--vr", (W - x - w) + "px"); pinH.style.setProperty("--vb", (H - y - h) + "px");
+      return {x, y, w, h, W, H};
+    }
+    function pintarH(p) {
+      let abre = 1, i, t;
+      if (p < A) { abre = sv(p / A); i = 0; t = 0; }
+      else if (p > 1 - Z) { abre = 1 - sv((p - (1 - Z)) / Z); i = N - 1; t = 1; }
+      else { const q = (p - A) / (1 - A - Z) * N; i = Math.min(N - 1, Math.floor(q)); t = q - i; }
+      const v = ventana(abre);
+      if (i !== ultimo) { ultimo = i; fotosH.forEach((f, k) => f.classList.toggle("on", k === i)); hEsc.dataset.foto = HIDE[i][0]; }
+      // obturador: parpadeo negro entre una foto y la siguiente
+      const enMedio = p >= A && p <= 1 - Z;
+      const bordeIni = i > 0 ? t : 1, bordeFin = i < N - 1 ? 1 - t : 1;
+      obt.style.opacity = enMedio ? (lim(1 - Math.min(bordeIni, bordeFin) / .05) * .96).toFixed(3) : 0;
+      // enfoque: de borroso a nítido (la primera llega borrosa mientras se abre la rendija)
+      const f = p < A ? 0 : lim((t - .06) / .4), esc = 1.07 - .07 * sv(f) + .03 * lim((t - .55) / .45);
+      const [b2, nit] = capas[i]; b2.style.opacity = sv(lim(f / .55)).toFixed(3); nit.style.opacity = sv(lim((f - .4) / .6)).toFixed(3);
+      fotosH[i].style.transform = `scale(${esc.toFixed(4)})`;
+      // recuadro de autofoco: grande en el centro → pequeño sobre el ojo (la foto está encuadrada con el ojo en object-position)
+      const [, ex, ey] = HIDE[i], e = sv(lim((t - .04) / .4));
+      const ox = v.W / 2 + (v.W * ex - v.W / 2) * esc, oy = v.H / 2 + (v.H * ey - v.H / 2) * esc;
+      const s = mix(Math.min(v.w, v.h) * .62, Math.max(64, Math.min(v.W, v.H) * .16), e);
+      const cx = mix(v.x + v.w / 2, ox, e), cy = mix(v.y + v.h / 2, oy, e);
+      af.style.width = af.style.height = s.toFixed(1) + "px";
+      af.style.transform = `translate3d(${(cx - s / 2).toFixed(1)}px,${(cy - s / 2).toFixed(1)}px,0)`;
+      const vis = p < A ? lim((p / A - .55) / .45) : p > 1 - Z ? 1 - lim((p - (1 - Z)) / Z * 2.5) : 1;
+      af.style.opacity = vis; hud.style.opacity = vis; bSaltarH.style.opacity = Math.max(.001, vis);
+      const ok = f >= 1 && p <= 1 - Z;
+      if (ok !== okAnt) { okAnt = ok; af.classList.toggle("ok", ok); estH.classList.toggle("ok", ok); estTxt.textContent = ok ? "Enfocado" : "Enfocando…"; }
+      // el disparo: destello justo al clavar el foco
+      flashH.style.opacity = enMedio ? (lim(1 - Math.abs(t - .5) / .045) * .5).toFixed(3) : 0;
+      const c = `Disparo ${String(i + 1).padStart(2, "0")} / ${String(N).padStart(2, "0")}`; if (c !== cuentaAnt) { cuentaAnt = c; cuenta.textContent = c; }
+      cabH.style.opacity = 1 - lim(p / A * 1.4); cabH.style.transform = `translateY(${-lim(p / A) * 24}px)`;
+    }
+    let dirH = 1, saltandoH = false;
+    const estadoH = {p: 0};
+    const twH = gsap.to(estadoH, {p: 1, ease: "none", onUpdate: () => pintarH(estadoH.p),
+      scrollTrigger: {trigger: pinH, start: "top top", end: () => "+=" + innerHeight * (N * .75 + 1), pin: true, scrub: .6, invalidateOnRefresh: true,
+        onRefresh: () => pintarH(estadoH.p), onToggle: s => document.body.classList.toggle("en-hide", s.isActive),
+        onUpdate: s => { if (!saltandoH && s.direction !== dirH) { dirH = s.direction; flechaH.textContent = dirH > 0 ? "↓" : "↑"; } }}});
+    pintarH(0); addEventListener("resize", () => pintarH(estadoH.p));
+    bSaltarH.addEventListener("click", e => {
+      e.stopPropagation(); if (saltandoH) return; saltandoH = true;
+      const st = twH.scrollTrigger, y = dirH > 0 ? st.end + 2 : st.start - innerHeight, fin = () => { saltandoH = false; };
+      if (lenis) lenis.scrollTo(y, {duration: 2, easing: t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, lock: true, force: true, onComplete: fin});
+      else { scrollTo({top: y, behavior: "smooth"}); setTimeout(fin, 1500); }
+    });
+    // las fichas del cuaderno caen sobre la mesa
+    gsap.from(".ficha", {y: -70, rotation: () => gsap.utils.random(-9, 9), opacity: 0, duration: 1.1, ease: "back.out(1.3)", stagger: .1, clearProps: "transform,opacity",
+      scrollTrigger: {trigger: "#fichas", start: "top 85%"}});
+  }
+
   // encargos y contacto
   gsap.from(".lista li", {y: 50, opacity: 0, duration: 1, stagger: .09, ease: "power3.out", scrollTrigger: {trigger: ".lista", start: "top 85%"}});
   gsap.from(".contacto-cuerpo > *", {y: 40, opacity: 0, duration: 1, stagger: .15, ease: "power3.out", scrollTrigger: {trigger: ".contacto-cuerpo", start: "top 90%"}});
@@ -982,6 +1174,7 @@ if (ANIM) {
     agua: `<path d="M0,-9 C4,-3 6.5,0.5 6.5,3.5 A6.5,6.5 0 0,1 -6.5,3.5 C-6.5,0.5 -4,-3 0,-9Z" fill="currentColor"/>`,
     noche: `<path d="M1,-8.5 A8.5,8.5 0 1,0 8.5,3 A6.6,6.6 0 1,1 1,-8.5Z" fill="currentColor"/><path d="M-6,-7 l1,2.2 2.2,1 -2.2,1 -1,2.2 -1,-2.2 -2.2,-1 2.2,-1Z" fill="currentColor"/>`,
     deporte: `<circle cx="2.6" cy="-7.2" r="2.2" fill="currentColor"/><path d="M1.6,-4 L-0.8,2.6 L-6.5,7.5 M-0.8,2.6 L4.2,7.8 M1.4,-3.4 L6.4,-0.4 M1.2,-3.4 L-4,-1.4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>`,
+    fauna: `<g transform="scale(.82)">${HUELLA}</g>`,
     m: `<text x="0" y="4.6" text-anchor="middle" font-family="Instrument Serif,Georgia,serif" font-style="italic" font-size="15" fill="currentColor">M</text>`
   };
   const MODOS = [
@@ -989,6 +1182,7 @@ if (ANIM) {
     {ic: "retrato", n: "Retrato", sec: "Reportajes", t: "#series"},
     {ic: "paisaje", n: "Paisaje", sec: "Paisajes", t: "#paisajes"},
     {ic: "noche", n: "Nocturno", sec: "Luna llena", t: "#luna"},
+    {ic: "fauna", n: "Animales", sec: "Desde el hide", t: "#animales"},
     {ic: "m", n: "Manual", sec: "Encargos", t: "#encargos"}
   ].filter(m => $(m.t));
   const PASO = 40, dial = $("#dial"), svgD = $("#dialSvg"), rueda = $("#dialRueda"), iconosEl = $("#dialIconos"), txt = $("#dialTxt");
@@ -1068,7 +1262,7 @@ if (fino) {
     requestAnimationFrame(bucle);
   })();
   document.addEventListener("mouseover", e => {
-    const enPajaro = !!e.target.closest(".dial"), enHero = !!e.target.closest(".hero"), enFoto = enPajaro || !!e.target.closest("[data-foto], [data-abrir], [data-album]");
+    const enPajaro = !!e.target.closest(".dial"), enHero = !!e.target.closest(".hero"), enFoto = enPajaro || !!e.target.closest("[data-foto], [data-abrir], [data-album], [data-ficha]");
     visor.classList.toggle("luz", enHero && !enFoto);
     visor.classList.toggle("foto", enFoto);
     etiqueta.textContent = enPajaro ? "MODO" : enHero ? "PINTA CON LUZ" : "VER";
@@ -1122,18 +1316,21 @@ function cerrar() {
 document.addEventListener("click", e => {
   if (caja.contains(e.target)) return;
   const c = e.target.closest("[data-album]");
-  if (c) { abrirAlbum(+c.dataset.album, c); return; }
+  if (c) { abrirAlbum(ALBUMES[+c.dataset.album], c); return; }
+  const fi = e.target.closest("[data-ficha]");
+  if (fi) { abrirAlbum(FAUNA[+fi.dataset.ficha], fi, "al cuaderno"); return; }
   const f = e.target.closest("[data-foto], [data-abrir]");
-  if (f) abrir(f.dataset.foto || f.dataset.abrir, f.closest("#album") ? albumLista : f.closest("#paisajes") ? PLISTA : null);
+  if (f) abrir(f.dataset.foto || f.dataset.abrir, f.closest("#album") ? albumLista : f.closest("#paisajes") ? PLISTA : f.closest("#animales") ? ALISTA : null);
 });
 
 /* ================= álbum: la carpeta se abre y la sesión llena la pantalla ================= */
 const albumEl = $("#album"), albFotos = $("#albFotos");
 let albumLista = null, carpetaOrigen = null;
 function origen(el) { const r = el.getBoundingClientRect(); return `${r.left + r.width / 2}px ${r.top + r.height / 2}px`; }
-function abrirAlbum(i, carpeta) {
-  const a = ALBUMES[i];
+function abrirAlbum(a, carpeta, volver = "a las carpetas") {
   albumLista = a.fotos.map(n => ({n, s: a.nombre}));
+  $("#albVolver").textContent = volver === "al cuaderno" ? "← Cuaderno" : "← Carpetas";
+  $("#albFin").textContent = "← Volver " + volver;
   carpetaOrigen = carpeta;
   $("#albNombre").textContent = a.nombre;
   $("#albSesion").textContent = a.sesion;
