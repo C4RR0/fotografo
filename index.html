@@ -422,6 +422,28 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
   .p-foto{--h:34svh}.p-foto:nth-child(3n){--h:38svh}
   .p-foto figcaption i{font-size:1rem}
 }
+
+/* ===== ANIMALES: primero, la mirada ===== */
+.mi-pin{position:relative;height:100svh;overflow:hidden;background:#070605}
+.mi-foto{position:absolute;inset:0;margin:0;opacity:0;cursor:zoom-in;clip-path:circle(0px at 50% 50%)}
+.mi-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform}
+.mi-foto::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,6,5,.3) 0%,transparent 26%,transparent 52%,rgba(7,6,5,.78) 100%);pointer-events:none}
+.mi-cab{position:absolute;left:var(--lado);top:clamp(86px,14vh,140px);z-index:3;pointer-events:none;text-shadow:0 2px 20px rgba(0,0,0,.6)}
+.mi-cab .mono{color:var(--rojo)}
+.mi-cab h2{font:400 clamp(2.8rem,7.4vw,6.6rem)/.88 var(--serif);letter-spacing:-.02em;margin-top:10px}
+.mi-cab h2 em{color:var(--ambar)}
+.mi-txt{position:absolute;left:var(--lado);bottom:clamp(70px,12vh,120px);z-index:3;opacity:0;pointer-events:none;text-shadow:0 2px 20px rgba(0,0,0,.6)}
+.mi-txt.on{pointer-events:auto}
+.mi-txt .mono{color:#e9e2d6;opacity:.85}
+.mi-txt h3{font:italic 400 clamp(3.2rem,9vw,8.5rem)/.9 var(--serif);letter-spacing:-.02em;margin:8px 0 20px;color:var(--papel)}
+.mi-abrir{display:inline-flex;gap:10px;align-items:center;padding:11px 18px;border-radius:99px;border:1px solid rgba(255,255,255,.45);background:rgba(10,8,8,.35);color:#fff;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:background .3s,border-color .3s;text-shadow:none}
+.mi-abrir:hover{background:var(--rojo);border-color:var(--rojo)}
+.mi-lista{position:absolute;right:calc(var(--lado) + 96px);bottom:clamp(70px,12vh,120px);z-index:3;display:flex;flex-direction:column;align-items:flex-end;gap:9px}
+.mi-lista button{background:none;border:0;padding:2px 0;color:rgba(255,255,255,.5);font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;transition:color .3s;text-shadow:0 1px 10px rgba(0,0,0,.7)}
+.mi-lista button:hover,.mi-lista button.on{color:#fff}
+.mi-lista button.on::before{content:"● ";color:var(--rojo)}
+@media (max-width:760px){.mi-lista{display:none}.mi-txt{bottom:84px}.mi-txt h3{font-size:clamp(2.8rem,14vw,4.4rem)}}
+.estatico .mi-foto:first-child{opacity:1;clip-path:none}.estatico .mi-txt:first-child{opacity:1;pointer-events:auto}.estatico .p-saltar{display:none}
 </style>
 </head>
 <body class="cargando">
@@ -528,13 +550,15 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
     </div>
   </section>
 
-  <!-- ANIMALES: una carpeta por familia (igual que Reportajes) -->
-  <section class="albumes" id="animales">
-    <div class="serie-cab">
-      <div><span class="mono" id="aniTotal">Animales</span><h2 data-partir>Cada familia, <em>su carpeta</em></h2></div>
-      <p>Abre una carpeta y mira todas sus fotos.</p>
+  <!-- ANIMALES: «Primero, la mirada». Cada familia empieza por el ojo del animal y la foto se aleja hasta verse entera -->
+  <section class="mirada" id="animales">
+    <div class="mi-pin">
+      <div class="mi-escena" id="miEscena"></div>
+      <div class="mi-cab"><span class="mono" id="miTotal">Animales</span><h2>Primero, <em>la mirada</em></h2></div>
+      <div id="miPie"></div>
+      <div class="mi-lista mono" id="miLista"></div>
+      <button class="p-saltar mono" id="miSaltar" type="button">Saltar animales <span aria-hidden="true">↓</span></button>
     </div>
-    <div class="carpetas" id="carpetasAni"></div>
   </section>
 
   <!-- ENCARGOS -->
@@ -638,18 +662,27 @@ FAUNA.forEach(g => {
   const p = PORTADA_F[g.nombre], fotos = p ? [p, ...g.fotos.filter(n => n !== p)] : g.fotos;
   ALBUMES.push({nombre: g.nombre, sesion: "Animales", texto: "", sesiones: [{t: "", f: fotos}], fotos});
 });
-const carpetasEl = $("#carpetas"), carpetasAni = $("#carpetasAni");
+/* ANIMALES · «Primero, la mirada»: [familia, foto, x, y del ojo (0-1)]. La foto se encuadra y se aleja desde el ojo */
+const MIRADA = [["Rapaces", "animal-61", .425, .362], ["Pájaros", "animal-54", .48, .354], ["Mochuelos", "animal-38", .467, .33], ["Flamencos", "animal-03", .625, .205], ["Mamíferos y reptiles", "animal-19", .35, .51]];
+const albDe = nom => N_REP + FAUNA.findIndex(g => g.nombre === nom);
+$("#miTotal").textContent = `Animales · ${ALBUMES.slice(N_REP).reduce((t, a) => t + a.fotos.length, 0)} fotos`;
+$("#miEscena").innerHTML = MIRADA.map(([f, n, x, y]) => `<figure class="mi-foto" data-album="${albDe(f)}" style="background:${C[n]}"><img src="${img(n)}" alt="${T[n]}" style="object-position:${x * 100}% ${y * 100}%;transform-origin:${x * 100}% ${y * 100}%" loading="lazy"></figure>`).join("");
+$("#miPie").innerHTML = MIRADA.map(([f], k) => { const a = ALBUMES[albDe(f)];
+  return `<div class="mi-txt"><span class="mono">Nº ${String(k + 1).padStart(2, "0")} / ${String(MIRADA.length).padStart(2, "0")} · ${a.fotos.length} fotos</span><h3>${f}</h3><button class="mi-abrir mono" data-album="${albDe(f)}" type="button">Abrir carpeta <span aria-hidden="true">↗</span></button></div>`; }).join("");
+$("#miLista").innerHTML = MIRADA.map(([f]) => `<button type="button" data-album="${albDe(f)}">${f}</button>`).join("");
+
+const carpetasEl = $("#carpetas");
 $("#albTotal").textContent = `Reportajes ·${N_REP} carpetas · ${ALBUMES.slice(0, N_REP).reduce((t, a) => t + a.sesiones.length, 0)} sesiones`;
-$("#aniTotal").textContent = `Animales · ${ALBUMES.length - N_REP} carpetas · ${ALBUMES.slice(N_REP).reduce((t, a) => t + a.fotos.length, 0)} fotos`;
 ALBUMES.forEach((a, i) => {
+  if (i >= N_REP) return;   // las de animales no van en la mesa de Reportajes (se abren desde «Primero, la mirada»)
   // portada de la carpeta: solo fotos que encajan en el marco sin cortarse (horizontales en ordenador, verticales en el móvil)
   const encaja = n => (innerWidth > 760) !== V.has(n);
   const porSesion = (a.sesiones || [{f: a.fotos}]).map(s => s.f.find(encaja)).filter(Boolean);
   const muestra = [...new Set([...porSesion, ...a.fotos.filter(encaja), ...a.fotos])].slice(0, 5);
-  (i < N_REP ? carpetasEl : carpetasAni).insertAdjacentHTML("beforeend",
+  carpetasEl.insertAdjacentHTML("beforeend",
   `<button class="carpeta" data-album="${i}" aria-label="Abrir el álbum de ${a.nombre}">
     <span class="c-forma">
-      <span class="c-pestana"><i></i>Nº ${String((i < N_REP ? i : i - N_REP) + 1).padStart(2, "0")} · ${String(a.fotos.length).padStart(2, "0")} ${a.fotos.length === 1 ? "foto" : "fotos"}</span>
+      <span class="c-pestana"><i></i>Nº ${String(i + 1).padStart(2, "0")} · ${String(a.fotos.length).padStart(2, "0")} ${a.fotos.length === 1 ? "foto" : "fotos"}</span>
       <span class="c-fotos">${muestra.map((n, k) => `<img src="${img(n, 1)}" alt=""${k ? ' loading="lazy"' : ' class="on"'}>`).join("")}</span>
       ${muestra.length > 1 ? `<span class="c-puntos">${muestra.map((n, k) => `<i${k ? "" : ' class="on"'}></i>`).join("")}</span>` : ""}
       <span class="c-texto"><span><span class="c-nombre">${a.nombre}</span><span class="c-info">${a.sesion} · <b>Abrir álbum</b></span></span><span class="c-abrir" aria-hidden="true">↗</span></span>
@@ -984,6 +1017,45 @@ if (ANIM) {
     .to("#lt1", {opacity: 0, y: -30, duration: .15}, .35)
     .fromTo("#lt2", {opacity: 0, y: 30}, {opacity: 1, y: 0, duration: .2}, .72)
     .to("#lleyenda", {opacity: 1, duration: .15}, .8);
+
+  // ANIMALES: «Primero, la mirada». Por familia: el ojo aparece dentro de un círculo → el círculo se abre y la foto se aleja
+  // desde el ojo hasta verse entera → nombre y «Abrir carpeta» → fundido a negro y el ojo del siguiente
+  {
+    const pinM = $(".mi-pin"), figsM = $$(".mi-foto"), imgsM = figsM.map(f => f.querySelector("img")), txtsM = $$(".mi-txt"), listaM = $$("#miLista button");
+    const cabM = $(".mi-cab"), bSaltarM = $("#miSaltar"), flechaM = bSaltarM.querySelector("span");
+    const N = MIRADA.length, ZOOM = 2.3, lim = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), sv = t => t * t * (3 - 2 * t);
+    let iAnt = -1;
+    function pintarM(p) {
+      const W = pinM.clientWidth, H = pinM.clientHeight, R = Math.hypot(W, H), r0 = Math.min(W, H) * .17, q = p * N, i = Math.min(N - 1, Math.floor(q));
+      figsM.forEach((f, k) => {
+        const tk = q - k, ultimo = k === N - 1;
+        f.style.pointerEvents = k === i ? "auto" : "none";   // solo la foto actual se puede pinchar
+        if (tk < 0 || (tk > 1 && !ultimo)) { f.style.opacity = 0; txtsM[k].style.opacity = 0; txtsM[k].classList.remove("on"); return; }
+        const [, , x, y] = MIRADA[k], abre = sv(lim(tk / .12)), z = sv(lim((tk - .12) / .5));
+        f.style.clipPath = `circle(${(r0 * abre + (R - r0) * z).toFixed(1)}px at ${x * 100}% ${y * 100}%)`;
+        imgsM[k].style.transform = `scale(${(ZOOM - (ZOOM - 1) * z).toFixed(4)})`;
+        f.style.opacity = (1 - (ultimo ? 0 : lim((tk - .86) / .14))).toFixed(3);
+        const tin = lim((tk - .5) / .16), tout = ultimo ? 0 : lim((tk - .82) / .1), o = tin * (1 - tout);
+        txtsM[k].style.opacity = o.toFixed(3); txtsM[k].style.transform = `translateY(${((1 - sv(tin)) * 30).toFixed(1)}px)`;
+        txtsM[k].classList.toggle("on", o > .5);
+      });
+      if (i !== iAnt) { iAnt = i; listaM.forEach((b, k) => b.classList.toggle("on", k === i)); }
+      cabM.style.opacity = (1 - lim((q - .2) / .25)).toFixed(3);
+    }
+    let dirM = 1, saltandoM = false;
+    const estadoM = {p: 0};
+    const twM = gsap.to(estadoM, {p: 1, ease: "none", onUpdate: () => pintarM(estadoM.p),
+      scrollTrigger: {trigger: pinM, start: "top top", end: () => "+=" + innerHeight * N * .9, pin: true, scrub: .6, invalidateOnRefresh: true,
+        onRefresh: () => pintarM(estadoM.p),
+        onUpdate: s => { if (!saltandoM && s.direction !== dirM) { dirM = s.direction; flechaM.textContent = dirM > 0 ? "↓" : "↑"; } }}});
+    pintarM(0); addEventListener("resize", () => pintarM(estadoM.p));
+    bSaltarM.addEventListener("click", e => {
+      e.stopPropagation(); if (saltandoM) return; saltandoM = true;
+      const st = twM.scrollTrigger, y = dirM > 0 ? st.end + 2 : st.start - innerHeight, fin = () => { saltandoM = false; };
+      if (lenis) lenis.scrollTo(y, {duration: 2, easing: t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, lock: true, force: true, onComplete: fin});
+      else { scrollTo({top: y, behavior: "smooth"}); setTimeout(fin, 1500); }
+    });
+  }
 
   // encargos y contacto
   gsap.from(".lista li", {y: 50, opacity: 0, duration: 1, stagger: .09, ease: "power3.out", scrollTrigger: {trigger: ".lista", start: "top 85%"}});
