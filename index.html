@@ -663,6 +663,29 @@ const ALBUMES = [{"nombre": "Alba", "sesion": "4 sesiones", "texto": "", "sesion
 // 10-11/11 el tío: «Mételas en la carpeta retratos como Marina, que no queden fuera» → la triatleta y la pareja del agua viven SOLO aquí (11/11 se quitaron sus secciones sueltas de la portada)
 ALBUMES.push({nombre: "Marina", sesion: "Triatlón", texto: "", sesiones: [{t: "Triatlón", f: SERIES["Hojas y medallas"]}], fotos: SERIES["Hojas y medallas"]},
              {nombre: "Pareja", sesion: "En el agua", texto: "", sesiones: [{t: "En el agua", f: SERIES["Dentro del agua"]}], fotos: SERIES["Dentro del agua"]});
+// 12/11 19:15-19:46 el tío manda por WhatsApp «Todas estas en una carpeta que se llame Isan», «Laura» (+ «Estás también donde Laura»), Lara
+// (las de las vías, con un vídeo titulado «Lara») y «Pre boda» (3 parejas). Entrada: AgenciaIA-PyMES/_entrada_tio_2026-11-12_noche/reparto.py
+// MAS: carpetas con varias sesiones; info = {foto: [ancho/alto, color medio]}
+const meterCarpeta = ({nombre, sesion, grupo, sesiones}) => {
+  const ses = sesiones.map(({t, info}) => { const f = Object.keys(info);
+    f.forEach(n => { T[n] = nombre + " · " + t; C[n] = info[n][1]; if (info[n][0] < 1) V.add(n); }); return {t, f}; });
+  ALBUMES.push({nombre, sesion, grupo, texto: "", sesiones: ses, fotos: ses.flatMap(s => s.f)}); };
+[
+  {nombre: "Isan", sesion: "9 sesiones", sesiones: [{t: "Río", info: {"isan-rio-01":[1.5,"#29292b"],"isan-rio-02":[1.497,"#344038"],"isan-rio-03":[0.668,"#445048"],"isan-rio-04":[1.501,"#51564d"]}},
+    {t: "Cascada", info: {"isan-cascada-01":[1.5,"#676360"],"isan-cascada-02":[0.666,"#605851"],"isan-cascada-03":[0.666,"#3f3636"],"isan-cascada-04":[0.666,"#473e3e"],"isan-cascada-05":[0.666,"#422b2d"],"isan-cascada-06":[1.5,"#474040"],"isan-cascada-07":[0.666,"#5c5956"]}},
+    {t: "Campos", info: {"isan-campos-01":[0.667,"#807b54"],"isan-campos-02":[1.497,"#907d5e"],"isan-campos-03":[0.668,"#8c8375"],"isan-campos-04":[1.497,"#84796a"],"isan-campos-05":[1.497,"#6f6128"],"isan-campos-06":[0.668,"#887d40"],"isan-campos-07":[0.667,"#83845b"],"isan-campos-08":[1.5,"#817e8a"]}},
+    {t: "Ruinas", info: {"isan-ruinas-01":[0.667,"#70646b"],"isan-ruinas-02":[0.667,"#5b4850"],"isan-ruinas-03":[0.666,"#655058"],"isan-ruinas-04":[1.501,"#65565d"],"isan-ruinas-05":[0.667,"#786665"],"isan-ruinas-06":[0.666,"#6a585c"],"isan-ruinas-07":[0.666,"#8b7870"],"isan-ruinas-08":[0.667,"#606a6c"],"isan-ruinas-09":[0.666,"#716764"],"isan-ruinas-10":[1.5,"#4d5143"],"isan-ruinas-11":[1.499,"#484e48"],"isan-ruinas-12":[1.497,"#505050"]}},
+    {t: "Paseo", info: {"isan-paseo-01":[1.5,"#6d6f76"],"isan-paseo-02":[1.5,"#69685e"],"isan-paseo-03":[0.667,"#6a6458"]}},
+    {t: "Otoño", info: {"isan-otono-01":[1.501,"#6c5857"],"isan-otono-02":[1.501,"#6c5450"],"isan-otono-03":[1.501,"#6a554a"],"isan-otono-04":[1.5,"#6d5948"]}},
+    {t: "Segovia", info: {"isan-segovia-01":[0.666,"#867980"],"isan-segovia-02":[1.5,"#787b6f"],"isan-segovia-03":[1.501,"#624c4f"]}},
+    {t: "Noche", info: {"isan-noche-01":[1.499,"#494640"],"isan-noche-02":[0.666,"#47443c"]}},
+    {t: "Estudio", info: {"isan-estudio-01":[0.613,"#4e3d38"],"isan-estudio-02":[1.497,"#131313"],"isan-estudio-03":[0.666,"#181617"],"isan-estudio-04":[0.667,"#14100e"],"isan-estudio-05":[0.667,"#272321"],"isan-estudio-06":[0.667,"#2c2a2b"],"isan-estudio-07":[0.667,"#403732"],"isan-estudio-08":[0.667,"#7a645d"],"isan-estudio-09":[0.667,"#776059"]}}]},
+  {nombre: "Laura", sesion: "4 sesiones", sesiones: [{t: "Bosque", info: {"laura-bosque-01":[1.0,"#615640"],"laura-bosque-02":[0.666,"#4c3831"],"laura-bosque-03":[0.667,"#483c44"],"laura-bosque-04":[0.667,"#5e4e4c"],"laura-bosque-05":[0.667,"#543b3c"],"laura-bosque-06":[0.667,"#443738"],"laura-bosque-07":[0.667,"#352c30"],"laura-bosque-08":[0.666,"#68544e"],"laura-bosque-09":[0.666,"#463335"],"laura-bosque-10":[0.667,"#4a363b"],"laura-bosque-11":[0.666,"#403336"],"laura-bosque-12":[0.666,"#4a3537"]}},
+    {t: "Otoño", info: {"laura-otono-01":[0.668,"#322f2a"],"laura-otono-02":[0.666,"#786b5c"],"laura-otono-03":[0.667,"#70675c"],"laura-otono-04":[0.666,"#494233"]}},
+    {t: "En pareja", info: {"laura-pareja-01":[0.668,"#4f5150"],"laura-pareja-02":[1.497,"#5e5c57"]}},
+    {t: "Halloween", info: {"laura-halloween-01":[0.666,"#3f3e3a"],"laura-halloween-02":[0.666,"#26252c"]}}]},
+  {nombre: "Lara", sesion: "Vías", sesiones: [{t: "Vías", info: {"lara-vias-01":[0.562,"#67605c"],"lara-vias-02":[1.5,"#545046"],"lara-vias-03":[1.501,"#403e38"],"lara-vias-04":[1.5,"#353032"],"lara-vias-05":[1.5,"#564a3b"],"lara-vias-06":[0.667,"#4e4747"],"lara-vias-07":[0.667,"#544b43"],"lara-vias-08":[1.5,"#60544c"],"lara-vias-09":[0.667,"#4c4544"],"lara-vias-10":[0.667,"#787870"],"lara-vias-11":[1.5,"#6e6c6b"],"lara-vias-12":[1.5,"#4d4948"],"lara-vias-13":[0.667,"#574c4c"],"lara-vias-14":[0.667,"#595154"],"lara-vias-15":[0.667,"#564c44"],"lara-vias-16":[1.5,"#5a534e"],"lara-vias-17":[1.5,"#5a5654"],"lara-vias-18":[0.667,"#655644"],"lara-vias-19":[1.5,"#585450"],"lara-vias-20":[0.667,"#5c5245"],"lara-vias-21":[1.5,"#50473c"],"lara-vias-22":[1.5,"#625a57"],"lara-vias-23":[0.667,"#554e48"],"lara-vias-24":[0.667,"#5a5851"],"lara-vias-25":[0.667,"#645f59"]}}]}
+].forEach(meterCarpeta);
 // 12/11 el tío manda sus bodas por WhatsApp (en su orden; demo/_plantillas/boda_tio.py). 14:27: «hay que separar las bodas y comuniones de lo demás»
 // → van en su propia sección #bodas (grupo "bodas"), con las mismas carpetas que Reportajes. Comuniones: añadir aquí con sesion "Comunión".
 // 13:56 «Boda Albano y Paula» (11)
@@ -675,6 +698,11 @@ const BODA_DM = {"boda-daniel-miriam-01": [0.666, "#756a5d"], "boda-daniel-miria
   const f = Object.keys(info);
   f.forEach(n => { T[n] = nombre + " · " + sesion; C[n] = info[n][1]; if (info[n][0] < 1) V.add(n); });
   ALBUMES.push({nombre, sesion, grupo: "bodas", texto: "", sesiones: [{t: sesion, f}], fotos: f}); });
+// 19:41-19:46 «Pre boda» (en la sección de bodas, tras las bodas)
+meterCarpeta(
+  {nombre: "Pre boda", sesion: "3 parejas", grupo: "bodas", sesiones: [{t: "Cascada", info: {"preboda-cascada-01":[1.501,"#45423b"],"preboda-cascada-02":[1.5,"#7c835c"],"preboda-cascada-03":[0.667,"#50524c"],"preboda-cascada-04":[0.666,"#656462"],"preboda-cascada-05":[1.5,"#3f5740"]}},
+    {t: "Vías", info: {"preboda-vias-01":[1.517,"#616161"],"preboda-vias-02":[1.611,"#796548"],"preboda-vias-03":[2.0,"#473733"]}},
+    {t: "Río", info: {"preboda-rio-01":[1.501,"#64603f"],"preboda-rio-02":[1.499,"#585952"],"preboda-rio-03":[1.501,"#41403a"]}}]});
 
 /* === ANIMALES (WhatsApp del tío, 11/11): 96 fotos animal-NN, generado con demo/_plantillas/animales_tio.py ===
    FAUNA_INFO: [proporción ancho/alto, color medio]. FAUNA: una carpeta por familia; la primera foto es la portada. */
