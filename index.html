@@ -556,15 +556,7 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
     </div>
   </section>
 
-  <!-- LUNA -->
-  <section class="luna" id="luna">
-    <div class="luna-pin">
-      <img src="https://raw.githubusercontent.com/C4RR0/fotografo-fotos/main/fotos/12.jpg" alt="Una chica en el campo que parece sostener una enorme luna llena sobre sus manos" id="lunaimg" data-abrir="12">
-      <span class="mono leyenda" id="lleyenda">Fotograma 12</span>
-      <p class="luna-txt t1" id="lt1">Hay fotos que salen en un segundo…</p>
-      <p class="luna-txt t2" id="lt2">…y otras que hay que <em>esperar</em>.</p>
-    </div>
-  </section>
+  <!-- (13/11: la sección LUNA «Hay fotos que salen en un segundo…» la quitó Jose Luis: «no pinta nada»; su JS se salta si no existe) -->
 
   <!-- ANIMALES: «Primero, la mirada». Cada familia empieza por el ojo del animal y la foto se aleja hasta verse entera -->
   <section class="mirada" id="animales">
@@ -1011,6 +1003,7 @@ if (ANIM) {
   }
 
   // LUNA: primero solo la luna sobre negro; el círculo se abre hasta la escena entera
+  if ($("#lunaimg")) {
   const lunaImg = $("#lunaimg"), pinL = $(".luna-pin"), estL = {p: 0};
   function circulo() {
     const W = pinL.clientWidth, H = pinL.clientHeight, w0 = lunaImg.naturalWidth || 1800, h0 = lunaImg.naturalHeight || 1201;
@@ -1026,6 +1019,7 @@ if (ANIM) {
     .to("#lt1", {opacity: 0, y: -30, duration: .15}, .35)
     .fromTo("#lt2", {opacity: 0, y: 30}, {opacity: 1, y: 0, duration: .2}, .72)
     .to("#lleyenda", {opacity: 1, duration: .15}, .8);
+  }
 
   // ANIMALES: «Primero, la mirada». Por familia: el ojo aparece dentro de un círculo → el círculo se abre y la foto se aleja
   // desde el ojo hasta verse entera → nombre y «Abrir carpeta» → fundido a negro y el ojo del siguiente
