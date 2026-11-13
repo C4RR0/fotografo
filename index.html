@@ -3,12 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>José Luis Vadillo · Fotografía</title>
+<title>Jose Luis Vadillo · Fotografía</title>
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Fotografía de parejas, retratos, deporte y naturaleza en Valladolid. Sesiones por encargo.">
 <link rel="canonical" href="https://joseluisvadillo.es/">
 <meta property="og:url" content="https://joseluisvadillo.es/">
 <meta name="theme-color" content="#0d0b0a">
-<meta property="og:title" content="José Luis Vadillo · Fotografía">
+<meta property="og:title" content="Jose Luis Vadillo · Fotografía">
 <meta property="og:image" content="https://raw.githubusercontent.com/C4RR0/fotografo-fotos/main/fotos/09.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -455,7 +458,7 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
 
 <div id="cuarto" aria-hidden="true">
   <svg id="iris" viewBox="-500 -500 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
-  <div class="cuarto-nombre">José Luis Vadillo<small>Fotografía</small></div>
+  <div class="cuarto-nombre">Jose Luis Vadillo<small>Fotografía</small></div>
   <div class="cuarto-txt mono">Cargando el carrete · <b id="pct">00</b> / 23</div>
 </div>
 <div id="flash" aria-hidden="true"></div>
@@ -501,7 +504,7 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
       <img class="hero-color" src="https://raw.githubusercontent.com/C4RR0/fotografo-fotos/main/fotos/09.jpg" alt="Chica en el agua de una fuente lanzando el pelo hacia atrás y formando un arco de gotas">
     </div>
     <div class="hero-txt">
-      <h1><span class="l1">José Luis</span><span class="l2" data-letras>Vadillo</span></h1>
+      <h1><span class="l1">Jose Luis</span><span class="l2" data-letras>Vadillo</span></h1>
       <div class="hero-pie">
         <p>Fotografía de parejas, retratos, deporte y naturaleza. Valladolid y alrededores.</p>
         <span class="pistas"><span class="pista-luz mono"><i></i><span class="solo-raton">Mueve el ratón: pinta con luz</span><span class="solo-tactil">Arrastra el dedo: pinta con luz</span></span></span>
@@ -574,7 +577,7 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
     </div>
   </section>
 
-  <!-- (13/11: la sección ENCARGOS «¿Qué quieres que fotografíe?» la quitó José Luis; su código sigue abajo y no hace nada si no está) -->
+  <!-- (13/11: la sección ENCARGOS «¿Qué quieres que fotografíe?» la quitó Jose Luis; su código sigue abajo y no hace nada si no está) -->
 
   <!-- CONTACTO -->
   <section class="contacto" id="contacto">
@@ -590,7 +593,7 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
 </main>
 
 <footer class="mono">
-  <span>© José Luis Vadillo · Todas las fotos tienen derechos reservados</span>
+  <span>© Jose Luis Vadillo · Todas las fotos tienen derechos reservados</span>
   <span>Web hecha por <a href="https://engranaia.com/">Engrana</a></span>
 </footer>
 
@@ -616,7 +619,7 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script>
-/* Número de WhatsApp de José Luis (formato 34XXXXXXXXX). Vacío = el botón no abre chat. */
+/* Número de WhatsApp de Jose Luis (formato 34XXXXXXXXX). Vacío = el botón no abre chat. */
 const WHATSAPP = "34652971714";
 
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";
@@ -650,7 +653,7 @@ const fnum = $("#fnum");
 const ponNum = n => { fnum.textContent = n; };
 
 /* ================= DATOS: carpetas (Reportajes y Bodas), animales y paisajes =================
-   Viven en datos.js (window.DATOS), que José Luis edita desde /subir/ (panel con contraseña → Apps Script → GitHub).
+   Viven en datos.js (window.DATOS), que Jose Luis edita desde /subir/ (panel con contraseña → Apps Script → GitHub).
    info[foto] = [ancho/alto, color medio, extensión si no es webp]. Para cambiarlos a mano: editar datos.js (¡hacer git pull antes!). */
 const D = window.DATOS || {info: {}, carpetas: [], fauna: [], paisajes: []};
 const INFO = D.info;
@@ -683,7 +686,7 @@ ALBUMES.forEach((a, i) => {
   // portada de la carpeta: solo fotos que encajan en el marco sin cortarse (horizontales en ordenador, verticales en el móvil)
   const encaja = n => (innerWidth > 760) !== V.has(n);
   const porSesion = (a.sesiones || [{f: a.fotos}]).map(s => s.f.find(encaja)).filter(Boolean);
-  const muestra = [...new Set([...(a.portada ? [a.portada] : []), ...porSesion, ...a.fotos.filter(encaja), ...a.fotos])].slice(0, 5);   // portada: la que elige José Luis en el panel
+  const muestra = [...new Set([...(a.portada ? [a.portada] : []), ...porSesion, ...a.fotos.filter(encaja), ...a.fotos])].slice(0, 5);   // portada: la que elige Jose Luis en el panel
   carpetasEl.insertAdjacentHTML("beforeend",
   `<button class="carpeta" data-album="${i}" aria-label="Abrir el álbum de ${a.nombre}">
     <span class="c-forma">
@@ -707,14 +710,14 @@ $$(".carpeta").forEach(c => {
 });
 
 /* ================= PAISAJES: un día entero, de sol a luna =================
-   [número de archivo, fase de luz, título (vacío: José Luis no quiere títulos, 10/11), proporción ancho/alto, color medio]. Van ordenadas por fase: día → hora dorada → eclipse → hora azul → noche. */
+   [número de archivo, fase de luz, título (vacío: Jose Luis no quiere títulos, 10/11), proporción ancho/alto, color medio]. Van ordenadas por fase: día → hora dorada → eclipse → hora azul → noche. */
 const FASES = ["Día", "Hora dorada", "Eclipse", "Hora azul", "Noche"];
 const PAISAJES = D.paisajes.filter(([n]) => INFO[n]).map(([n, f], i) => [n, f, "", INFO[n][0], INFO[n][1], i]).sort((x, y) => FASES.indexOf(x[1]) - FASES.indexOf(y[1]) || x[5] - y[5]);
 const PLISTA = PAISAJES.map(([n]) => { T[n] = "Paisaje"; return {n, s: "Paisajes"}; });
 const pPista = $("#pPista");
 $("#pTotal").textContent = `Paisajes · ${PAISAJES.length} fotos`;
 pPista.innerHTML = PAISAJES.map(([k, f, t, ar, c], i) =>
-  `<figure class="p-foto" data-foto="${k}" data-i="${i}" style="aspect-ratio:${ar};--bg:${c}"><span class="marco"><img src="${img(k, 1)}" alt="Paisaje de José Luis Vadillo" loading="lazy"></span></figure>`).join("")
+  `<figure class="p-foto" data-foto="${k}" data-i="${i}" style="aspect-ratio:${ar};--bg:${c}"><span class="marco"><img src="${img(k, 1)}" alt="Paisaje de Jose Luis Vadillo" loading="lazy"></span></figure>`).join("")
   + `<div class="p-fin">Y cuando ya no queda nadie, sigue la foto.<small>Fin de los paisajes · sigue bajando</small></div>`;
 // las estrellas (salen al hacerse de noche)
 (() => { const e = $("#pEstrellas"); let h = ""; for (let i = 0; i < 140; i++) { const s = Math.random() < .12 ? 3 : Math.random() < .5 ? 2 : 1.3;
@@ -735,7 +738,7 @@ if (lista) ENC.forEach(([t, d, n], i) => {
 });
 
 const wa = $("#wa");
-if (WHATSAPP) wa.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hola José Luis, he visto tu web y me gustaría hacer una sesión.")}`;
+if (WHATSAPP) wa.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hola Jose Luis, he visto tu web y me gustaría hacer una sesión.")}`;
 else wa.removeAttribute("target");
 
 const man = $("#manifiesto");
@@ -826,7 +829,7 @@ svgI.innerHTML = `<defs>
   <circle r="${L}" fill="none" stroke="#000" stroke-width="5" opacity=".7"/>
   <circle r="${L + 9}" fill="none" stroke="#2b2320" stroke-width="12"/>
   <circle r="${L + 36}" fill="none" stroke="#2f2622" stroke-width="1"/>
-  <g><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="40s" repeatCount="indefinite"/><text class="anillo-txt"><textPath href="#arco">JOSÉ LUIS VADILLO · 50 mm 1:1.8 · VALLADOLID · FOTOGRAFÍA · ∞ 10 5 3 2 1.5 m ·</textPath></text></g>
+  <g><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="40s" repeatCount="indefinite"/><text class="anillo-txt"><textPath href="#arco">JOSE LUIS VADILLO · 50 mm 1:1.8 · VALLADOLID · FOTOGRAFÍA · ∞ 10 5 3 2 1.5 m ·</textPath></text></g>
   ${ticks}
   <circle r="${L + 64}" fill="none" stroke="#3a2f2a" stroke-width="2"/>
   <circle r="${L + 92}" fill="none" stroke="#1d1715" stroke-width="22"/>
@@ -1274,7 +1277,7 @@ function cerrarAlbum() {
    Ninguna web puede impedir del todo una captura de pantalla: por eso las fotos llevan la marca de agua grabada.
    Esto quita lo fácil: clic derecho, arrastrar, guardar con Ctrl+S, imprimir y la tecla Impr Pant. */
 const avisoP = document.createElement("div");
-avisoP.className = "aviso-prot mono"; avisoP.textContent = "© Fotos de José Luis Vadillo · Protegidas";
+avisoP.className = "aviso-prot mono"; avisoP.textContent = "© Fotos de Jose Luis Vadillo · Protegidas";
 document.body.append(avisoP);
 let tAviso;
 const avisar = () => { avisoP.classList.add("on"); clearTimeout(tAviso); tAviso = setTimeout(() => avisoP.classList.remove("on"), 2400); };
@@ -1287,7 +1290,7 @@ addEventListener("keydown", e => {
 addEventListener("keyup", e => {
   if (e.key !== "PrintScreen") return;
   document.body.classList.add("tapado");
-  if (navigator.clipboard) navigator.clipboard.writeText("© José Luis Vadillo · Fotografía protegida").catch(() => {});
+  if (navigator.clipboard) navigator.clipboard.writeText("© Jose Luis Vadillo · Fotografía protegida").catch(() => {});
   avisar();
   setTimeout(() => document.body.classList.remove("tapado"), 1600);
 });
