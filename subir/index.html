@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tus fotos · Panel</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0d0b0a">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icono-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icono-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tus fotos">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --negro:#0d0b0a; --carbon:#171312; --carbon2:#211b19; --papel:#efe8dd; --gris:#9c9189; --linea:#2b2421;
+  --rojo:#d0412a; --ambar:#e0913f; --verde:#7fae6b;
+  --serif:"Instrument Serif",Georgia,serif; --sans:"Inter Tight",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  --lado:clamp(16px,4vw,40px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--negro)}
+body{background:var(--negro);color:var(--papel);font:400 17px/1.5 var(--sans);-webkit-font-smoothing:antialiased;min-height:100svh;padding-bottom:96px}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+img{display:block;max-width:100%}
+a{color:inherit}
+.mono{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+[hidden]{display:none!important}
+
+/* cabecera */
+header{position:sticky;top:0;z-index:20;background:rgba(13,11,10,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--linea);padding:12px var(--lado);display:flex;align-items:center;gap:12px}
+header .marca{font-family:var(--serif);font-size:1.5rem;line-height:1;flex:1}
+header .marca em{color:var(--ambar)}
+header a{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--gris);border:1px solid var(--linea);padding:9px 12px;border-radius:999px;white-space:nowrap}
+.pestanas{display:flex;gap:6px;padding:14px var(--lado) 4px;overflow-x:auto;scrollbar-width:none}
+.pestanas::-webkit-scrollbar{display:none}
+.pestanas button{flex:none;background:var(--carbon);border:1px solid var(--linea);border-radius:999px;padding:11px 18px;font-weight:500;font-size:.95rem}
+.pestanas button[aria-selected=true]{background:var(--papel);color:var(--negro);border-color:var(--papel)}
+
+main{padding:10px var(--lado) 40px;max-width:1100px;margin:0 auto}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.2rem,8vw,3.4rem);line-height:1.02;margin:14px 0 6px}
+h1 em{color:var(--ambar)}
+.ayuda{color:var(--gris);font-size:.95rem;max-width:56ch;margin-bottom:18px}
+
+/* botones */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:999px;border:1px solid var(--linea);background:var(--carbon);font-weight:500}
+.btn.prin{background:var(--ambar);border-color:var(--ambar);color:#1a0f05}
+.btn.peligro{color:#ff8f7d;border-color:#5a2a22}
+.btn.peq{min-height:40px;padding:0 14px;font-size:.9rem}
+.btn:disabled{opacity:.45;cursor:default}
+.fila{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* carpetas */
+.carpetas{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:8px}
+.carpeta{position:relative;text-align:left;background:var(--carbon);border:1px solid var(--linea);border-radius:14px;overflow:hidden;padding:0}
+.carpeta .tapa{aspect-ratio:4/3;background:var(--carbon2);display:block;width:100%;object-fit:cover}
+.carpeta .txt{display:block;padding:10px 12px 12px}
+.carpeta .nom{display:block;font-family:var(--serif);font-size:1.35rem;line-height:1.1}
+.carpeta .num{display:block;margin-top:4px;color:var(--gris)}
+.carpeta.nueva{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:170px;border-style:dashed;color:var(--ambar);gap:6px}
+.carpeta.nueva b{font-size:2.2rem;font-weight:400;line-height:1}
+.vacia{color:var(--gris);font-style:italic}
+
+/* dentro de una carpeta */
+.volver{margin:14px 0 2px}
+.cab-carpeta{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;justify-content:space-between;margin-bottom:6px}
+.sesion{margin-top:26px;border-top:1px solid var(--linea);padding-top:14px}
+.sesion-cab{display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:space-between;margin-bottom:12px}
+.sesion-cab h2{font-family:var(--serif);font-weight:400;font-size:1.7rem;line-height:1.1}
+.sesion-cab h2 small{font-family:var(--mono);font-size:.7rem;color:var(--gris);letter-spacing:.08em;margin-left:8px}
+.fotos{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:6px}
+.foto{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--carbon2);border:0;padding:0}
+.foto img{width:100%;height:100%;object-fit:cover}
+.foto .marca{position:absolute;left:5px;top:5px;background:rgba(13,11,10,.82);border-radius:999px;padding:3px 8px;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase}
+.foto .marca.ojo{background:var(--ambar);color:#1a0f05}
+.foto.subiendo{opacity:.55}
+.pie-carpeta{margin-top:34px;border-top:1px solid var(--linea);padding-top:18px}
+
+/* hoja de acciones / diálogos */
+.velo{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.72);display:flex;align-items:flex-end;justify-content:center}
+@media (min-width:700px){.velo{align-items:center}}
+.hoja{background:var(--carbon);border:1px solid var(--linea);border-radius:20px 20px 0 0;width:min(560px,100%);max-height:92svh;overflow:auto;padding:20px var(--lado) calc(20px + env(safe-area-inset-bottom))}
+@media (min-width:700px){.hoja{border-radius:20px}}
+.hoja h3{font-family:var(--serif);font-weight:400;font-size:1.8rem;line-height:1.1;margin-bottom:6px}
+.hoja p{color:var(--gris);font-size:.95rem;margin-bottom:14px}
+.hoja .previa{width:100%;max-height:46svh;object-fit:contain;border-radius:10px;background:#000;margin-bottom:14px}
+.hoja .acciones{display:grid;gap:8px}
+.hoja .acciones .btn{width:100%}
+.hoja label{display:block;font-size:.9rem;color:var(--gris);margin:12px 0 6px}
+.hoja input[type=text],.hoja input[type=password],.hoja select{width:100%;min-height:50px;border-radius:12px;border:1px solid var(--linea);background:var(--negro);padding:0 14px;font-size:1.05rem}
+.hoja input:focus,.hoja select:focus{outline:2px solid var(--ambar);outline-offset:1px}
+.opciones{display:grid;gap:8px;margin-top:6px}
+.opciones button{min-height:50px;border-radius:12px;border:1px solid var(--linea);background:var(--negro);text-align:left;padding:0 16px}
+.opciones button[aria-pressed=true]{border-color:var(--ambar);color:var(--ambar)}
+
+/* elegir el ojo */
+.ojo-cont{position:relative;display:inline-block;max-width:100%;margin:0 auto 12px}
+.ojo-cont img{max-height:60svh;border-radius:10px;cursor:crosshair}
+.ojo-punto{position:absolute;width:34px;height:34px;margin:-17px 0 0 -17px;border:2px solid var(--ambar);border-radius:50%;box-shadow:0 0 0 3px rgba(0,0,0,.5);pointer-events:none}
+
+/* estado (abajo) */
+.estado{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:40;background:var(--carbon2);border:1px solid var(--linea);border-radius:999px;padding:10px 16px;display:flex;gap:12px;align-items:center;max-width:calc(100% - 24px);font-size:.92rem;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.estado .punto{width:9px;height:9px;border-radius:50%;background:var(--gris);flex:none}
+.estado.ok .punto{background:var(--verde)}
+.estado.trabajando .punto{background:var(--ambar);animation:lat 1s infinite}
+.estado.error .punto{background:var(--rojo)}
+.estado button{background:none;border:0;color:var(--ambar);font-weight:600;text-decoration:underline;padding:4px}
+@keyframes lat{50%{opacity:.25}}
+
+/* subida */
+.progreso{position:fixed;inset:0;z-index:60;background:rgba(13,11,10,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center}
+.progreso h3{font-family:var(--serif);font-weight:400;font-size:2.2rem}
+.barra{width:min(420px,90%);height:8px;border-radius:9px;background:var(--linea);overflow:hidden}
+.barra i{display:block;height:100%;width:0;background:var(--ambar);transition:width .3s}
+.progreso p{color:var(--gris)}
+
+/* entrar */
+.entrar{max-width:420px;margin:12svh auto 0;padding:0 var(--lado)}
+.entrar input{width:100%;min-height:54px;border-radius:12px;border:1px solid var(--linea);background:var(--carbon);padding:0 16px;font-size:1.1rem;margin:18px 0 12px}
+.entrar .btn{width:100%}
+.entrar .err{color:#ff8f7d;min-height:1.5em;margin-top:10px}
+</style>
+</head>
+<body>
+
+<!-- ENTRAR -->
+<section class="entrar" id="pEntrar" hidden>
+  <p class="mono" style="color:var(--gris)">José Luis Vadillo · Fotografía</p>
+  <h1>Tus <em>fotos</em></h1>
+  <p class="ayuda">Desde aquí subes fotos a tu web, creas carpetas y quitas las que no quieras. Escribe la contraseña que te dio Sergio.</p>
+  <form id="fEntrar">
+    <input type="password" id="clave" autocomplete="current-password" placeholder="Contraseña" aria-label="Contraseña" required>
+    <button class="btn prin" type="submit" id="bEntrar">Entrar</button>
+    <p class="err" id="errEntrar" role="alert"></p>
+  </form>
+</section>
+
+<!-- PANEL -->
+<div id="pPanel" hidden>
+  <header>
+    <span class="marca">Tus <em>fotos</em></span>
+    <a href="../" target="_blank" rel="noopener">Ver la web ↗</a>
+  </header>
+  <nav class="pestanas" role="tablist" id="pestanas">
+    <button role="tab" data-s="reportajes">Reportajes</button>
+    <button role="tab" data-s="bodas">Bodas y comuniones</button>
+    <button role="tab" data-s="animales">Animales</button>
+    <button role="tab" data-s="paisajes">Paisajes</button>
+  </nav>
+  <main id="vista"></main>
+</div>
+
+<div class="estado" id="estado" hidden><span class="punto"></span><span id="estadoTxt"></span><button id="estadoBtn" hidden></button></div>
+<input type="file" id="selector" accept="image/*" multiple hidden>
+
+<script>
+/* ==== Panel de fotos de José Luis · 13/11/2026 ====
+   Las fotos se preparan AQUÍ, en el navegador (webp 2560 px calidad 90 + miniatura 900 px, como hacía Claude a mano),
+   se mandan al Apps Script «Panel fotos José Luis» (cuenta de Engrana), que las guarda en GitHub con su propia clave.
+   Los datos de la web (carpetas, animales, paisajes) están en ../datos.js. */
+const API = "PEGAR_AQUI_URL_EXEC";
+const FOTOS = "https://raw.githubusercontent.com/C4RR0/fotografo-fotos/main/fotos/";
+const LADO_GRANDE = 2560, LADO_MINI = 900;
+const FASES = ["Día", "Hora dorada", "Eclipse", "Hora azul", "Noche"];
+const GRUPOS = {reportajes: "Reportajes", bodas: "Bodas y comuniones", animales: "Animales", paisajes: "Paisajes"};
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const guarda = {get: k => { try { return localStorage.getItem(k); } catch { return null; } },
+                set: (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch {} }};
+const copia = o => JSON.parse(JSON.stringify(o));
+const nuevoId = () => Date.now().toString(36).slice(-6) + Math.random().toString(36).slice(2, 5);
+const slug = s => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 30) || "foto";
+
+const S = {clave: guarda.get("panelClave"), datos: null, sha: null, pend: [], archivos: [], locales: {}, vista: {s: guarda.get("panelSeccion") || "reportajes", c: null},
+           guardando: false, otraVez: false, subiendo: false, deshacer: null};
+
+/* ---------- servidor ---------- */
+async function api(q) {
+  const r = await fetch(API, {method: "POST", body: JSON.stringify({...q, clave: S.clave})});
+  if (!r.ok) throw new Error("El servidor no responde (" + r.status + ")");
+  const j = await r.json();
+  if (!j.ok && j.error === "clave") { guarda.set("panelClave", null); location.reload(); throw new Error("clave"); }
+  return j;
+}
+
+/* ---------- estado de abajo ---------- */
+let tEstado;
+function estado(txt, tipo, boton, accion) {
+  const e = $("#estado"); e.hidden = false; e.className = "estado " + (tipo || "");
+  $("#estadoTxt").textContent = txt;
+  const b = $("#estadoBtn"); b.hidden = !boton; b.textContent = boton || ""; b.onclick = accion || null;
+  clearTimeout(tEstado);
+  if (tipo === "ok") tEstado = setTimeout(() => { e.hidden = true; }, boton ? 15000 : 6000);
+}
+
+/* ---------- datos ---------- */
+const img = (n, mini) => S.locales[n] && mini ? S.locales[n] : `${FOTOS}${n}${mini ? "-m" : ""}.${(S.datos.info[n] && S.datos.info[n][2]) || (n.includes("-") ? "webp" : "jpg")}`;
+function prepararIds(d) {   // cada carpeta y sesión lleva un id fijo para poder repetir los cambios si hay conflicto
+  d.carpetas.forEach(c => { c.id ||= "c" + nuevoId(); c.sesiones.forEach(s => { s.id ||= "s" + nuevoId(); }); });
+  d.fauna.forEach(g => { g.id ||= "a" + nuevoId(); });
+  return d;
+}
+const carpeta = (d, id) => d.carpetas.find(c => c.id === id) || d.fauna.find(g => g.id === id);
+const fotosDe = c => c.sesiones ? c.sesiones.flatMap(s => s.f) : c.fotos;
+const portadaDe = c => { const f = fotosDe(c); return c.portada && f.includes(c.portada) ? c.portada : f[0]; };
+function resumen(c) { if (c.sesiones) { const n = c.sesiones.filter(s => s.f.length || c.sesiones.length === 1).length; c.sesion = n > 1 ? `${n} sesiones` : (c.sesiones[0] && c.sesiones[0].t) || "Sesión"; } }
+
+async function cargar() {
+  estado("Cargando tus fotos…", "trabajando");
+  const r = await api({accion: "datos"});
+  if (!r.ok) throw new Error(r.error);
+  S.datos = prepararIds(r.datos); S.sha = r.sha;
+  S.pend.forEach(op => op(S.datos));   // (si veníamos de un conflicto)
+  $("#estado").hidden = true;
+}
+
+/* Cada cambio es una función que se aplica a los datos; así, si alguien cambió la web a la vez, se repite sobre lo nuevo. */
+function cambiar(op, nota, deshacible) {
+  S.deshacer = deshacible ? {antes: copia(S.datos), nota} : null;
+  op(S.datos); S.pend.push(op); S.nota = nota;
+  pintar();
+  if (!S.subiendo) guardar();
+  if (deshacible) estado(nota, "trabajando", "Deshacer", () => {
+    const antes = S.deshacer && S.deshacer.antes; if (!antes) return; S.deshacer = null;
+    cambiar(d => { Object.keys(d).forEach(k => delete d[k]); Object.assign(d, copia(antes)); }, "Deshecho");
+  });
+}
+
+async function guardar() {
+  if (S.guardando) { S.otraVez = true; return; }
+  if (!S.pend.length && !S.archivos.length) return;
+  S.guardando = true;
+  const ops = S.pend.length, archivos = S.archivos.slice(), nota = S.nota || "Cambios desde el panel";
+  if (!S.deshacer) estado("Guardando…", "trabajando");
+  try {
+    let r = await api({accion: "guardar", datos: S.datos, sha: S.sha, archivos, nota});
+    if (!r.ok && r.error === "conflicto") {   // otra persona/pestaña cambió la web: recargo y repito mis cambios
+      S.archivos = S.archivos.slice(archivos.length);
+      const pend = S.pend; await cargar(); S.pend = pend;
+      r = await api({accion: "guardar", datos: S.datos, sha: S.sha, archivos: [], nota});
+    }
+    if (!r.ok) throw new Error(r.error);
+    S.sha = r.sha; S.pend = S.pend.slice(ops); S.archivos = S.archivos.filter(a => !archivos.includes(a));
+    if (!S.pend.length && !S.subiendo) estado("Guardado ✓ · en la web en 1 o 2 minutos", "ok", S.deshacer ? "Deshacer" : null, $("#estadoBtn").onclick);
+  } catch (e) {
+    estado("No se pudo guardar: " + e.message, "error", "Reintentar", guardar);
+    S.guardando = false; return;
+  }
+  S.guardando = false;
+  if (S.otraVez || S.pend.length) { S.otraVez = false; guardar(); }
+}
+addEventListener("beforeunload", e => { if (S.subiendo || S.pend.length || S.archivos.length) { e.preventDefault(); e.returnValue = ""; } });
+
+/* ---------- preparar fotos en el navegador ---------- */
+async function abrirImagen(file) {
+  try { return await createImageBitmap(file, {imageOrientation: "from-image"}); } catch {}
+  const url = URL.createObjectURL(file), im = new Image(); im.src = url;
+  try { await im.decode(); return im; } catch { throw new Error(`No puedo abrir «${file.name}». Si es del iPhone (HEIC) o RAW, pásala antes a JPG.`); }
+}
+function reducir(src, max) {
+  const w0 = src.naturalWidth || src.width, h0 = src.naturalHeight || src.height;
+  const k = Math.min(1, max / Math.max(w0, h0)), W = Math.round(w0 * k), H = Math.round(h0 * k);
+  let cur = src, cw = w0, ch = h0;
+  while (cw / 2 >= W && ch / 2 >= H && cw > 2 * W) {   // reducir a la mitad por pasos: más nítido que de golpe
+    const c = document.createElement("canvas"); c.width = Math.round(cw / 2); c.height = Math.round(ch / 2);
+    const x = c.getContext("2d"); x.imageSmoothingQuality = "high"; x.drawImage(cur, 0, 0, c.width, c.height);
+    cur = c; cw = c.width; ch = c.height;
+  }
+  const c = document.createElement("canvas"); c.width = W; c.height = H;
+  const x = c.getContext("2d"); x.imageSmoothingQuality = "high"; x.drawImage(cur, 0, 0, W, H);
+  return c;
+}
+const aBlob = (c, tipo, q) => new Promise((ok, mal) => c.toBlob(b => b ? ok(b) : mal(new Error("No pude preparar la foto")), tipo, q));
+const aB64 = b => new Promise(ok => { const r = new FileReader(); r.onload = () => ok(r.result.split(",")[1]); r.readAsDataURL(b); });
+function colorMedio(c) {
+  const p = document.createElement("canvas"); p.width = p.height = 16; const x = p.getContext("2d"); x.drawImage(c, 0, 0, 16, 16);
+  const d = x.getImageData(0, 0, 16, 16).data; let r = 0, g = 0, b = 0;
+  for (let i = 0; i < d.length; i += 4) { r += d[i]; g += d[i + 1]; b += d[i + 2]; }
+  const n = d.length / 4, h = v => Math.round(v / n * .8).toString(16).padStart(2, "0");
+  return "#" + h(r) + h(g) + h(b);
+}
+async function prepararFoto(file, base) {
+  const im = await abrirImagen(file);
+  const w = im.naturalWidth || im.width, h = im.naturalHeight || im.height;
+  const grande = reducir(im, LADO_GRANDE), mini = reducir(grande, LADO_MINI);
+  if (im.close) im.close();
+  let tipo = "image/webp", ext = "webp", bg = await aBlob(grande, tipo, .9);
+  if (bg.type !== "image/webp") { tipo = "image/jpeg"; ext = "jpg"; bg = await aBlob(grande, tipo, .92); }   // Safari antiguo no sabe hacer webp
+  const bm = await aBlob(mini, tipo, .82);
+  const id = slug(base) + "-" + nuevoId();
+  return {id, ext, grande: bg, mini: bm, info: ext === "webp" ? [+(w / h).toFixed(3), colorMedio(mini)] : [+(w / h).toFixed(3), colorMedio(mini), "jpg"]};
+}
+
+/* Sube las fotos elegidas y las coloca con «meter(d, id)». */
+async function subirFotos(files, base, meter, nota) {
+  files = [...files].filter(f => /^image\//.test(f.type) || /\.(jpe?g|png|webp|heic|heif|tiff?)$/i.test(f.name));
+  if (!files.length) return;
+  S.subiendo = true;
+  const capa = document.createElement("div"); capa.className = "progreso";
+  capa.innerHTML = `<h3>Subiendo fotos</h3><div class="barra"><i></i></div><p id="progTxt"></p><p class="mono">No cierres esta página hasta que termine</p>`;
+  document.body.append(capa);
+  const fallos = [];
+  for (let k = 0; k < files.length; k++) {
+    capa.querySelector("#progTxt").textContent = `Foto ${k + 1} de ${files.length}…`;
+    capa.querySelector(".barra i").style.width = (k / files.length * 100) + "%";
+    try {
+      const f = await prepararFoto(files[k], base);
+      const r = await api({accion: "foto", nombre: f.id, ext: f.ext, grande: await aB64(f.grande), mini: await aB64(f.mini)});
+      if (!r.ok) throw new Error(r.error);
+      S.archivos.push(...r.archivos);
+      S.locales[f.id] = URL.createObjectURL(f.mini);
+      const {id, info} = f;
+      const op = d => { d.info[id] = info; meter(d, id); };
+      op(S.datos); S.pend.push(op);
+      if ((k + 1) % 10 === 0) { S.nota = nota; await guardar(); }   // cada 10 fotos se guarda, por si se corta
+    } catch (e) { fallos.push(files[k].name + ": " + e.message); }
+  }
+  capa.querySelector(".barra i").style.width = "100%";
+  S.subiendo = false; S.nota = nota;
+  capa.querySelector("#progTxt").textContent = "Guardando en la web…";
+  await guardar();
+  capa.remove();
+  pintar();
+  if (fallos.length) dialogo({titulo: "Algunas fotos no se subieron", texto: fallos.join("\n"), botones: [{t: "Vale", prin: true}]});
+}
+function elegirFotos(base, meter, nota) {
+  const sel = $("#selector"); sel.value = "";
+  sel.onchange = () => subirFotos(sel.files, base, meter, nota);
+  sel.click();
+}
+
+/* ---------- diálogos ---------- */
+function dialogo({titulo, texto, html, campos = [], botones = []}) {
+  return new Promise(fin => {
+    const velo = document.createElement("div"); velo.className = "velo";
+    velo.innerHTML = `<div class="hoja" role="dialog" aria-modal="true"><h3>${esc(titulo)}</h3>${texto ? `<p style="white-space:pre-line">${esc(texto)}</p>` : ""}${html || ""}
+      <form>${campos.map((c, i) => c.opciones
+        ? `<label for="cmp${i}">${esc(c.label)}</label><select id="cmp${i}">${c.opciones.map(o => `<option${o === c.valor ? " selected" : ""}>${esc(o)}</option>`).join("")}</select>`
+        : `<label for="cmp${i}">${esc(c.label)}</label><input type="text" id="cmp${i}" value="${esc(c.valor || "")}" placeholder="${esc(c.ph || "")}" autocomplete="off">`).join("")}
+      <div class="acciones" style="margin-top:18px">${botones.map((b, i) => `<button type="${b.prin ? "submit" : "button"}" class="btn${b.prin ? " prin" : ""}${b.peligro ? " peligro" : ""}" data-i="${i}">${esc(b.t)}</button>`).join("")}</div></form></div>`;
+    const cerrar = v => { velo.remove(); fin(v); };
+    velo.addEventListener("click", e => { if (e.target === velo) cerrar(null); });
+    velo.querySelector("form").addEventListener("submit", e => { e.preventDefault(); const i = botones.findIndex(b => b.prin); valor(i); });
+    velo.querySelectorAll("button[data-i]").forEach(b => b.addEventListener("click", e => { if (b.type !== "submit") { e.preventDefault(); valor(+b.dataset.i); } }));
+    function valor(i) {
+      const b = botones[i]; if (!b) return cerrar(null);
+      const vals = campos.map((c, k) => velo.querySelector("#cmp" + k).value.trim());
+      if (b.prin && campos.some((c, k) => c.obligatorio && !vals[k])) { velo.querySelector("input").focus(); return; }
+      cerrar({boton: b.v ?? i, vals});
+    }
+    document.body.append(velo);
+    setTimeout(() => (velo.querySelector("input,select") || velo.querySelector(".btn.prin") || velo.querySelector("button")).focus(), 50);
+  });
+}
+const confirmar = async (titulo, texto, si) => ((await dialogo({titulo, texto, botones: [{t: si, prin: true, peligro: true, v: 1}, {t: "Cancelar", v: 0}]})) || {}).boton === 1;
+
+/* ---------- pintar ---------- */
+function pintar() {
+  document.querySelectorAll("#pestanas button").forEach(b => b.setAttribute("aria-selected", b.dataset.s === S.vista.s));
+  const v = $("#vista"), {s, c} = S.vista;
+  if (!S.datos) { v.innerHTML = ""; return; }
+  if (s === "paisajes") return pintarPaisajes(v);
+  const cc = c && carpeta(S.datos, c);
+  if (cc) return pintarCarpeta(v, cc);
+  S.vista.c = null;
+  const lista = s === "animales" ? S.datos.fauna : S.datos.carpetas.filter(x => x.grupo === s);
+  const titulo = {reportajes: "Cada sesión, <em>su carpeta</em>", bodas: "Cada celebración, <em>su carpeta</em>", animales: "Primero, <em>la mirada</em>"}[s];
+  v.innerHTML = `<h1>${titulo}</h1>
+    <p class="ayuda">${s === "animales" ? "Una carpeta por familia de animales." : "Una carpeta por persona o celebración; dentro, una sesión por cada sitio o día."} Toca una carpeta para añadir o quitar fotos.</p>
+    <div class="carpetas">${lista.map(x => { const f = fotosDe(x); return `<button class="carpeta" data-c="${x.id}">
+      ${f[0] ? `<img class="tapa" src="${img(portadaDe(x), 1)}" alt="" loading="lazy">` : `<span class="tapa"></span>`}
+      <span class="txt"><span class="nom">${esc(x.nombre)}</span><span class="num mono">${f.length} ${f.length === 1 ? "foto" : "fotos"}${f.length ? "" : " · no se ve aún"}</span></span></button>`; }).join("")}
+      <button class="carpeta nueva" id="bNueva"><b>+</b>Nueva carpeta</button></div>`;
+  v.querySelectorAll(".carpeta[data-c]").forEach(b => b.onclick = () => abrirCarpeta(b.dataset.c));
+  $("#bNueva").onclick = nuevaCarpeta;
+}
+
+function abrirCarpeta(id) { S.vista.c = id; history.pushState({c: id}, ""); pintar(); scrollTo(0, 0); }
+addEventListener("popstate", () => { S.vista.c = (history.state && history.state.c) || null; pintar(); });
+
+function miniatura(n, marcas = []) {
+  return `<button class="foto" data-f="${n}" aria-label="Opciones de esta foto"><img src="${img(n, 1)}" alt="" loading="lazy">${marcas.map(m => `<span class="marca${m === "Mirada" ? " ojo" : ""}">${m}</span>`).join("")}</button>`;
+}
+
+function pintarCarpeta(v, c) {
+  const animal = !c.sesiones, todas = fotosDe(c);
+  const marcas = n => [n === portadaDe(c) ? "Portada" : null, animal && c.mirada && c.mirada[0] === n ? "Mirada" : null].filter(Boolean);
+  v.innerHTML = `<button class="btn peq volver" id="bVolver">← ${esc(GRUPOS[S.vista.s])}</button>
+    <div class="cab-carpeta"><h1>${esc(c.nombre)}</h1><button class="btn peq" id="bNombre">Cambiar nombre</button></div>
+    <p class="ayuda">${todas.length} fotos. Toca una foto para ponerla de portada (mejor una horizontal), moverla o quitarla.${animal ? " La foto marcada «Mirada» es la que se abre desde el ojo." : ""}</p>
+    ${animal
+      ? `<div class="sesion"><div class="sesion-cab"><span></span><button class="btn prin" data-subir="">+ Añadir fotos</button></div>
+         <div class="fotos">${c.fotos.map(n => miniatura(n, marcas(n))).join("") || `<p class="vacia">Aún no hay fotos.</p>`}</div></div>`
+      : c.sesiones.map(se => `<div class="sesion"><div class="sesion-cab"><h2>${esc(se.t || "Sin nombre")}<small>${se.f.length} fotos</small></h2>
+           <div class="fila"><button class="btn peq" data-ren="${se.id}">Cambiar nombre</button>${c.sesiones.length > 1 ? `<button class="btn peq peligro" data-borses="${se.id}">Quitar sesión</button>` : ""}<button class="btn prin" data-subir="${se.id}">+ Añadir fotos</button></div></div>
+           <div class="fotos">${se.f.map(n => miniatura(n, marcas(n))).join("") || `<p class="vacia">Aún no hay fotos en esta sesión.</p>`}</div></div>`).join("")}
+    <div class="pie-carpeta fila">
+      ${animal ? "" : `<button class="btn" id="bSesion">+ Nueva sesión</button>`}
+      <button class="btn" id="bAntes">↑ Moverla antes</button><button class="btn" id="bDespues">↓ Moverla después</button>
+      <button class="btn peligro" id="bBorrar">Quitar carpeta</button>
+    </div>`;
+  $("#bVolver").onclick = () => history.back();
+  $("#bNombre").onclick = async () => {
+    const r = await dialogo({titulo: "Nombre de la carpeta", campos: [{label: "Nombre", valor: c.nombre, obligatorio: true}], botones: [{t: "Guardar", prin: true}, {t: "Cancelar"}]});
+    if (!r || r.boton !== 0 || r.vals[0] === c.nombre) return;
+    const id = c.id, nom = r.vals[0], viejo = c.nombre;
+    cambiar(d => { const x = carpeta(d, id); if (x) x.nombre = nom; }, `«${viejo}» ahora se llama «${nom}»`);
+  };
+  v.querySelectorAll("[data-subir]").forEach(b => b.onclick = () => {
+    const id = c.id, sid = b.dataset.subir, se = c.sesiones && c.sesiones.find(x => x.id === sid);
+    elegirFotos(c.nombre + (se && se.t ? " " + se.t : ""), (d, n) => { const x = carpeta(d, id); if (!x) return;
+      if (x.sesiones) { (x.sesiones.find(y => y.id === sid) || x.sesiones[0]).f.push(n); resumen(x); } else x.fotos.push(n); },
+      `fotos nuevas en ${c.nombre}${se && se.t ? " · " + se.t : ""}`);
+  });
+  v.querySelectorAll("[data-ren]").forEach(b => b.onclick = async () => {
+    const se = c.sesiones.find(x => x.id === b.dataset.ren);
+    const r = await dialogo({titulo: "Nombre de la sesión", texto: "Por ejemplo, el sitio: «Vías», «Cascada», «Estudio»…", campos: [{label: "Nombre", valor: se.t}], botones: [{t: "Guardar", prin: true}, {t: "Cancelar"}]});
+    if (!r || r.boton !== 0) return;
+    const id = c.id, sid = se.id, t = r.vals[0];
+    cambiar(d => { const x = carpeta(d, id), y = x && x.sesiones.find(z => z.id === sid); if (y) { y.t = t; resumen(x); } }, `sesión renombrada en ${c.nombre}`);
+  });
+  v.querySelectorAll("[data-borses]").forEach(b => b.onclick = async () => {
+    const se = c.sesiones.find(x => x.id === b.dataset.borses);
+    if (!await confirmar(`¿Quitar la sesión «${se.t || "sin nombre"}»?`, `Sus ${se.f.length} fotos dejarán de verse en la web.`, "Sí, quitarla")) return;
+    const id = c.id, sid = se.id;
+    cambiar(d => { const x = carpeta(d, id); if (x) { x.sesiones = x.sesiones.filter(y => y.id !== sid); resumen(x); } }, `quitada una sesión de ${c.nombre}`, true);
+  });
+  if (!animal) $("#bSesion").onclick = async () => {
+    const r = await dialogo({titulo: "Nueva sesión", texto: "Ponle el nombre del sitio o del día. Luego añade sus fotos.", campos: [{label: "Nombre de la sesión", ph: "Ej.: Río", obligatorio: true}], botones: [{t: "Crear", prin: true}, {t: "Cancelar"}]});
+    if (!r || r.boton !== 0) return;
+    const id = c.id, sid = "s" + nuevoId(), t = r.vals[0];
+    cambiar(d => { const x = carpeta(d, id); if (x) { x.sesiones.push({t, f: [], id: sid}); resumen(x); } }, `nueva sesión «${t}» en ${c.nombre}`);
+  };
+  const mover = paso => {
+    const id = c.id;
+    cambiar(d => {
+      const lista = animal ? d.fauna : d.carpetas, i = lista.findIndex(x => x.id === id); if (i < 0) return;
+      let j = i + paso; while (!animal && lista[j] && lista[j].grupo !== lista[i].grupo) j += paso;
+      if (j < 0 || j >= lista.length) return;
+      [lista[i], lista[j]] = [lista[j], lista[i]];
+    }, `carpeta ${c.nombre} movida`);
+  };
+  $("#bAntes").onclick = () => mover(-1);
+  $("#bDespues").onclick = () => mover(1);
+  $("#bBorrar").onclick = async () => {
+    if (!await confirmar(`¿Quitar la carpeta «${c.nombre}»?`, `Sus ${todas.length} fotos dejarán de verse en la web. Justo después podrás deshacerlo.`, "Sí, quitarla")) return;
+    const id = c.id;
+    history.back();
+    cambiar(d => { d.carpetas = d.carpetas.filter(x => x.id !== id); d.fauna = d.fauna.filter(x => x.id !== id); }, `quitada la carpeta ${c.nombre}`, true);
+  };
+  v.querySelectorAll(".foto").forEach(b => b.onclick = () => opcionesFoto(b.dataset.f, c));
+}
+
+async function nuevaCarpeta() {
+  const s = S.vista.s;
+  const campos = s === "animales" ? [{label: "Familia de animales", ph: "Ej.: Zorros", obligatorio: true}]
+    : s === "bodas" ? [{label: "Nombres", ph: "Ej.: Ana y Luis", obligatorio: true}, {label: "¿Qué es?", opciones: ["Boda", "Comunión", "Bautizo", "Pre boda"], valor: "Boda"}]
+    : [{label: "Nombre (de la persona o del grupo)", ph: "Ej.: Lucía", obligatorio: true}, {label: "Primera sesión: el sitio o el día (si quieres)", ph: "Ej.: Vías"}];
+  const r = await dialogo({titulo: "Nueva carpeta", campos, botones: [{t: "Crear carpeta", prin: true}, {t: "Cancelar"}]});
+  if (!r || r.boton !== 0) return;
+  const id = (s === "animales" ? "a" : "c") + nuevoId(), nom = r.vals[0], t = r.vals[1] || "";
+  cambiar(d => {
+    if (s === "animales") d.fauna.push({nombre: nom, fotos: [], id});
+    else { const x = {nombre: nom, sesion: t || "Sesión", grupo: s, sesiones: [{t, f: [], id: "s" + nuevoId()}], id}; resumen(x); d.carpetas.push(x); }
+  }, `nueva carpeta ${nom}`);
+  abrirCarpeta(id);
+}
+
+async function opcionesFoto(n, c) {
+  const animal = c && !c.sesiones, pais = !c;
+  const fase = pais && (S.datos.paisajes.find(p => p[0] === n) || [])[1];
+  const otras = c && c.sesiones && c.sesiones.length > 1;
+  const botones = [
+    !pais && {t: "Ponerla de portada", v: "portada", prin: true},
+    animal && {t: "Usarla en «la mirada» (elegir el ojo)", v: "mirada"},
+    {t: "← Moverla antes", v: "antes"}, {t: "Moverla después →", v: "despues"},
+    otras && {t: "Pasarla a otra sesión", v: "sesion"},
+    pais && {t: "Cambiar el momento del día", v: "fase"},
+    {t: "Quitarla de la web", v: "quitar", peligro: true}, {t: "Cancelar", v: "no"}].filter(Boolean);
+  const r = await dialogo({titulo: pais ? `Paisaje · ${fase}` : c.nombre, html: `<img class="previa" src="${img(n, 1)}" alt="">`, botones});
+  if (!r) return;
+  const id = c && c.id;
+  const lista = d => { if (pais) return d.paisajes; const x = carpeta(d, id); return x && (x.sesiones ? x.sesiones.find(s => s.f.includes(n)).f : x.fotos); };
+  if (r.boton === "portada") cambiar(d => { const x = carpeta(d, id); if (!x) return;
+      if (x.sesiones) x.portada = n;   // la carpeta de la web la enseña la primera (sin cambiar el orden de las sesiones)
+      else { x.fotos.splice(x.fotos.indexOf(n), 1); x.fotos.unshift(n); } }, `nueva portada en ${c.nombre}`);
+  else if (r.boton === "antes" || r.boton === "despues") cambiar(d => { const l = lista(d); if (!l) return;
+      const i = pais ? l.findIndex(p => p[0] === n) : l.indexOf(n), j = i + (r.boton === "antes" ? -1 : 1);
+      if (i < 0 || j < 0 || j >= l.length || (pais && l[j][1] !== l[i][1])) return; [l[i], l[j]] = [l[j], l[i]]; }, "foto movida");
+  else if (r.boton === "quitar") cambiar(d => { if (pais) { d.paisajes = d.paisajes.filter(p => p[0] !== n); return; }
+      const x = carpeta(d, id); if (!x) return; if (x.sesiones) { x.sesiones.forEach(s => { s.f = s.f.filter(m => m !== n); }); resumen(x); } else x.fotos = x.fotos.filter(m => m !== n);
+      if (x.mirada && x.mirada[0] === n) delete x.mirada; }, "foto quitada de la web", true);
+  else if (r.boton === "sesion") {
+    const actual = c.sesiones.find(s => s.f.includes(n));
+    const q = await dialogo({titulo: "¿A qué sesión?", campos: [{label: "Sesión", opciones: c.sesiones.filter(s => s !== actual).map(s => s.t || "Sin nombre")}], botones: [{t: "Pasarla", prin: true}, {t: "Cancelar"}]});
+    if (!q || q.boton !== 0) return;
+    const destino = c.sesiones.filter(s => s !== actual).find(s => (s.t || "Sin nombre") === q.vals[0]).id;
+    cambiar(d => { const x = carpeta(d, id); if (!x) return; x.sesiones.forEach(s => { s.f = s.f.filter(m => m !== n); }); x.sesiones.find(s => s.id === destino).f.push(n); resumen(x); }, "foto cambiada de sesión");
+  }
+  else if (r.boton === "fase") {
+    const q = await dialogo({titulo: "¿En qué momento del día?", texto: "Los paisajes de la web van del día a la noche.", campos: [{label: "Momento", opciones: FASES, valor: fase}], botones: [{t: "Cambiar", prin: true}, {t: "Cancelar"}]});
+    if (!q || q.boton !== 0) return;
+    const f = q.vals[0];
+    cambiar(d => { d.paisajes = d.paisajes.filter(p => p[0] !== n); meterPaisaje(d, n, f); }, "paisaje cambiado de momento");
+  }
+  else if (r.boton === "mirada") elegirOjo(n, c);
+}
+
+async function elegirOjo(n, c) {
+  let xy = c.mirada && c.mirada[0] === n ? [c.mirada[1], c.mirada[2]] : [.5, .5];
+  const velo = document.createElement("div"); velo.className = "velo";
+  velo.innerHTML = `<div class="hoja" style="text-align:center"><h3>Toca el ojo del animal</h3><p>La web empieza enseñando solo ese ojo y luego la foto entera.</p>
+    <div class="ojo-cont"><img src="${img(n)}" alt=""><span class="ojo-punto"></span></div>
+    <div class="acciones"><button class="btn prin" data-v="1">Guardar</button><button class="btn" data-v="0">Cancelar</button></div></div>`;
+  document.body.append(velo);
+  const im = velo.querySelector("img"), pt = velo.querySelector(".ojo-punto");
+  const poner = () => { pt.style.left = xy[0] * 100 + "%"; pt.style.top = xy[1] * 100 + "%"; }; poner();
+  im.addEventListener("click", e => { const b = im.getBoundingClientRect(); xy = [+((e.clientX - b.left) / b.width).toFixed(3), +((e.clientY - b.top) / b.height).toFixed(3)]; poner(); });
+  velo.querySelectorAll("[data-v]").forEach(b => b.onclick = () => {
+    velo.remove(); if (b.dataset.v !== "1") return;
+    const id = c.id, [x, y] = xy;
+    cambiar(d => { const g = carpeta(d, id); if (g) g.mirada = [n, x, y]; }, `nueva «mirada» en ${c.nombre}`);
+  });
+}
+
+function meterPaisaje(d, n, fase) {   // al final de su momento del día
+  let k = -1; d.paisajes.forEach((p, i) => { if (FASES.indexOf(p[1]) <= FASES.indexOf(fase)) k = i; });
+  d.paisajes.splice(k + 1, 0, [n, fase]);
+}
+function pintarPaisajes(v) {
+  const P = S.datos.paisajes;
+  v.innerHTML = `<h1>De sol <em>a luna</em></h1><p class="ayuda">${P.length} paisajes. En la web pasan del día a la noche, así que cada foto va en su momento del día. Toca una foto para moverla o quitarla.</p>
+    ${FASES.map(f => { const l = P.filter(p => p[1] === f); return `<div class="sesion"><div class="sesion-cab"><h2>${f}<small>${l.length} fotos</small></h2><button class="btn prin" data-fase="${f}">+ Añadir fotos</button></div>
+      <div class="fotos">${l.map(p => miniatura(p[0])).join("") || `<p class="vacia">Ninguna todavía.</p>`}</div></div>`; }).join("")}`;
+  v.querySelectorAll("[data-fase]").forEach(b => b.onclick = () => { const f = b.dataset.fase; elegirFotos("paisaje", (d, n) => meterPaisaje(d, n, f), `paisajes nuevos (${f})`); });
+  v.querySelectorAll(".foto").forEach(b => b.onclick = () => opcionesFoto(b.dataset.f, null));
+}
+
+/* ---------- arranque ---------- */
+document.querySelectorAll("#pestanas button").forEach(b => b.onclick = () => {
+  S.vista = {s: b.dataset.s, c: null}; guarda.set("panelSeccion", b.dataset.s);
+  if (history.state && history.state.c) history.replaceState(null, ""); pintar(); scrollTo(0, 0);
+});
+$("#fEntrar").addEventListener("submit", async e => {
+  e.preventDefault(); $("#bEntrar").disabled = true; $("#errEntrar").textContent = "";
+  S.clave = $("#clave").value.trim();
+  try {
+    const r = await fetch(API, {method: "POST", body: JSON.stringify({accion: "entrar", clave: S.clave})}).then(x => x.json());
+    if (!r.ok) throw new Error(r.error === "clave" ? "Esa contraseña no es. Pregúntale a Sergio." : r.error);
+    guarda.set("panelClave", S.clave); arrancar();
+  } catch (err) { $("#errEntrar").textContent = err.message === "Failed to fetch" ? "No hay conexión. Prueba otra vez." : err.message; }
+  $("#bEntrar").disabled = false;
+});
+async function arrancar() {
+  $("#pEntrar").hidden = true; $("#pPanel").hidden = false;
+  history.replaceState(null, "");
+  try { await cargar(); pintar(); }
+  catch (e) { estado("No pude cargar tus fotos: " + e.message, "error", "Reintentar", arrancar); }
+}
+if (S.clave) arrancar(); else $("#pEntrar").hidden = false;
+</script>
+</body>
+</html>
