@@ -470,7 +470,6 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
     <li><a href="#bodas">Bodas</a></li>
     <li><a href="#paisajes">Paisajes</a></li>
     <li><a href="#animales">Animales</a></li>
-    <li><a href="#encargos">Encargos</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
 </nav>
@@ -574,12 +573,7 @@ body:has(.caja.on) .dial,body:has(.album.on) .dial{opacity:0;pointer-events:none
     </div>
   </section>
 
-  <!-- ENCARGOS -->
-  <section class="encargos" id="encargos">
-    <span class="mono t">Encargos</span>
-    <h2 data-partir>¿Qué quieres que <em>fotografíe</em>?</h2>
-    <ul class="lista" id="lista"></ul>
-  </section>
+  <!-- (13/11: la sección ENCARGOS «¿Qué quieres que fotografíe?» la quitó José Luis; su código sigue abajo y no hace nada si no está) -->
 
   <!-- CONTACTO -->
   <section class="contacto" id="contacto">
@@ -734,7 +728,7 @@ const ENC = [
   ["Naturaleza y paisaje","Lunas, nieblas y la fauna de aquí.","12"]
 ];
 const lista = $("#lista"), flot = $(".flotante");
-ENC.forEach(([t, d, n], i) => {
+if (lista) ENC.forEach(([t, d, n], i) => {
   lista.insertAdjacentHTML("beforeend", `<li data-f="${n}"><span class="n mono">0${i + 1}</span><h3>${t}</h3><p>${d}</p><img class="mini" src="${img(n, 1)}" alt="" loading="lazy"></li>`);
   flot.insertAdjacentHTML("beforeend", `<img src="${img(n, 1)}" alt="" data-f="${n}" loading="lazy">`);
 });
@@ -1069,7 +1063,7 @@ if (ANIM) {
   }
 
   // encargos y contacto
-  gsap.from(".lista li", {y: 50, opacity: 0, duration: 1, stagger: .09, ease: "power3.out", scrollTrigger: {trigger: ".lista", start: "top 85%"}});
+  if ($(".lista")) gsap.from(".lista li", {y: 50, opacity: 0, duration: 1, stagger: .09, ease: "power3.out", scrollTrigger: {trigger: ".lista", start: "top 85%"}});
   gsap.from(".contacto-cuerpo > *", {y: 40, opacity: 0, duration: 1, stagger: .15, ease: "power3.out", scrollTrigger: {trigger: ".contacto-cuerpo", start: "top 90%"}});
 
   addEventListener("load", () => ScrollTrigger.refresh());
@@ -1182,7 +1176,7 @@ if (fino) {
     visor.classList.toggle("foto", enFoto);
     etiqueta.textContent = enPajaro ? "MODO" : enHero ? "PINTA CON LUZ" : "VER";
   });
-  lista.querySelectorAll("li").forEach(li => {
+  (lista ? lista.querySelectorAll("li") : []).forEach(li => {
     li.addEventListener("mouseenter", () => { flot.classList.add("on"); flot.querySelectorAll("img").forEach(i => i.classList.toggle("on", i.dataset.f === li.dataset.f)); });
     li.addEventListener("mouseleave", () => flot.classList.remove("on"));
   });
